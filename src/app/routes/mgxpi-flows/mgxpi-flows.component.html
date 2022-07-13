@@ -1,77 +1,162 @@
+
+<!-- <mat-menu #appMenu="matMenu" xPosition="after" yPosition="above">
+  <button mat-menu-item (click)="exportexcel()">frontend</button>
+  <button mat-menu-item (click)="exportPDF()">backend</button>
+</mat-menu>
+<button mat-flat-button [matMenuTriggerFor]="appMenu">Menu</button> -->
+
+<!-- <div class="menu">
+  <ul class="menu-options">
+    <li class="menu-option" *ngIf= "!flag" (click)="updateFlowEnableStatus()">Enable flow</li>
+    <li class="menu-option" *ngIf= "flag" (click)="updateFlowEnableStatus()">Disable flow</li>
+    <li class="menu-option" (click)="exportexcel()">Export Table to Excel</li>
+    <li class="menu-option" (click)="exportPDF()">Export Table to PDF</li>
+    <li class="menu-option" (click)="exportPNG()">Export Table to png</li>
+    <li class="menu-option" (click)="copy_cell_value()">copy cell value</li>
+    <li class="menu-option">Logout</li>
+  </ul>
+</div> -->
+
 <mat-sidenav-container>
-  <mat-sidenav-content role="region">
+<mat-sidenav-content role="region">
+  <div class="matero-row" fxLayout="row wrap">
+    <div class="matero-col" fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let stat of flowStats">
+      <mat-card [ngClass]="['text-white', stat.color]" style="padding: 12px 15px 12px 15px;">
+        <mat-card-title style="margin-bottom: 0px;" class="f-s-16 f-w-500">{{stat.title}}</mat-card-title>
+        <mat-card-content style="margin-bottom: 0px;">
+          <h2 style="margin-bottom: 0px;">{{stat.amount}}</h2>
+          <mtx-progress [value]="100" height="2px" foreground="rgba(255,255,255,1)" background="rgba(0,0,0,.5)">
+          </mtx-progress>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="matero-row" fxLayout="row wrap">
     <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
-    <p-table #dt [columns]="flowColumns" [resizableColumns]="true" selectionMode="single" dataKey="flowId"
-      [value]="flows" [paginator]="true" [rows]="15" expandableRows="true" rowExpandMode="multiple" class="table">
-      <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
-        Flows
-      </ng-template>
-
-      <!-- Parent Table Data -->
-
-      <ng-template pTemplate="header" let-columns>
-        <tr class="table-th-tr">
-          <th></th>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
-            [ngStyle]="{'width': col.width}">
-            {{col.header}}
-            <p-sortIcon [field]="col.field"></p-sortIcon>
-          </th>
-        </tr>
-        <tr class="table-th-tr-fltr">
-          <th></th>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
-            <p-dropdown *ngSwitchCase="'bpName'" placeholder="ALL" [options]="bpList" appendTo="body"
-              [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')"></p-dropdown>
-          </th>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="body" let-flowsData let-expanded="expanded" let-columns="columns">
-        <tr [pSelectableRow]="flowsData">
-          <td>
-            <a href="#" [pRowToggler]="flowsData" (click)="getTriggersDataByFlows(flowsData)">
-              <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
-            </a>
-          </td>
-          <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
-            <span>{{col.field=='isEnable'?flowsData[col.field]==true?'Yes':'No':flowsData[col.field]}}</span>
-          </td>
-        </tr>
-      </ng-template>
-
-      <!-- Child Table Data-->
-
-      <ng-template pTemplate="rowexpansion" let-flowsData dataKey="triggerId">
-        <tr>
-          <td [attr.colspan]="10" [attr.rowspan]="1" style="padding-left: 67px !important;">
-            <p-table [columns]="triggerColumns" selectionMode="single" dataKey="triggerId" [value]="triggers">
-              <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
-            [ngStyle]="{'width': col.width}">
-            {{col.header}}
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-triggersData let-columns="columns">
-        <tr [pSelectableRow]="triggersData" *ngIf="flowsData.flowId === triggersData.flowId">
-          <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
-            <div *ngIf="col.subfield;then flowruntimetreedata else triggersdata"></div>
-            <ng-template #flowruntimetreedata>
-              <ng-container>{{getFlowTriggersStep(triggersData,col)}}</ng-container>
-            </ng-template>
-            <ng-template #triggersdata>
-              {{triggersData[col.field]}}
-            </ng-template>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    </td>
-    </tr>
+    <p-table id="dt" #dt [columns]="flowColumns" [resizableColumns]="true" selectionMode="single" dataKey="flowId"
+    [value]="flows" [paginator]="true" [rows]="15" expandableRows="true" rowExpandMode="multiple" class="table">
+    <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
+      Flows
     </ng-template>
-    </p-table>
+
+    <!-- Parent Table Data -->
+
+    <ng-template pTemplate="header" let-columns>
+      <tr class="table-th-tr">
+        <th></th>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
+          [ngStyle]="{'width': col.width}">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+      
+      
+
+      <tr class="table-th-tr-fltr">
+        <th></th>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+          <p-dropdown *ngSwitchCase="'bpName'" placeholder="ALL" [options]="bpList" appendTo="body"
+            [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')" >
+           </p-dropdown>
+           <p-dropdown *ngSwitchCase="'flowName'" placeholder="ALL" [options]="flowList" appendTo="body"
+           [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')">
+         </p-dropdown>
+         <p-dropdown *ngSwitchCase="'isEnable'" placeholder="ALL" [options]="enable_list" appendTo="body"
+           [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')">
+         </p-dropdown>
+        </th>
+      </tr>
+    
+    </ng-template>
+
+    <ng-template pTemplate="body" let-flowsData let-expanded="expanded" let-columns="columns">
+      <tr [pSelectableRow]="flowsData" >
+        <td>
+          <a href="#" [pRowToggler]="flowsData" (click)="load(flowsData)">
+            <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+          </a>
+        </td>
+        <!-- (contextmenu)="onRightClick()" -->
+
+        <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}"  (contextmenu)="onRightClick(flowsData.bpId,flowsData.flowId,flowsData.isEnable,flowsData[col.field])" >
+
+           
+          <span>{{col.field=='isEnable'?flowsData[col.field]==true?'Yes':'No':flowsData[col.field]}}</span>
+          
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- Child Table Data-->
+
+    <ng-template pTemplate="rowexpansion" let-flowsData dataKey="triggerId">
+      <tr>
+        <td [attr.colspan]="10" [attr.rowspan]="1" style="padding-left: 67px !important;">
+          <p-table [columns]="triggerColumns" selectionMode="single" dataKey="triggerId" [value]="triggers">
+            <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
+          [ngStyle]="{'width': col.width}">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-triggersData let-columns="columns">
+      <tr [pSelectableRow]="triggersData" *ngIf="flowsData.flowId === triggersData.flowId">
+        <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+          <div *ngIf="col.subfield;then flowruntimetreedata else triggersdata"></div>
+          <ng-template #flowruntimetreedata>
+            <ng-container>{{getFlowTriggersStep(triggersData,col)}}</ng-container>
+          </ng-template>
+          <ng-template #triggersdata>
+            
+            {{triggersData[col.field]}}
+          
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  </td>
+  </tr>
+  </ng-template>
+  </p-table>
+  <!-- <div (contextmenu)="onRightClick_outside()">
+  </div> -->
+</div>
+</div>
+</div>
+
+</mat-sidenav-content>
+</mat-sidenav-container> 
+<div id="context-menu">
+  <div class="item" *ngIf= "!flag" (click)="updateFlowEnableStatus()">
+     Enable
   </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  <div class="item" *ngIf= "flag" (click)="updateFlowEnableStatus()">
+    Disable
+ </div>
+  <hr>
+  <div class="item" (click)="refresh()">
+    Refresh
+  </div>
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+     Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+     Logout
+  </div>
+</div>
+
+
+

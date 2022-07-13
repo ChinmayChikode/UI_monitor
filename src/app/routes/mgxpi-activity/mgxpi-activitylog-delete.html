@@ -21,8 +21,8 @@
       Delete messages older than 
     
     <mat-form-field  class="mat-form-field-delete-datepicker" style="width:12em !important">
-        <input style="color: white;" #deleteLogDate matInput [matDatepicker]="deleteLogPicker" placeholder="Deletion date"
-        (dateChange)="this.activityServices.onToDeleteDateChange(deleteLogDate.value)">
+        <input style="color: white;" #deleteLogDate matInput [matDatepicker]="deleteLogPicker" placeholder="Deletion date">
+        
         <mat-datepicker-toggle style="color: white;" matSuffix [for]="deleteLogPicker"></mat-datepicker-toggle>
         <ngx-mat-datetime-picker style="color: white;" #deleteLogPicker [showSeconds]="true"
           [enableMeridian]="true">
@@ -40,6 +40,6 @@
   <button mat-stroked-button color="primary" mat-dialog-close cdkFocusInitial
   (click)="this.activityServices.deleteActivityLogByDays(this.projectSelection.projectKey)">Yes</button> -->
   <button mat-button style="background-color: white;color: black;" width="30px" class="activityFiltersCancel" mat-dialog-close>No</button>
-	<button mat-button style="background-color: white;color: black;" width="30px" class="activityFiltersSave" (click)="this.activityServices.deleteActivityLogByDays(this.projectSelection.projectKey)" mat-dialog-close>Yes</button>
+	<button mat-button style="background-color: white;color: black;" width="30px" class="activityFiltersSave" (click)="this.activityServices.onToDeleteDateChange(deleteLogDate.value)" mat-dialog-close>Yes</button>
 </mat-dialog-actions>
 </div>

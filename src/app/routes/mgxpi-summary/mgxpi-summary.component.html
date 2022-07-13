@@ -1,52 +1,100 @@
-<mat-sidenav-container style="padding: 5px !important;">
+ <mat-sidenav-container id='dt' style="padding: 5px !important;" (contextmenu)="onRightClick()">
 
-  <mat-sidenav-content role="region">
-
-    <div class="matero-row" fxLayout="row wrap">
-
-      <!-- Statistics -->
-      <div class="matero-col" fxFlex.gt-sm="20" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let stat of stats">
-        <mat-card [ngClass]="['text-white', stat.color]" style="padding:12px 15px 12px 15px;">
-          <mat-card-title style="margin-bottom: 0px" class="f-s-16 f-w-500">{{stat.title}}</mat-card-title>
-          <mat-card-content style="margin-bottom: 0;">
-            <h2 style="margin-bottom: 0px;">{{stat.amount}}</h2>
-            <mtx-progress [value]="stat.progress.value" height="2px" foreground="rgba(255,255,255,1)"
-              background='rgba(0,0,0,.5)'>
-            </mtx-progress>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-      <!-- Charts -->
-      <div class="matero-col" fxFlex="100" fxFlex.gt-sm="50">
-        <mat-card style="min-width: 400px;min-height: 475px;border: solid 1px #CCC !important;border-radius: 15px;">
-          <mat-card-subtitle class="f-s-14 f-w-100">
-            <span style="color: black;font-weight: 500 !important;">
-              <div style="padding: 0.4em 0em 0.5em 0.9em;background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);">
-                Server Threads
-              </div>
-            </span>
-          </mat-card-subtitle>
-          <div id="projectLoadChart"></div>
-        </mat-card>
-      </div>
-      <div class="matero-col" fxFlex="100" fxFlex.gt-sm="50">
-        <mat-card style="min-width: 400px;min-height: 475px;border: solid 1px #CCC !important;border-radius: 15px;">
-          <mat-card-subtitle class="f-s-14 f-w-100">
-            <span style="color: black;font-weight: 500 !important;">
-              <div style="padding: 0.4em 0em 0.5em 0.9em;background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);">
-                Server Activity
-              </div>
-            </span>
-          </mat-card-subtitle>
-          <div id="funnelPanel" [ngClass]="this.options.dir === 'ltr' ? 'summary-server-acivity-ltr' : 'summary-server-acivity-rtl'">
-            <div id="funnelContainer">
-              <div id="funnel"></div>
-            </div>
+    <mat-sidenav-content role="region">
+     
+            
+        <div class="matero-row" fxLayout="row wrap">
+  
+          <!-- Statistics -->
+          <div class="matero-col" fxFlex.gt-sm="20" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let stat of stats">
+            <mat-card [ngClass]="['text-white', stat.color]" style="padding:12px 15px 12px 15px;">
+              <mat-card-title style="margin-bottom: 0px" class="f-s-16 f-w-500">{{stat.title}}</mat-card-title>
+              <mat-card-content style="margin-bottom: 0;">
+                <h2 style="margin-bottom: 0px;">{{stat.amount}}</h2>
+                <mtx-progress [value]="stat.progress.value" height="2px" foreground="rgba(255,255,255,1)"
+                  background='rgba(0,0,0,.5)'>
+                </mtx-progress>
+              </mat-card-content>
+            </mat-card>
           </div>
-        </mat-card>
-      </div>
-    </div>
+    
+          <!-- Charts -->
+          
+          <div class="matero-col" fxFlex="100" fxFlex.gt-sm="50">
+            <mat-card style="min-width: 400px;min-height: 475px;border: solid 1px #CCC !important;border-radius: 15px;">
+              <mat-card-subtitle class="f-s-14 f-w-100">
+                <span style="color: black;font-weight: 500 !important;">
+                  <div style="padding: 0.4em 0em 0.5em 0.9em;background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);">
+                    Server Threads
+                  </div>
+                </span>
+              </mat-card-subtitle>
+              <div id="projectLoadChart"></div>
+            </mat-card>
+          </div>
 
-  </mat-sidenav-content>
-</mat-sidenav-container>
+          <div class="matero-col" fxFlex="100" fxFlex.gt-sm="50">
+            <mat-card style="min-width: 400px;min-height: 475px;border: solid 1px #CCC !important;border-radius: 15px;">
+              <mat-card-subtitle class="f-s-14 f-w-100">
+                <span style="color: black;font-weight: 500 !important;">
+                  <div style="padding: 0.4em 0em 0.5em 0.9em;background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);">
+                    Server Activity
+                  </div>
+                </span>
+              </mat-card-subtitle>
+              <div id="funnelPanel" [ngClass]="this.options.dir === 'ltr' ? 'summary-server-acivity-ltr' : 'summary-server-acivity-rtl'">
+                <div id="funnelContainer">
+                  <div id="funnel"></div>
+                </div>
+              </div>
+            </mat-card>
+          </div>          
+        </div>
+
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+<!-- <pie class="highcharts-figure">
+            <div id="container"></div>
+            <p class="highcharts-description">
+            </p>
+          </pie> -->
+          <!-- <div class="widget">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+            style="width: 100%; display: block;">
+              
+          </div> -->
+
+
+
+<div id="context-menu">
+  
+  <div class="item" (click)="refresh()">
+    Refresh
+ </div>
+  <div class="item" (click)="exportPDF()">
+     Export Table to PDF
+  </div>
+  <div class="item">
+     Logout
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

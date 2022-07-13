@@ -1,0 +1,164 @@
+
+
+<!-- <mat-toolbar>
+  <h4 mat-dialog-title>Activity Log</h4>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+</mat-toolbar>
+
+<mat-dialog-content>
+
+  
+
+    <table mat-table [dataSource]="ActivityDetials" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="Date & Time">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date & Time </th>
+          <td mat-cell *matCellDef="let element"> {{element.displayCreatedTime}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="MESSAGETYPE">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> MESSAGETYPE </th>
+          <td mat-cell *matCellDef="let element"> {{element.messageType}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Message">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Message </th>
+          <td mat-cell *matCellDef="let element"> {{element.messagestring}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="FSID">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> FSID </th>
+          <td mat-cell *matCellDef="let element"> {{element.rootfsid}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Blob">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Blob </th>
+            <td mat-cell *matCellDef="let element"> {{element.userblob}} </td>
+          </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+
+</mat-dialog-content> -->
+
+
+
+<mat-toolbar>
+  <h4 mat-dialog-title>Activity Log Details</h4>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1"><mat-icon>clear</mat-icon></button>  
+</mat-toolbar>
+
+<mat-sidenav-container id=box>
+  <mat-sidenav-content role="region">
+
+      <div class="matero-row" fxLayout="row wrap">
+        <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
+          <p-table id='dt' #dt [columns]="activity" selectionMode="single" dataKey="rootfsid"
+            [value]="this.messagesSrvpopup.activityLog" [paginator]="false" [rows]="18" sortField="" [sortOrder]="-1"
+            [resizableColumns]="true" class="table">
+            <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
+              Activity Log
+            </ng-template>
+
+            <ng-template pTemplate="header" let-columns>
+              <tr class="table-th-tr">
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
+                  [ngStyle]="{'width': col.width}">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-activityLog let-columns="columns">
+              <tr [pSelectableRow]="activityLog">
+                <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}" (contextmenu)="onRightClick(activityLog[col.field])">
+                  
+                  <div *ngIf="col.field=='blobexists'; then thenBlock else elseBlock"></div>
+                  <ng-template #thenBlock>
+                    <span *ngIf="activityLog.blobexists" >
+
+                      <mat-icon>insert_drive_file</mat-icon>
+  
+                    </span>
+                  </ng-template>
+              
+                  <ng-template #elseBlock>
+                    {{activityLog[col.field]}}
+                  </ng-template>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary">
+
+              <mat-label style="float: left; padding: 1em 0em;color:black;font-weight:500 !important">Records:
+                {{this.messagesSrvpopup.previous}}-{{this.messagesSrvpopup.next}} of
+                {{this.messagesSrvpopup.totalRecordsCount}}
+              </mat-label>
+
+              <button mat-icon-button aria-label="Navigation menu"
+                (click)="this.messagesSrvpopup.first()" [disabled]="this.messagesSrvpopup.firstDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">first_page</mat-icon>
+              </button>
+
+              <button mat-icon-button aria-label="Navigation menu"
+                (click)="this.messagesSrvpopup.updatePrevious()" [disabled]="this.messagesSrvpopup.previousDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">keyboard_arrow_left</mat-icon>
+              </button>
+
+              <button mat-icon-button aria-label="Navigation menu"
+                (click)="this.messagesSrvpopup.updateNext()" [disabled]="this.messagesSrvpopup.nextDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">keyboard_arrow_right</mat-icon>
+              </button>
+
+              <button mat-icon-button aria-label="Navigation menu" (click)="this.messagesSrvpopup.last()"
+                [disabled]="this.messagesSrvpopup.lastDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">last_page</mat-icon>
+              </button>
+
+              <mat-form-field @fade>
+                <mat-label style="color:black;font-weight:500 !important">Records Per Page</mat-label>
+                <mat-select #selectedValue [(ngModel)]="this.messagesSrvpopup.recordsFilterRange"
+                  (selectionChange)="this.messagesSrvpopup.onRangeFilterChange(selectedValue.value)">
+                  <mat-option *ngFor="let record of recordsFilter" [value]="record.value">
+                    {{ record.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            </ng-template>
+
+          </p-table>
+        </div>
+      </div>
+  <mat-sidenav-content>
+<mat-sidenav-container >
+
+       
+<div id="context-menu">
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+     Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+     Logout
+  </div>
+</div>
+
+
+
+
+     

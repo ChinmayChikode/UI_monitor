@@ -1,0 +1,25 @@
+<mat-card style="border: solid 1px #CCC !important;border-radius: 15px;">
+  <h2 mat-dialog-title>Details</h2>
+  <mat-dialog-content class="mat-typography">
+      <h3> Do you want to clear all ODS Variables ?</h3>
+  
+
+  <div>
+    <button style="float:right;color:black;background-color: #f5f7fa !important; 
+    background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-right: 2em !important; font-size: 25px;"
+    mat-raised-button mat-raised-button-new [mat-dialog-close]="false">Cancel</button>
+
+    <!-- <button style="float:right;color:black;background-color: #f5f7fa !important; 
+    background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-right: 2em !important; font-size: 25px;"
+    mat-raised-button mat-raised-button-new (click)="this.odsComponent.clearOdsTable()">Ok</button> -->
+    <button style="float:right;color:black;background-color: #f5f7fa !important; 
+    background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-right: 2em !important; font-size: 25px;"
+    mat-raised-button mat-raised-button-new [mat-dialog-close]="true">Ok</button>
+  </div>
+</mat-dialog-content>
+</mat-card>
+<!-- <mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+</mat-dialog-actions> -->
+

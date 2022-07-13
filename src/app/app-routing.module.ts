@@ -7,7 +7,7 @@ import { MgxpiLoginComponent } from './routes/mgxpi-login/mgxpi-login.component'
 
 const routes: Routes = [
   {
-    path: 'xpi/login',
+    path: 'login',
     component: MgxpiLoginComponent
   },
   {
@@ -22,7 +22,6 @@ const routes: Routes = [
     {
       path: 'xpi/messages',
       //component: MgxpiMessagesComponent,
-      //loadChildren: './routes/mgxpi-messages/messages.module#MessagesModule'
       loadChildren: () => import('./routes/mgxpi-messages/messages.module').then(m => m.MessagesModule)
     },
     {

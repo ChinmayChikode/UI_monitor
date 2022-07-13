@@ -87,7 +87,7 @@ export class DashboardService {
       series: [
         {
           name: 'Total Count',
-          data: [5, 7, 3, 9]
+          data: [5,6]
         }
       ],
       chart: {
@@ -112,9 +112,7 @@ export class DashboardService {
       xaxis: {
         type: 'category',
         categories: [
-          'Last Hour',
-          'Last Day',
-          'Since Start-Up'
+          'abc','xyz'
         ]
       },
       yaxis: {
@@ -225,7 +223,8 @@ export class DashboardService {
       yaxis: {
         title: {
           text: 'Licenses'
-        }
+        },
+        worker_series:[],
       },
       tooltip: {
         y: [{

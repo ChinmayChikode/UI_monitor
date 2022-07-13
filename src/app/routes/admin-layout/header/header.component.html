@@ -1,6 +1,7 @@
 <mat-toolbar class="matero-toolbar">
   <button mat-icon-button class="matero-toolbar-button" *ngIf="showToggle" (click)="toggleSidenav.emit()">
-    <mat-icon style="color: black;line-height: 0px !important;height: 0px !important;">menu</mat-icon>
+    <mat-icon mat-icon matTooltip="Toggle" [matTooltipClass]="{ 'tool-tip': true }" 
+    style="color: black;line-height: 0px !important;height: 0px !important;">menu</mat-icon>
   </button>
 
   <app-branding *ngIf="showBranding"></app-branding>
@@ -30,12 +31,17 @@
 
   <button style="color: black;margin-top: 2px;line-height: 40px !important;height: 40px !important;" mat-icon-button
     class="matero-toolbar-button" fxHide.lt-sm (click)="toggleFullscreen()">
-    <mat-icon>fullscreen</mat-icon>
+    <mat-icon matTooltip="Fullscreen" [matTooltipClass]="{ 'tool-tip': true }" *ngIf="screen" >fullscreen</mat-icon>
+    <mat-icon matTooltip="Exit Fullscreen" [matTooltipClass]="{ 'tool-tip': true }" *ngIf="!screen" >fullscreen_exit</mat-icon>
+    
+
   </button>
+
+  
 
   <button style="color: black;margin-top: 2px;line-height: 40px !important;height: 40px !important;" mat-icon-button
     class="matero-toolbar-button" fxHide.lt-sm (click)="op.toggle($event)">
-    <img src="assets/images/Apps.png" width="30px" />
+    <img src="assets/images/Apps.png" width="30px" matTooltip="Menu Options" [matTooltipClass]="{ 'tool-tip': true }"/>
   </button>
 
   <div style="position: fixed;left: -5px;top: 0;">

@@ -2,43 +2,133 @@
 
   <mat-sidenav-content role="region">
 
-    <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100">
-      <p-table #dt [columns]="cols" [value]="bam" [paginator]="true" [rows]="26" sortField="messageId" [sortOrder]="-1"
-        class="table">
-        <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
-          BAM
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr class="table-th-tr">
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
-              {{col.header}}
-              <p-sortIcon [field]="col.field"></p-sortIcon>
-              <input *ngSwitchCase="'businessProcess'" pInputText type="text" placeholder="Starts with"
-                class="ui-column-filter" style="width: 100%;"
-                (input)="dt.filter($event.target.value, col.field, 'startsWith')">
-              <input *ngSwitchCase="'flow'" pInputText type="text" placeholder="Starts with" class="ui-column-filter"
-                style="width: 100%;" (input)="dt.filter($event.target.value, col.field, 'contains')">
-              <input pInputText style="width: 100%;" *ngSwitchCase="'status'" placeholder="Starts with" type="text"
-                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-user let-columns="columns">
-          <tr>
-            <td *ngFor="let col of columns">
-              {{user[col.field]}}
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
+    <div class="matero-row" fxLayout="row wrap">
+      <!-- Statistics -->
+      <div class="matero-col" fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let stat of stats">
+        <mat-card [ngClass]="['text-white', stat.color]" style="padding:12px 15px 12px 15px;">
+          <mat-card-title style="margin-bottom: 0px" class="f-s-16 f-w-500">{{stat.title}}</mat-card-title>
+          <mat-card-content style="margin-bottom: 0;">
+            <h2 style="margin-bottom: 0px;">{{stat.amount}}</h2>
+            <mtx-progress [value]="stat.progress.value" height="2px" foreground="rgba(255,255,255,1)"
+              background='rgba(0,0,0,.5)'>
+            </mtx-progress>
+          </mat-card-content>
+        </mat-card>
+      </div>
 
+      <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100">
+        <p-table id="dt" #dt [columns]="cols" [value]="bam" [paginator]="true" [rows]="17" sortField="messageId"
+          [sortOrder]="-1" class="table" [resizableColumns]="true" selectionMode="single" expandableRows="true"
+          rowExpandMode="multiple" class="table">
+          <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
+            BAM
+          </ng-template>
+
+
+          <ng-template pTemplate="header" let-columns>
+            <tr class="table-th-tr">
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field" pResizableColumn
+                colspan="col.colspan" [ngStyle]="{'width': col.width}">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+                <!-- <input *ngSwitchCase="'businessProcess'" pInputText type="text" placeholder="Starts with"
+                    class="ui-column-filter" style="width: 100%;"
+                    (input)="dt.filter($event.target.value, col.field, 'startsWith')">
+                  <input *ngSwitchCase="'flow'" pInputText type="text" placeholder="Starts with" class="ui-column-filter"
+                    style="width: 100%;" (input)="dt.filter($event.target.value, col.field, 'contains')">
+                  <input pInputText style="width: 100%;" *ngSwitchCase="'status'" placeholder="Starts with" type="text"
+                    (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"> -->
+              </th>
+            </tr>
+
+            <!-- code for dropdown of columns -->
+            <tr class="table-th-tr-fltr">
+
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+
+                <p-dropdown *ngSwitchCase="'category'" placeholder="ALL" [options]="category" appendTo="body"
+                  [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')">
+                </p-dropdown>
+
+                <p-dropdown *ngSwitchCase="'severity'" placeholder="ALL" [options]="priority" appendTo="body"
+                  [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')">
+                </p-dropdown>
+
+                <!-- <p-dropdown *ngSwitchCase="'statuscode'" placeholder="ALL" [options]="statuslist" appendTo="body"
+                   [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')">
+                 </p-dropdown> -->
+              </th>
+            </tr>
+          </ng-template>
+
+          <!-- <ng-template pTemplate="body" let-user let-columns="columns">
+              <tr [pSelectableRow]="user"> 
+                <td *ngFor="let col of columns" [ngStyle]="{'color': user.color,'width': col.width}" (click)="details(user)">
+                  {{user[col.field]}}
+                </td>
+              </tr>
+            </ng-template> 
+          {{user.flowrequestid}} {{user.fsid}} {{user.rootfsid}}-->
+
+          
+          <ng-template pTemplate="body" let-user let-columns="columns">
+            <tr [pSelectableRow]="user">
+              <td *ngFor="let col of columns ;" (click)="details(user)" (contextmenu)="onRightClick(user[col.field])">
+                <div *ngIf="col.field=='userblob'; then thenBlock else elseBlock"></div>
+                <ng-template #thenBlock>
+                  <span *ngIf="user.userblob" >
+                    <!-- (click)="downloadFile(user.msgid)"> -->
+                    <mat-icon>insert_drive_file</mat-icon>
+                  </span>
+                </ng-template>
+                <ng-template #elseBlock>
+                  {{user[col.field]}}
+                </ng-template>
+              </td>
+            </tr>
+          </ng-template>
+
+          <!-- <ng-template pTemplate="summary">
+             <button
+                style="float:right;color:black;background-color: #f5f7fa !important; margin-left: 16px;background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-top: 0.6em !important;"
+                mat-raised-button mat-raised-button-new (click)="RefreshInterval()">
+                Refresh
+              </button>
+          </ng-template> -->
+        </p-table>
+      </div>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+
+<!-- <button style="float:right;color:black;background-color: #f5f7fa !important; 
+  background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-right: 2em !important; font-size: 25px;"
+  mat-raised-button mat-raised-button-new (click)="RefreshPanel()">Refresh
+</button> -->
 
 <div *ngIf="options.dir === 'ltr'" class="customizer-handle" matTooltip="You can change my location" cdkDrag
   (cdkDragStarted)="handleDragStart($event)">
   <button mat-icon-button class="sidemenu-mat-icon-button" (click)="openPanel($event)">
     <img src="assets/images/activity-settings.png" width="30px" />
+
   </button>
+</div>
+
+<div id="context-menu">
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+    Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+    Logout
+  </div>
 </div>

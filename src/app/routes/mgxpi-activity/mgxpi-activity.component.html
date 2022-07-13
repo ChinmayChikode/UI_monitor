@@ -1,134 +1,608 @@
-<mat-sidenav-container>
-  <mat-sidenav-content role="region" #customLoadingTemplate>
-    <div class="fixed-table">
-    <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100" style="margin-top: 0.4em !important;">
-      <p-table #activityLogTable [columns]="displayedColumns" selectionMode="single" dataKey="msgid"
-        [value]="this.activityService.activityLog" sortField="msgid" [sortOrder]="-1" [resizableColumns]="true"
-        [autoLayout]="true" [scrollable]="true" scrollHeight="78vh" class="table"
-        [lazy]="true"
-        (onLazyLoad)="this.activityService.loadDataLazy($event,this.projectSelection.projectKey)"
-        [totalRecords]="this.activityService.totalRecords"
-        [rows]="this.activityService.recordsFilterRange"
-        [showCurrentPageReport]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Records"
-        [paginator]="true" [rowsPerPageOptions]="[50,100,200,500]">
-        <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
-          Activity Log
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr class="table-th-tr">
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
-              [ngStyle]="{'width': col.width}">
-              {{col.header}}
-              <p-sortIcon [field]="col.field"></p-sortIcon>
-            </th>
-          </tr>
-          <!--<tr class="table-th-tr-fltr" @fade *ngIf="showFilters">
-            <th colspan="2">
-              <mat-form-field class="mat-form-field-From-datepicker">
-                <input #fromDate matInput [matDatepicker]="fromPicker" placeholder="From date"
-                  (dateChange)="this.activityService.onFromDateChange(fromDate.value)">
-                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                <ngx-mat-datetime-picker #fromPicker [showSeconds]="true" [enableMeridian]="true">
-                </ngx-mat-datetime-picker>
-              </mat-form-field>
-              <mat-form-field class="mat-form-field-To-datepicker">
-                <input #toDate matInput [matDatepicker]="toPicker" placeholder="To date"
-                  (dateChange)="this.activityService.onToDateChange(toDate.value)">
-                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                <ngx-mat-datetime-picker #toPicker [showSeconds]="true" [enableMeridian]="true">
-                </ngx-mat-datetime-picker>
-              </mat-form-field>
-              <button mat-icon-button class="mat-search-icon-button">
-                <mat-icon (click)="this.activityService.getActivityLogByProjectKey(this.projectSelection.projectKey)">
-                  search</mat-icon>
-              </button>
-            </th>
-            <th colspan="6">
-              <ng-container *ngFor="let item of cols;">
-                <mat-checkbox class="mat-checkbox-filter" [(ngModel)]="item.checked" (change)="toggleColumns()">
-                  {{item.header}}
-                </mat-checkbox>
-              </ng-container>
-            </th>
-          </tr> -->
+<!-- <style type="text/css">
+  body {
+      overflow:hidden;
+  }
 
-          <tr class="table-th-tr-fltr" *ngIf="showFilters">
-            <th *ngFor="let col of columns" [ngSwitch]="col.field">
-              <input #fsid *ngSwitchCase="'fsid'" [(ngModel)]="this.activityService.lblFilterFSIDValue" pInputText
-                type="text" (change)="this.activityService.onFSIDChange(fsid.value)" placeholder="FSID"
-                class="ui-column-filter" style="width: 80%;"
-                (input)="activityLogTable.filter($event.target.value, col.field, 'startsWith')">
-              <input #flowrequestid *ngSwitchCase="'flowrequestid'" pInputText type="text"
-                (change)="this.activityService.onFlowReqIdChange(flowrequestid.value)" placeholder="Flow Request ID"
-                class="ui-column-filter" style="width: 80%;"
-                (input)="activityLogTable.filter($event.target.value, col.field, 'startsWith')">
-              <input #rootfsid *ngSwitchCase="'rootfsid'" pInputText type="text"
-                (change)="this.activityService.onRootFSIDChange(rootfsid.value)" placeholder="Root FSID"
-                class="ui-column-filter" style="width: 80%;"
-                (input)="activityLogTable.filter($event.target.value, col.field, 'startsWith')">
+  td.ex1 {
+      padding-left: 1.5%;
+    }
+  </style>
 
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-activity let-columns="columns" class="ui-resizable-column">
-          <tr [pSelectableRow]="activity">
-            <td *ngFor="let col of columns" [ngStyle]="{'color': activity.color,'width': col.width}">
-              <!--Temporarly Commenting below-->
-              <!-- {{activity[col.field]}} 
-              <span>{{col.field=='blobexists'?activity[col.field]==0?'':'Yes':activity[col.field]}}</span> -->
-              <span>{{activity[col.field]}}</span>
-            </td>
-          </tr>
-        </ng-template>
-
-        <!--<ng-template pTemplate="summary">
-
-          <mat-label style="float: left; padding: 1em 0em;color:black;font-weight:500 !important">Records:
-            {{this.activityService.previous}}-{{this.activityService.next}} of
-            {{this.activityService.totalRecordsCount}}</mat-label>
-
-          <button mat-icon-button aria-label="Navigation menu"
-            (click)="this.activityService.first()" [disabled]="this.activityService.firstDisabled">
-            <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">first_page</mat-icon>
-          </button>
-
-          <button mat-icon-button aria-label="Navigation menu"
-            (click)="this.activityService.updatePrevious()" [disabled]="this.activityService.previousDisabled">
-            <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">keyboard_arrow_left</mat-icon>
-          </button>
-
-          <button mat-icon-button aria-label="Navigation menu"
-            (click)="this.activityService.updateNext()" [disabled]="this.activityService.nextDisabled">
-            <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">keyboard_arrow_right</mat-icon>
-          </button>
-
-          <button mat-icon-button aria-label="Navigation menu" (click)="this.activityService.last()"
-            [disabled]="this.activityService.lastDisabled">
-            <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">last_page</mat-icon>
-          </button>
-
-          <mat-form-field @fade>
-            <mat-label style="color:black;font-weight:500 !important">Records Per Page</mat-label>
-            <mat-select #selectedValue [(ngModel)]="this.activityService.recordsFilterRange"
-              (selectionChange)="this.activityService.onRangeFilterChange(selectedValue.value)">
-              <mat-option *ngFor="let record of recordsFilter" [value]="record.value">
-                {{ record.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <button style="float:right;color:black;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-top: 0.6em !important;"
-            mat-raised-button mat-raised-button-new (click)="openActLogDeletePanel($event)">Delete Log</button>
-
-        </ng-template>-->
-
-      </p-table>
-
-    </div>
+<div id="context-menu">
+  <div class="item"(click)="Refresh()">
+    Refresh
   </div>
+  <hr>
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+    Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+    Logout
+  </div>
+</div>
+
+
+
+<mat-sidenav-container style="padding: 5px !important;">
+  <mat-sidenav-content role="region">
+    
+    
+    <div class="matero-row" fxLayout="row wrap">
+       Statistics 
+       https://www.angularjswiki.com/flexlayout/fxflex/ 
+      <div class="matero-col" fxFlex.gt-sm="20"  *ngFor="let stat of this.activityService.stats">
+        <mat-card [ngClass]="['text-white', stat.color]" style="padding:12px 15px 12px 15px;">
+          <mat-card-title style="margin-bottom: 0px" class="f-s-16 f-w-500">{{stat.title}}</mat-card-title>
+          <mat-card-content style="margin-bottom: 0px;">
+             <h2 style="margin-bottom: 0px;">
+              <span>{{stat.amount==''?'All':stat.amount}}</span></h2>
+              <mtx-progress [value]="stat.progress.value" height="2px" foreground="rgba(255,255,255,1)"
+              background='rgba(0,0,0,.5)'>
+            </mtx-progress>
+          </mat-card-content>
+        </mat-card>
+      </div> 
+   
+
+     <!-- <div class="fixed-table">
+        <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100">
+          <mat-card style="min-height: 575px;border: solid 1px #CCC !important;border-radius: 15px;">
+          <p-table id="activityLogTable" #activityLogTable [columns]="displayedColumns" selectionMode="single" dataKey="msgid"
+            [value]="this.activityService.activityLog" sortField="msgid" [sortOrder]="-1" [resizableColumns]="true"
+            [autoLayout]="true" [scrollable]="true" scrollHeight="60vh" class="table">
+            
+
+             <!-- <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
+              Activity Log
+             </ng-template> 
+
+             <ng-template pTemplate="header" let-columns>
+              
+              <!-- <tr class="table-th-tr-fltr" *ngIf="showFilters"> -->
+<!-- <th colspan="2">
+                  <button mat-icon-button class="mat-search-icon-button">
+                    <mat-icon (click)="this.activityService.getActivityLogByProjectKey(this.projectSelection.projectKey)">
+                      search
+                    </mat-icon>
+                  </button>
+                </th> 
+              <div>
+                <tr class="table-th-tr-fltr">
+               
+                  <ng-container *ngFor="let item of cols">
+                      <td class="ex1">
+                        <mat-checkbox class="mat-checkbox-filter" [(ngModel)]="item.checked" (change)="toggleColumns()">
+                          {{item.header}} 
+                        </mat-checkbox>
+                      </td>
+                  </ng-container>
+                </tr>
+              </div>
+                <!-- <div *ngIf="col.field=='blobexists'; then thenBlock else elseBlock"></div>
+                  <ng-template #thenBlock>
+                    <span *ngIf="activity.blobexists" (click)="downloadFile(activity)">
+                      <mat-icon>insert_drive_file</mat-icon>
+
+                    </span>
+                  </ng-template>
+                  <ng-template #elseBlock>
+                    {{activity[col.field]}} 
+                  </ng-template> 
+                 
+                  <tr class="table-th-tr">
+                      <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn="true" 
+                      [ngStyle]="{'width': col.width}">
+                      {{col.header}}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                  </tr>
+
+                  <tr class="table-th-tr-fltr">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+                      <p-dropdown *ngSwitchCase="'messageType'" placeholder="ALL" [options]="messageTypeList" appendTo="body"
+                        [style]="{'width':'100%'}" (onChange)="activityLogTable.filter($event.value, col.field, 'contains')" >
+                       </p-dropdown>
+                      
+                       <p-dropdown *ngSwitchCase="'serverName'" placeholder="ALL" [options]="this.activityService.serverList" appendTo="body"
+                        [style]="{'width':'100%'}" (onChange)="activityLogTable.filter($event.value, col.field, 'contains')" >
+                       </p-dropdown>
+
+                       <p-dropdown *ngSwitchCase="'bpName'" placeholder="ALL" [options]="this.activityService.bpList" appendTo="body"
+                        [style]="{'width':'100%'}" (onChange)="activityLogTable.filter($event.value, col.field, 'contains')" >
+                       </p-dropdown>
+
+                       <p-dropdown *ngSwitchCase="'flowName'" placeholder="ALL" [options]="this.activityService.flowList" appendTo="body"
+                        [style]="{'width':'100%'}" (onChange)="activityLogTable.filter($event.value, col.field, 'contains')" >
+                       </p-dropdown>
+
+                       <input #fsid type="text" *ngSwitchCase="'fsid'" placeholder="FSID" 
+                        class="ui-column-filter" style="width: 80%;"
+                       (input)="activityLogTable.filter($event.target.value, col.field, 'startsWith')">
+
+                      <input pInputText #flowrequestid type="text" *ngSwitchCase="'flowrequestid'" placeholder="Flow Request ID"
+                       class="ui-column-filter" style="width: 80%;"
+                       (input)="activityLogTable.filter($event.target.value, col.field, 'startsWith')">
+
+                      <input pInputText #rootfsid type="text" *ngSwitchCase="'rootfsid'" placeholder="Root FSID"
+                       class="ui-column-filter" style="width: 80%;"
+                       (input)="activityLogTable.filter($event.target.value, col.field, 'startsWith')">
+                       
+                    </th>
+                  </tr>
+                  
+            </ng-template>
+
+            <ng-template pTemplate="body" let-activity let-columns="columns" class="ui-resizable-column">
+              <tr [pSelectableRow]="activity">
+                <td *ngFor="let col of columns" [ngStyle]="{'color': activity.color,'width': col.width}"        
+                (click)="record_details(activity)" (contextmenu)="onRightClick(activity,activity[col.field])"> 
+
+                <div *ngIf="col.field=='blobexists'; then thenBlock else elseBlock"></div>
+                  <ng-template #thenBlock>
+
+                    
+
+                    <span *ngIf="activity.blobexists" (click)="downloadFile(activity.msgid)">
+
+                      <mat-icon>insert_drive_file</mat-icon>
+
+                    </span>
+                  </ng-template>
+                  <ng-template #elseBlock>
+                    {{activity[col.field]}} 
+                  </ng-template>
+
+                  <!-- <span>{{col.field=='blobexists'?activity[col.field]==0?'No':'Yes':activity[col.field]}}</span> 
+                   
+                  
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary">
+
+              <mat-label style="float: left; padding: 1em 0em;color:black;font-weight:500 !important">Records:
+                {{this.activityService.previous}} {{this.activityService.next}} of
+                {{this.activityService.totalRecordsCount}}
+              </mat-label>
+
+              <button mat-icon-button aria-label="Navigation menu"
+                (click)="this.activityService.first()" [disabled]="this.activityService.firstDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">first_page</mat-icon>
+              </button>
+
+              <button mat-icon-button aria-label="Navigation menu"
+                (click)="this.activityService.updatePrevious()" [disabled]="this.activityService.previousDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">keyboard_arrow_left</mat-icon>
+              </button>
+
+              <button mat-icon-button aria-label="Navigation menu"
+                (click)="this.activityService.updateNext()" [disabled]="this.activityService.nextDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">keyboard_arrow_right</mat-icon>
+              </button>
+
+              <button mat-icon-button aria-label="Navigation menu" (click)="this.activityService.last()"
+                [disabled]="this.activityService.lastDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">last_page</mat-icon>
+              </button>
+
+              <mat-form-field @fade>
+                <mat-label style="color:black;font-weight:500 !important">Records Per Page</mat-label>
+                <mat-select #selectedValue [(ngModel)]="this.activityService.recordsFilterRange"
+                  (selectionChange)="this.activityService.onRangeFilterChange(selectedValue.value)">
+                  <mat-option *ngFor="let record of recordsFilter" [value]="record.value">
+                    {{ record.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <button style="float:right;color:black;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-top: 0.6em !important;"
+                mat-raised-button mat-raised-button-new (click)="openActLogDeletePanel($event)">
+                Delete Log
+              </button>
+
+            </ng-template>
+          
+          </p-table>
+         </mat-card>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="EnableLogging" checked>
+          <label class="form-check-label" for="EnableLogging">Enable Logging</label>&nbsp;&nbsp;
+        
+          <input class="form-check-input" type="checkbox" id="EnableComponentLogging" checked>
+          <label class="form-check-label" for="EnableComponentLogging">Enable Component Logging</label>&nbsp;&nbsp;
+        
+          <input class="form-check-input" type="checkbox" id="Automatic Refresh Interval" [(ngModel)]="isChecked" (change)="checkvalue(isChecked?'A':'B')" checked>
+          <label class="form-check-label" for="EnableComponentLogging">Automatic Refresh Interval:  {{automatic_refersh_interval/1000}} secs
+          </label>&nbsp;
+          <button style="float:right;color:black;background-color: #f5f7fa !important; 
+          background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-right: 2em !important; font-size: 25px;"
+          mat-raised-button mat-raised-button-new (click)="RefreshInterval()">...
+          </button>
+        
+          
+        </div>
+    </div>
+    
+    
+
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+
+
+
+<!-- Settings icon code 
+<div *ngIf="options.dir === 'ltr'" class="customizer-handle" matTooltip="You can change my location" cdkDrag
+(cdkDragStarted)="handleDragStart($event)">
+<button mat-icon-button class="sidemenu-mat-icon-button" (click)="openPanel($event)">
+  <img src="assets/images/activity-settings.png" width="30px" />
+</button>
+</div>
+
+<div *ngIf="options.dir === 'ltr'" [ngClass]="{ 'customizer-panel': true, 'mat-elevation-z12 opened': openedFilterDialog }">
+<!-- @fade *ngIf="showFilters"
+<div class="row">
+<!-- <div class="col-6">
+<div class="matero-col" fxFlex.gt-sm="40" fxFlex.gt-xs="50" fxFlex="100" style="min-height: 400px">
+<!-- <mat-card style="min-height: 400px;border: solid 2px #CCC !important;"> 
+  <!-- <div class="matero-col" fxFlex.gt-sm="20" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let stat of stats"> 
+                
+    <tr class="table-th-tr-fltr">
+      <th colspan="2">
+        Time Range Filters <br>
+        <mat-card style="border: solid 2px #CCC !important;">
+          <mat-form-field class="mat-form-field-From-datepicker">
+            <input #fromDate matInput [matDatepicker]="fromPicker" placeholder="From date">
+              <!-- (dateChange)="this.activityService.onFromDateChange(fromDate.value)"> 
+            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #fromPicker [showSeconds]="true" [enableMeridian]="true">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+          <br>
+          <mat-form-field class="mat-form-field-To-datepicker">
+            <input #toDate matInput [matDatepicker]="toPicker" placeholder="To date">
+              <!-- (dateChange)="this.activityService.onToDateChange(toDate.value)"> 
+            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #toPicker [showSeconds]="true" [enableMeridian]="true">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+          <br><br>
+           
+         Context Related Filtering<br><br>
+        
+          <div style="text-align: left">Root FSID<br><input #rootfsid placeholder="" ><Button mat-raised button (click)="rootfsid.value =''"> X </Button></div>
+          <div style="text-align: left">Flow Request ID<br><input #flowrequest placeholder="" > <Button mat-raised button (click)="flowrequest.value =''"> X </Button></div>
+          <div style="text-align: left">FSID<br><input #fsid placeholder=""> <Button mat-raised button (click)="fsid.value =''"> X </Button></div>
+          <button mat-raised button (click)="this.activityService.applyFilters(fromDate.value,toDate.value,rootfsid.value,flowrequest.value,fsid.value)"> Apply</button>
+          <button mat-raised button (click)="this.activityService.applyFilters(fromDate.value,toDate.value,rootfsid.value,flowrequest.value,fsid.value);closePanel()"> Apply and Close</button>
+          <button mat-raised button (click)="clearFilters()" > Clear</button>
+        </mat-card>
+     </th>  
+    </tr>
+  </div>
+<div class="matero-col" fxFlex.gt-sm="60" fxFlex.gt-xs="50" fxFlex="100">
+    <p-table #activityLogFilter [value]="activityLogMsgFilter" [columns]="activityFiltersColumns"
+      [resizableColumns]="true" [autoLayout]="true" [scrollable]="true" scrollHeight="25vh">
+          <ng-template pTemplate="caption">
+            Messages Filter
+          </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr class="table-th-tr">
+          <th *ngFor="let col of columns" colspan="col.colspan" [ngStyle]="{'width': col.width}">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template #actualTarget pTemplate="body" let-activityFilter let-columns="columns" let-ri="rowIndex">
+        <tr [pSelectableRow]="activityFilter">
+          <td style="text-align: center;width:10%;">
+            <p-triStateCheckbox [(ngModel)]="activityFilter.display"></p-triStateCheckbox>
+          </td>
+          <td style="text-align: center;width:10%;">
+            <p-triStateCheckbox [(ngModel)]="activityFilter.write"></p-triStateCheckbox>
+          </td>
+          <td style="text-align: center;width:10%;">
+            <button mat-icon-button (click)="op.toggle($event,actualTarget)">
+              <img src="assets/images/ColorPicker.png" width="20px" />
+            </button>
+            <p-overlayPanel #op [showCloseIcon]="true" [dismissable]="false">
+              <ng-template pTemplate>
+                <p-colorPicker appendTo="body" [(ngModel)]="activityFilter.color" [inline]="true"></p-colorPicker>
+              </ng-template>
+            </p-overlayPanel>
+          </td>
+          <td style="text-align: left;width:70%;">
+            <span [ngStyle]="{'color':activityFilter.color}">
+              {{activityFilter.messageName}}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary" >
+        <button mat-button width="30px" class="activityFiltersCancel" (click)="writeActivityLogMsgFilters()">OK</button>
+        <button mat-button width="30px" class="activityFiltersSave" (click)="closePanel()">Close</button>
+      </ng-template>
+    </p-table>
+</div>
+</div>
+
+</div>
+
+
+<div [ngClass]="{ 'customizer-panel-overlay': true, opened: openedFilterDialog }" (click)="closePanel()"></div>
+
+
+
+
+
+
+
+ -->
+
+ <style type="text/css">
+  body {
+    overflow: hidden;
+  }
+
+  td.ex1 {
+    padding-left: 1.3%;
+  }
+</style>
+
+<div id="context-menu">
+  <div class="item" (click)="Refresh()">
+    Refresh
+  </div>
+  <hr>
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+    Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+    Logout
+  </div>
+</div>
+
+
+
+<mat-sidenav-container style="padding: 5px !important;">
+  <mat-sidenav-content role="region">
+
+
+    <div class="matero-row" fxLayout="row wrap">
+      <!-- Statistics -->
+      <!-- https://www.angularjswiki.com/flexlayout/fxflex/ -->
+      <div class="matero-col" fxFlex.gt-sm="20" *ngFor="let stat of this.activityService.stats">
+        <mat-card [ngClass]="['text-white', stat.color]" style="padding:12px 15px 12px 15px;">
+          <mat-card-title style="margin-bottom: 0px" class="f-s-16 f-w-500">{{stat.title}}</mat-card-title>
+          <mat-card-content style="margin-bottom: 0px;">
+            <h2 style="margin-bottom: 0px;">
+              <span>{{stat.amount==''?'All':stat.amount}}</span>
+            </h2>
+            <mtx-progress [value]="stat.progress.value" height="2px" foreground="rgba(255,255,255,1)"
+              background='rgba(0,0,0,.5)'>
+            </mtx-progress>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+
+      <!-- <div class="fixed-table"> -->
+      <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100">
+        <mat-card style="min-height: 575px;border: solid 1px #CCC !important;border-radius: 15px;">
+          <p-table id="activityLogTable" #activityLogTable [columns]="displayedColumns" selectionMode="single"
+            dataKey="msgid" [value]="this.activityService.activityLog" sortField="msgid" [sortOrder]="-1"
+            [resizableColumns]="true" [autoLayout]="true" [scrollable]="true" scrollHeight="60vh" class="table">
+
+
+
+
+            <ng-template pTemplate="header" let-columns>
+
+              <div>
+                <tr class="table-th-tr-fltr">
+
+                  <ng-container *ngFor="let item of cols">
+                    <td class="ex1">
+                      <mat-checkbox class="mat-checkbox-filter" [(ngModel)]="item.checked" (change)="toggleColumns()">
+                        {{item.header}}&nbsp;&nbsp;
+                      </mat-checkbox>
+                    </td>
+                  </ng-container>
+                </tr>
+              </div>
+             
+              <tr class="table-th-tr">
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn="true"
+                  [ngStyle]="{'width': col.width}">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+
+              <tr class="table-th-tr-fltr">
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+                  <p-dropdown *ngSwitchCase="'messageType'" placeholder="ALL" [options]="messageTypeList"
+                    appendTo="body" [style]="{'width':'100%'}"
+                    (onChange)="activityLogTable.filter($event.value, col.field, 'contains')">
+                  </p-dropdown>
+
+                  <p-dropdown *ngSwitchCase="'serverName'" placeholder="ALL" [options]="this.activityService.serverList"
+                    appendTo="body" [style]="{'width':'100%'}"
+                    (onChange)="activityLogTable.filter($event.value, col.field, 'contains')">
+                  </p-dropdown>
+
+                  <p-dropdown *ngSwitchCase="'bpName'" placeholder="ALL" [options]="this.activityService.bpList"
+                    appendTo="body" [style]="{'width':'100%'}"
+                    (onChange)="activityLogTable.filter($event.value, col.field, 'contains')">
+                  </p-dropdown>
+
+                  <p-dropdown *ngSwitchCase="'flowName'" placeholder="ALL" [options]="this.activityService.flowList"
+                    appendTo="body" [style]="{'width':'100%'}"
+                    (onChange)="activityLogTable.filter($event.value, col.field, 'contains')">
+                  </p-dropdown>
+
+                  <input pInputText #fsid type="text" *ngSwitchCase="'fsid'" placeholder="FSID" class="ui-column-filter"
+                    style="width: 80%;" (input)="activityLogTable.filter($event.target.value, col.field, 'startsWith')">
+
+                  <input pInputText #flowrequestid type="text" *ngSwitchCase="'flowrequestid'"
+                    placeholder="Flow Request ID" class="ui-column-filter" style="width: 80%;"
+                    (input)="activityLogTable.filter($event.target.value, col.field, 'startsWith')">
+
+                  <input pInputText #rootfsid type="text" *ngSwitchCase="'rootfsid'" placeholder="Root FSID"
+                    class="ui-column-filter" style="width: 80%;"
+                    (input)="activityLogTable.filter($event.target.value, col.field, 'startsWith')">
+
+                </th>
+              </tr>
+
+            </ng-template>
+
+            <ng-template pTemplate="body" let-activity let-columns="columns" class="ui-resizable-column">
+              <tr [pSelectableRow]="activity">
+                <td *ngFor="let col of columns" [ngStyle]="{'color': activity.color,'width': col.width}"
+                  (click)="record_details(activity)" (contextmenu)="onRightClick(activity,activity[col.field])">
+
+                  <div *ngIf="col.field=='blobexists'; then thenBlock else elseBlock"></div>
+                  <ng-template #thenBlock>
+
+                    <span *ngIf="activity.blobexists" >
+                      <!-- (click)="downloadFile(activity.msgid)" -->
+                      <mat-icon>insert_drive_file</mat-icon>
+
+
+                    </span>
+                  </ng-template>
+                  <ng-template #elseBlock>
+                    {{activity[col.field]}}
+                  </ng-template>
+
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary">
+
+              <mat-label style="float: left; padding: 1em 0em;color:black;font-weight:500 !important">Records:
+                {{this.activityService.previous}} {{this.activityService.next}} of
+                {{this.activityService.totalRecordsCount}}
+              </mat-label>
+
+              <button mat-icon-button aria-label="Navigation menu" (click)="this.activityService.first()"
+                [disabled]="this.activityService.firstDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">first_page</mat-icon>
+              </button>
+
+              <button mat-icon-button aria-label="Navigation menu" (click)="this.activityService.updatePrevious()"
+                [disabled]="this.activityService.previousDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">keyboard_arrow_left
+                </mat-icon>
+              </button>
+
+              <button mat-icon-button aria-label="Navigation menu" (click)="this.activityService.updateNext()"
+                [disabled]="this.activityService.nextDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">keyboard_arrow_right
+                </mat-icon>
+              </button>
+
+              <button mat-icon-button aria-label="Navigation menu" (click)="this.activityService.last()"
+                [disabled]="this.activityService.lastDisabled">
+                <mat-icon style="color:black;font-weight:500 !important" aria-hidden="false">last_page</mat-icon>
+              </button>
+
+              <mat-form-field @fade>
+                <mat-label style="color:black;font-weight:500 !important">Records Per Page</mat-label>
+                <mat-select #selectedValue [(ngModel)]="this.activityService.recordsFilterRange"
+                  (selectionChange)="this.activityService.onRangeFilterChange(selectedValue.value)">
+                  <mat-option *ngFor="let record of recordsFilter" [value]="record.value">
+                    {{ record.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <button
+                style="float:right;color:black;background-color: #f5f7fa !important; margin-left: 8px; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-top: 0.6em !important;"
+                mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                &nbsp;&nbsp;
+                <mat-checkbox class="example-margin" [(ngModel)]="logChecked" (click)="enableLogging(logChecked)">
+                  Enable Logging</mat-checkbox>
+                <br><br>
+                &nbsp;&nbsp;
+                <mat-checkbox class="example-margin" [(ngModel)]="componentChecked"
+                  (click)="componentLogging(componentChecked)">Component Logging</mat-checkbox>
+                &nbsp;&nbsp;<br><br>&nbsp;&nbsp;
+                <mat-checkbox class="example-margin" [(ngModel)]="isChecked" (change)="checkvalue(isChecked?'A':'B')">
+                  Automatic Refresh Interval</mat-checkbox>
+                &nbsp;&nbsp;
+
+
+              </mat-menu>
+
+              <button
+                style="float:right;color:black;background-color: #f5f7fa !important; margin-left: 16px;background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-top: 0.6em !important;"
+                mat-raised-button mat-raised-button-new (click)="RefreshInterval()">
+                Refresh
+              </button>
+
+              <button
+                style="float:right;color:black;background-color: #f5f7fa !important; margin-left: 16px; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-top: 0.6em !important;"
+                mat-raised-button mat-raised-button-new (click)="openActLogDeletePanel($event)">
+                Delete Log
+              </button>
+
+              <button
+                style="float:right;color:black;background-color: #f5f7fa !important; margin-left: 16px; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-top: 0.6em !important;"
+                mat-raised-button mat-raised-button-new (click)="dateTimeFilter()">
+                Data Filtering
+              </button>
+
+
+
+
+
+
+            </ng-template>
+
+          </p-table>
+        </mat-card>
+      </div>
+
+    </div>
+
+
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Settings icon code -->
+<div *ngIf="options.dir === 'ltr'" class="customizer-handle" matTooltip="You can change my location" cdkDrag
+  (cdkDragStarted)="handleDragStart($event)">
+  <button mat-icon-button class="sidemenu-mat-icon-button" (click)="openPanel($event)">
+    <img src="assets/images/activity-settings.png" width="30px" />
+  </button>
+</div>
 
 <div *ngIf="options.dir === 'ltr'" class="customizer-handle" matTooltip="You can change my location" cdkDrag
   (cdkDragStarted)="handleDragStart($event)">

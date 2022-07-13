@@ -1,0 +1,70 @@
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+<mat-card style="border: solid 0.1px #CCC !important;border-collapse: collapse;border-radius: 15px;overflow: hidden;">
+ 
+    <div class='ng-container' (click)="exit()">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Date Time:</th>
+                    <td>{{activity.displayCreatedTime}}</td> 
+                </tr><br>
+                <tr>
+                    <th>BP Name(ID):</th>
+                    <td>{{activity.bpid}}</td>
+                </tr><br>
+                <tr>
+                    <th>Flow Name(ID):</th>
+                    <td>{{activity.flowid}}</td>
+                </tr><br>
+                <tr>
+                    <th> Name(ID):</th>
+                    <td>{{activity.fsstep}}</td>
+                </tr><br>
+                <tr>
+                    <th>Server ID:</th>
+                    <td>{{activity.serverid}}</td>
+                </tr><br>
+                <tr>
+                    <th>Message Type:</th>
+                    <td>
+                    <textarea>{{activity.messageType}}</textarea> 
+                    </td>
+                </tr><br>
+                <tr>
+                    <th> Root FSID:</th>
+                    <td> {{activity.rootfsid}} </td>
+                </tr><br>
+                <tr>
+                    <th>Flow Request ID:</th>
+                    <td>{{activity.flowrequestid}}</td>
+                </tr><br>
+                <!-- <tr>
+                    <td>FSID:</td>
+                    <td>{{activity.FSID}}</td>
+                </tr><br-->
+                <tr> 
+                    <th>Message:</th>
+                    <td>
+                    <textarea>{{activity.messagestring}}</textarea> 
+                    </td>
+                </tr><br>
+                <tr>
+                    <th>UserBlob:</th>
+                    <td>
+                        <div *ngIf="'activity.blobexists'; then thenBlock else elseBlock"></div>
+                            <ng-template #thenBlock>
+                                <span *ngIf="activity.blobexists" (click)="downloadFile(activity.msgid)"> 
+                                    <mat-icon>insert_drive_file</mat-icon>
+                                </span>
+                            </ng-template>
+                            <ng-template #elseBlock>
+                                NA
+                            </ng-template>
+                        
+                    </td>
+                </tr><br>
+            </tbody>
+        </table>
+        
+    </div>
+</mat-card>

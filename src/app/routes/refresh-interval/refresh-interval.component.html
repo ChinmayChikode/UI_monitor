@@ -1,0 +1,21 @@
+<h2 mat-dialog-title> Details</h2>
+
+<mat-form-field class="interval-form-field">
+    <mat-label>Refresh (Seconds):</mat-label>
+    <input #intervalTime matInput type="number" [ngModel]="seconds">
+    <button mat-button *ngIf="seconds" matSuffix mat-icon-button aria-label="Clear" (click)="seconds=null">
+      <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field>
+
+<div>
+  <button style="float:right;color:black;background-color: #f5f7fa !important; 
+  background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-right: 2em !important; font-size: 25px;"
+  mat-raised-button mat-raised-button-new mat-dialog-close>Cancel</button>
+
+    <button style="float:right;color:black;background-color: #f5f7fa !important; 
+    background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-right: 2em !important; font-size: 25px;"
+    mat-raised-button mat-raised-button-new (click)="setRefreshInterval(intervalTime.value)" mat-dialog-close>Apply</button>
+
+</div>
+  

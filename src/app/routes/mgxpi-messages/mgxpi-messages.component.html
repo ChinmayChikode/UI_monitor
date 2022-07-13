@@ -13,7 +13,7 @@
       </div>
       <div class="matero-row" fxLayout="row wrap">
         <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
-          <p-table #messagesTables [columns]="cols" selectionMode="single" dataKey="messageId"
+          <p-table id='messagesTables' #messagesTables [columns]="cols" selectionMode="single" dataKey="messageId"
             [value]="this.messagesSrv.messages" [paginator]="true" [rows]="18" sortField="messageId" [sortOrder]="-1"
             [resizableColumns]="true" class="table">
             <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
@@ -38,6 +38,10 @@
                     appendTo="body" [style]="{'width':'100%'}"
                     (onChange)="messagesTables.filter($event.value, col.field, 'contains')"></p-dropdown>
 
+                    <input #messageId *ngSwitchCase="'createdByServerId'" pInputText type="text" placeholder="Server ID"
+                    class="ui-column-filter" style="width: 80%;"
+                    (input)="messagesTables.filter($event.target.value, col.field, 'startsWith')" />
+
                   <p-dropdown *ngSwitchCase="'invokeCompType'" placeholder="ALL" [options]="messagesSrv.invocationType"
                     appendTo="body" [style]="{'width':'100%'}"
                     (onChange)="messagesTables.filter($event.value, col.field, 'contains')"></p-dropdown>
@@ -58,7 +62,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-message let-columns="columns">
               <tr [pSelectableRow]="message">
-                <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+                <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}" (contextmenu)="onRightClick(message[col.field])">
                   {{message[col.field]}}
                 </td>
               </tr>
@@ -76,3 +80,29 @@
     <img src="assets/images/activity-settings.png" width="30px" />
   </button>
 </div>
+
+<div id="context-menu">
+  <div class="item" (click)="ViewActivityLog()">
+    View Activity
+  </div> 
+  <hr>
+  <div class="item" (click)="refresh()">
+    Refresh
+  </div>
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+     Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+     Logout
+  </div>
+</div>
+

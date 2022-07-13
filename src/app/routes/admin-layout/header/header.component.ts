@@ -10,6 +10,7 @@ import * as screenfull from 'screenfull';
 import { ProjectSelection } from './../sidemenu/projectselection.service';
 import { SettingsService } from '@core';
 
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -19,6 +20,7 @@ export class HeaderComponent implements OnInit {
 
   projectName: string;
   projectStartedSince: string;
+  screen  = true;
 
   options = this.settings.getOptions();
   @Output() optionsEvent = new EventEmitter<object>();
@@ -49,10 +51,22 @@ export class HeaderComponent implements OnInit {
 
   // TODO:
   toggleFullscreen() {
+
     if (this.screenfull.enabled) {
+
       this.screenfull.toggle();
+      if(this.screenfull.isFullscreen){
+
+        this.screen = true;
+      }
+      else{
+  
+        this.screen = false;
+      }
     }
+    
   }
+
 
   sendOptions() {
     this.optionsEvent.emit(this.options);

@@ -1,0 +1,57 @@
+<mat-card style="border: solid 0.1px #CCC !important;border-radius: 10px;overflow: hidden;">
+    
+
+<div class="container">
+    <b>Time Range Filters</b> <br><br>
+
+    <div class="form-group">
+        <div>
+            <mat-form-field class="mat-form-field-From-datepicker">
+                <input class="form-control input-lg" #fromDate matInput [matDatepicker]="fromPicker"
+                    placeholder="From date">
+                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #fromPicker [showSeconds]="true" [enableMeridian]="true">
+                </ngx-mat-datetime-picker>
+            </mat-form-field> &nbsp; &nbsp; &nbsp;
+        </div>
+
+        <div>
+            <mat-form-field class="mat-form-field-To-datepicker">
+                <input #toDate matInput [matDatepicker]="toPicker" placeholder="To date">
+                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #toPicker [showSeconds]="true" [enableMeridian]="true">
+                </ngx-mat-datetime-picker>
+            </mat-form-field>
+        </div>
+
+    </div>
+    <br>
+    <div>
+    <b>Context Related Filtering</b><br><br>
+
+    <mat-form-field >
+        <input #rootfsid matInput [ngModel]="data1.stats[2].amount" placeholder="Root FSID">
+        
+    </mat-form-field>
+
+    <mat-form-field >
+        <input #flowrequest matInput [ngModel]="data1.stats[4].amount" placeholder="Flow Request ID">
+        
+    </mat-form-field>
+
+    <mat-form-field >
+        <input #fsid matInput [ngModel]="data1.stats[3].amount" placeholder="FSID">
+        
+    </mat-form-field></div>
+
+ 
+    <button style="color:black;background-color: #f5f7fa !important; margin-left: 0px; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-top: 0.6em !important;"
+    mat-raised-button mat-raised-button-new (click)="apply(fromDate.value,toDate.value,rootfsid.value,flowrequest.value,fsid.value)">Apply
+    </button>
+     <button style="color:black;background-color: #f5f7fa !important; margin-left: 6px; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-top: 0.6em !important;"
+     mat-raised-button mat-raised-button-new (click)="clearFilters()">Clear
+     </button>
+</div>
+
+
+</mat-card>

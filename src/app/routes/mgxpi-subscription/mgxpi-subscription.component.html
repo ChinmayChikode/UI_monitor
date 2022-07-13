@@ -1,10 +1,11 @@
 <mat-sidenav-container>
 
-  <mat-sidenav-content role="region">
+  <mat-sidenav-content >
 
-    <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100">
-      <p-table #dt [columns]="cols" [value]="subscription" [paginator]="true" [rows]="26" sortField="pssName"
-        [sortOrder]="-1" class="table">
+    <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100" style="max-height:500px">
+      <mat-card style="border: solid 1px #CCC !important;border-radius: 15px;">
+      <p-table id='dt' #dt [columns]="cols" [value]="pssdata" [paginator]="true" [rows]="25" 
+       class="table"  table id="DataTable">
         <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
           Subscription
         </ng-template>
@@ -16,14 +17,39 @@
             </th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-subscription let-columns="columns">
+        <ng-template pTemplate="body" let-pssdata let-columns="columns">
           <tr>
-            <td *ngFor="let col of columns">
-              {{subscription[col.field]}}
+            <td *ngFor="let col of columns" (contextmenu)="onRightClick(pssdata[col.field])">
+              {{pssdata[col.field]}}
             </td>
           </tr>
         </ng-template>
-      </p-table>
+       </p-table>
+          <button style="float:right;color:black;background-color: #f5f7fa !important; 
+             background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) 
+             !important;margin-right: 2em !important; font-size: 40px;"
+             mat-raised-button mat-raised-button-new (click)="ClearPanel()">Clear All
+         </button>
+      </mat-card>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<div id="context-menu">
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+     Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+     Logout
+  </div>
+</div>
+

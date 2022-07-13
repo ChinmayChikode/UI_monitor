@@ -49,6 +49,9 @@ export class SummaryService {
                 this.triggerCount = tokenResponse.triggerCount;
                 this.workeCount = tokenResponse.workeCount;
                 this.projectState = tokenResponse.projectState;
+                  console.log(tokenResponse);
+                // console.log(this.latestWorker);
+                // console.log(this.reservedLicenseThreads);
             },
             (errorResponse: any) => {
               console.log(errorResponse);

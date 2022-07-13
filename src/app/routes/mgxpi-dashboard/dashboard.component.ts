@@ -1,14 +1,7 @@
 import { SidenavService } from 'app/services/sidenav.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
-import {
-  Component,
-  OnInit,
-  EventEmitter,
-  Input,
-  Output,
-  AfterViewInit
-} from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SettingsService } from '@core';
@@ -16,6 +9,12 @@ import { Subject, from, merge, Observable } from 'rxjs';
 import { ChatService } from './ChatService';
 import { ChatModule, Message, User, Action, ExecuteActionEvent, SendMessageEvent } from '@progress/kendo-angular-conversational-ui';
 import { switchMap, map, windowCount, scan, take, tap } from 'rxjs/operators';
+import * as html2pdf from 'html2pdf.js';
+import { ProjectSelection } from '../admin-layout/sidemenu/projectselection.service';
+import { RefreshTableComponent } from 'app/refresh-table/refresh-table.component';
+import { SharedModule } from '@shared';
+import { MatDialog } from '@angular/material';
+
 export interface UserData {
   desc: string;
   severity: string;
@@ -65,7 +64,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   toggleButtonStatus: boolean;
   toggleIconChange: boolean;
   constructor(private sidenavSrv: SidenavService, private spinner: NgxSpinnerService,
-              public settings: SettingsService, private svc: ChatService) {
+              public settings: SettingsService, private svc: ChatService,
+              private projectSelection: ProjectSelection,
+              public activityLogRefresh: MatDialog, ) {
 
                 const hello: Message = {
                   author: this.bot,
@@ -140,6 +141,63 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   closePanel() {
     this.openedFilterDialog = false;
   }
+
+  exportPDF(){
+
+    const options = {
+      filename : this.projectSelection.projectKey+'_dashboard',
+     // image : {type:'jpeg'},
+      html2canvas:{width: 900,
+        height: 800}
+      //jsPDF : {orientation: 'landscape'}
+
+    };
+
+    const content : Element = document.getElementById('download');
+
+    html2pdf().from(content).set(options).save();
+  }
+
+  refresh(){
+    let dialogref = this.activityLogRefresh.open(RefreshTableComponent,{
+      data:{ refresh_interval:SharedModule.global_interval/1000}
+    });
+
+    dialogref.afterClosed().subscribe(result=>{
+
+      console.log("activity compoenent received data "+result.data_interval);
+      // console.log("activity compoenent received data "+typeof(result.data_interval)); 
+      if(result.data_interval){
+        SharedModule.global_interval = result.data_interval*1000
+        
+        // clearInterval(this.interval);
+        // this.interval = setInterval(() => {
+        //   this.getFlowDataByProjectKey(this.http, this.projectSelection.projectKey,
+        //     this.projectSelection.projectLocation);
+        // },SharedModule.global_interval );
+        
+      }
+      
+    })
+  }
+
+  onRightClick(){
+
+      window.addEventListener("contextmenu",function(event){
+      event.preventDefault();
+      let contextElement = document.getElementById("context-menu");
+      contextElement.style.top = event.clientY + "px";
+      contextElement.style.left = event.clientX + "px";
+      contextElement.classList.add("active");
+    });
+    window.addEventListener("click",function(){
+      document.getElementById("context-menu").classList.remove("active");
+    });
+    console.log("right click has been executed and returning false");
+
+    
+  }
+
 
 }
 
