@@ -1,0 +1,309 @@
+body .ui-table .ui-table-caption {
+    background-color: #f4f4f4;
+      color: #0083B0;
+      border: 1px solid #c8c8c8;
+      padding: 0.571em 1em;
+      text-align: center;
+    //color:black !important;
+    //background: linear-gradient(#457fca, #5691c8) !important;
+    //background: linear-gradient(#d0d4d8, #d0d4d8) !important;
+    //font-weight: 500 !important;
+  }
+  /*.mat-drawer-content{
+    overflow: hidden !important;
+  }
+  .mat-drawer-container{
+    overflow: hidden !important;
+  }*/
+  .activity-log-nav{
+      background-color: transparent !important;
+      position: fixed;
+      z-index: 1000;
+      border-radius: 15rem;
+      box-shadow: 0 0.5rem 1rem 0 rgba(44,51,73,.1);
+      background: black;
+      cursor: pointer;
+      transition-duration: 0.34s;
+      margin: -5px 0px 0px -3px;
+    }
+  
+  //   .mat-icon-button{
+  //     height: 20px !important;
+  //     width: 20px !important;
+  //     line-height: 20px !important;
+  //   }
+  .actlog-mat-icon-button {
+      margin: 0 1em 0 0 !important;
+      width: 30px !important;
+      height: 30px !important;
+      line-height: 30px !important;
+    }
+  
+  .ui-table-summary {
+    height: 3.7em !important;
+  }
+    /*.mat-icon-button, .mat-stroked-button{
+      margin: 0 1em 0 0 !important;
+    }*/
+   
+  /*.mat-form-field, .mat-form-field-infix{
+      height: 0px !important;
+      width: 7em !important;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-infix {
+      padding: 0em !important;
+  } */
+  .mat-form-field-infix{
+    width: 100px !important;
+  }
+  body .ui-table .ui-table-summary {
+      //padding: 0.2em 0.5em;
+      padding: 0.5em 0.5em 1em 1em;
+      //background:linear-gradient(#667db6, #0082c8, #0082c8, #667db6) !important;
+      //background:linear-gradient(#00B4DB,#0083B0) !important;
+      //background: linear-gradient(#457fca, #5691c8) !important;
+      background: linear-gradient(#d0d4d8, #d0d4d8) !important;
+  }
+  .mat-raised-button-new{
+      /*line-height: 28px !important;
+      padding: 0 20px !important;
+      padding: 0.3em 1em 0.2em 0.9em !important;
+      background-color: #0077B5 !important;
+      color: white !important;*/
+      line-height: 27px !important;
+      padding: 0.3em 1em 0.2em 0.9em !important;
+      background-color: white !important;
+      color: black !important;
+  }
+  // .mat-select-value {
+  //     //color:white;
+  // }
+  .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 1.35em !important;
+  }
+  .activityFiltersSave{
+      width: 6em !important;
+      float: right !important;
+      background-color: #f5f7fa !important; 
+      background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;
+      color: black !important;
+      height: 25px !important;
+      //margin-top: 1em;
+      line-height: 20px !important;
+  }
+  .activityFiltersCancel{
+      margin-left: 31em !important;
+      background-color: #f5f7fa !important; 
+      background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;
+      color: black !important;
+      height: 25px !important;
+      //margin-top: 1em;
+      line-height: 20px !important;
+      width: 6em;
+  }
+  .mat-dialog-container {
+    background-color: white !important;
+    padding: 20px 30px 45px 30px !important;
+  }
+  .ui-colorpicker-overlay-panel {
+    position: sticky;
+  }
+  .mat-select-value{
+    color: black !important;
+  }
+  .ui-table {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #c8c8c8;
+    > * {
+      flex: 0 0 auto;
+    }
+  
+    > .ui-table-scrollable-wrapper {
+      flex: 1 1 auto;
+      overflow: hidden;
+  
+      > .ui-table-scrollable-view {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+  
+        > .ui-table-scrollable-header {
+          flex: 0 0 auto;
+        }
+  
+        > .ui-table-scrollable-body {
+          flex: 1 1 auto;
+        }
+      }
+    }
+  }
+  .ui-widget {
+    font-size: 12px !important;
+  }
+  
+  .topics tr { 
+    overflow: hidden;
+    height: 14px;
+    white-space: nowrap;
+  }
+  
+  .matero-row{
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  
+  .f-s-16 {
+    font-size: 13px !important;
+  }
+  .f-w-500 {
+    font-weight: 100 !important;
+  }
+  
+  //summary tab css
+  
+  body .ui-table .ui-table-caption {
+    color:#0083B0 !important;
+  }
+  .mat-expansion-panel-header {
+   // font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  
+  .mat-card {
+  //  font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 12px !important;
+    margin-bottom: 5px !important;
+    padding: 12px !important;
+  }
+  .list-summary{
+    list-style: none;
+  
+    &li span{
+        float: right;
+    }
+  }
+  .list-summary li{
+    padding: 5px;
+    span{
+        float: right;
+        margin-left: 25px;
+    }
+  }
+  .mat-list-base .mat-list-item, .mat-list-base .mat-list-option{
+    height: auto;
+  }
+  
+  .matero-row{
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  
+  .serverstatusgraph{
+    height: 364px;
+    width: 390px;
+    background-image: url('/assets/images/graph_witharrow.png'); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+  }
+  
+  .server-start{
+    position: absolute;
+    margin-left: 126px;
+    // -webkit-transform: rotate(4deg);
+    transform: rotate(4deg);
+    margin-top: 17px;
+  }
+  
+  .invocation-date{
+    position: absolute;
+    margin-left: 238px;
+    // -webkit-transform: rotate(113deg);
+    transform: rotate(297deg);
+    margin-top: 250px;
+    width: 194px;
+    text-align: right;
+  }
+  
+  .worker-date{
+    position: absolute;
+    margin-left: -31px;
+    // -webkit-transform: rotate(242deg);
+    transform: rotate(422deg);
+    margin-top: 246px;
+  }
+  .matero-row{
+    min-width: 410px;
+  }
+  .f-s-16 {
+    font-size: 13px !important;
+  }
+  .f-w-500 {
+    font-weight: 100 !important;
+  }
+  
+  //slide button css
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 15px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: -10px;
+    bottom: 1.5px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 38px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  

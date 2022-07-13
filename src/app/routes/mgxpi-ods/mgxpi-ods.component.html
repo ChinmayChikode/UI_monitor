@@ -1,21 +1,38 @@
-<mat-sidenav-container>
+<mat-sidenav-container style="padding: 5px !important;">
 
   <mat-sidenav-content role="region">
 
+    <!-- <div class="matero-row" fxLayout="row wrap"> -->
+    <!-- Parent Table -->
     <mat-card>
       <div style="overflow: auto !important; max-height:200px !important">
-        <p-table #dt [columns]="topcols" [value]="odsData" [paginator]="false" [rows]="25" class="table">
+        <p-table id="dt" #dt [columns]="topcols" [value]="odsData" [paginator]="false" [rows]="25" class="table">
           <ng-template pTemplate="header" let-columns>
             <tr class="table-th-tr">
-              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+              <th *ngFor="let col of columns; let i = index" (click)="ClickedRow(i)" [class.active]="i == HighlightRow"
+                [pSortableColumn]="col.field" [ngSwitch]="col.field">
                 {{col.header}}
                 <p-sortIcon [field]="col.field"></p-sortIcon>
               </th>
             </tr>
+
+            <!-- dropdown for global and local -->
+            <tr class="table-th-tr-fltr">
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+
+                <p-dropdown *ngSwitchCase="'userKeyType'" placeholder="ALL" [options]="typeList" appendTo="body"
+                  [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field,'contains')">
+                </p-dropdown>
+
+              </th>
+            </tr>
+
+
           </ng-template>
+
           <ng-template pTemplate="body" let-user let-columns="columns">
             <tr (click)="getOdsChildData(user.userKey)">
-              <td *ngFor="let col of columns">
+              <td *ngFor="let col of columns" (contextmenu)="onRightClick(user[col.field],'dt')">
                 {{user[col.field]}}
               </td>
             </tr>
@@ -23,37 +40,117 @@
         </p-table>
       </div>
     </mat-card>
+
+    <!-- Child table -->
+    <div
+      style="min-height: 30px;padding: 0.4em 0em 0.5em 0.9em;background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);">
+      {{childTableHeading}}
+      <button style="float:right;color:black;background-color: #f5f7fa !important; 
+        background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) 
+        !important;margin-right: 2em !important; font-size: 40px;" mat-raised-button (click)="clearAll()">Clear All
+      </button>
+    </div>
+
     <mat-card>
-      <div style="overflow: auto !important; max-height:300px !important">
-        <p-table #dt [columns]="childCols" [value]="odsChildData" [paginator]="false" [rows]="25" selectionMode="single"
-          class="table">
-          <ng-template pTemplate="header" let-columns>
-            <tr class="table-th-tr">
-              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
-                {{col.header}}
-                <p-sortIcon [field]="col.field"></p-sortIcon>
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-user let-columns="columns">
-            <tr>
-              <td *ngFor="let col of columns ;">
-                <div *ngIf="col.field=='userBlob'; then thenBlock else elseBlock"></div>
-                <ng-template #thenBlock>
-                  <span *ngIf="user.userBlob" (click)="showBlob(user)">
-                    <mat-icon> insert_drive_file</mat-icon>
-                  </span>
-                </ng-template>
-                <ng-template #elseBlock>
-                  {{user[col.field]}}
-                </ng-template>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+      <div style="overflow: auto !important; max-height:560px !important">
+        <mat-card style="min-height: 350px;border: solid 1px #CCC !important;border-radius: 15px;">
+          <p-table id="dc" #dc [columns]="childCols" [value]="odsChildData" [paginator]="true" [rows]="15"
+            selectionMode="single" class="table">
+            <ng-template pTemplate="header" let-columns>
+              <tr class="table-th-tr">
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+
+              <!-- <tr class="table-th-tr-fltr">
+               <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field" colspan="col.colspan"
+                [ngStyle]="{'width': col.width}"> -->
+
+              <!-- <p-dropdown placeholder="Text" [options]="bloblist" appendTo="body"
+                  [style]="{'width':'100%'}" (onChange)="dt.download($event.value)">
+                </p-dropdown> -->
+              <!-- *ngSwitchCase="'userBlob'"
+              </th> 
+            </tr> -->
+
+            </ng-template>
+
+            <ng-template pTemplate="body" let-user let-columns="columns">
+              <tr>
+                <td *ngFor="let col of columns" (contextmenu)="onRightClick(user[col.field],'dc')">
+                  <div *ngIf="col.field=='userBlob'; then thenBlock else elseBlock"></div>
+                  <ng-template #thenBlock>
+                    <span *ngIf="user.userBlob" (click)="downloadFile(user.userNumber)">
+                      <mat-icon>insert_drive_file</mat-icon>
+                    </span>
+                  </ng-template>
+                  <ng-template #elseBlock>
+                    {{user[col.field]}}
+                  </ng-template>
+                </td>
+              </tr>
+            </ng-template>
+
+          </p-table>
+
+        </mat-card>
+        <!-- <button style="float:left;color:black;background-color: #f5f7fa !important; 
+          background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-right: 2em !important; font-size: 40px;"
+           mat-raised-button mat-raised-button-new (click)="RefreshPanel($event)">Refresh
+        </button> -->
+
+        <!-- <mat-form-field>
+            <mat-label>Download blob</mat-label>
+             <mat-select [(ngModel)]="blobFormat" name="b"> -->
+        <!-- <mat-select name="b">  
+              <mat-option *ngFor="let b of blob" [value]="b.value">
+                {{b.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+
+        <!-- <mat-paginator [length]="100"
+              [pageSize]="5"
+              [pageSizeOptions]="[5, 10, 25, 100]">
+        </mat-paginator> -->
+
       </div>
     </mat-card>
 
 
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<!-- <div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="Automatic Refresh Interval" checked>
+  <label class="form-check-label" for="EnableComponentLogging">Automatic Refresh Interval
+    <button
+      style="float:right;color:black;background-color: #f5f7fa !important; 
+  background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;margin-right: 2em !important; font-size: 25px;"
+      mat-raised-button mat-raised-button-new (click)="RefreshInterval()">...
+    </button>
+  </label>
+</div> -->
+
+<div id="context-menu">
+  <div class="item" (click)="refresh()">
+    Refresh
+  </div>
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+    Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+    Logout
+  </div>
+</div>

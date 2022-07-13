@@ -1,7 +1,9 @@
 export const urls = {
   CHATBOT_URL: 'http://localhost:5002/webhooks/rest/webhook',
+  //SERVER_URL: 'http://localhost:8083/magicmonitor/api/v1',
   SERVER_URL: 'http://localhost:8098/api/v1',
   ProjectsList: '/getAllProjectsList',
+  BamFilter: '/filteredBamLog',
   LoadProjectMetadata:'/loadProjectMetadata',
   Messages: '/allMessage/',
   Flows: '/flow/',
@@ -11,6 +13,7 @@ export const urls = {
   Locking: '/locking/',
   Subscription: '/PSSData/',
   Scheduler: '/scheduler/',
+  InvokeScheduler:'/invokeFlowByScheduler/',
   Summary: '/summary/',
   StartProject: '/startProject',
   StopProject: '/stopRequest/',
@@ -18,6 +21,10 @@ export const urls = {
   Servers: '/serversByProject/',
   ServerWorkersByServerID: '/workerByServerId/',
   ServerWorkersByProject: '/workerByServer/',
+  NewServerInstance:'/newServerInstance/',
+  StopServer:'/stopServer/',
+  StartServer:'/startServer/',
+  ClearEntry:'/deleteServer/',
   AllWorkers: '/worker/',
   ActivityLog: '/activityLog',
   ActivityLogMsgFilters: '/getActivityLogMsgFilters',
@@ -35,5 +42,9 @@ export const urls = {
   triggerActivity: '/triggersActivityStatistics/',
   alertsByProject: '/alertsByProject/',
   projectLoad: '/flowReqHistory/',
-  licenseDetails: '/licenseDetails/'
+  licenseDetails: '/licenseDetails/',
+  updateFlowStatus: '/updateFlowStatus/',
+  canWorkEnable: '/canWorkEnable/',
+  blob: '/displayblob',
+  odsblob: '/displayOdsBlob'
 };

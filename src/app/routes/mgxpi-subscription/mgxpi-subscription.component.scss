@@ -1,8 +1,9 @@
 body .ui-table .ui-table-caption {
   color:#0083B0 !important;
 }
+
 .ui-table {
-    height: 100%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     border: 1px solid #c8c8c8;
@@ -29,3 +30,38 @@ body .ui-table .ui-table-caption {
       }
     }
   }
+
+body {
+  margin:0px;
+  font-family:"Open Sans",sans-serif;
+}
+#context-menu {
+  position:fixed;
+  z-index:100;
+  width:135px;
+  background:rgb(238, 229, 229);
+  border-radius:5px;
+  transform:scale(0);
+  transform-origin:top left; 
+}
+#context-menu.active {
+  transform:scale(1);
+  transition:transform 300ms ease-in-out;
+}
+#context-menu .item {
+  padding:8px 10px;
+  font-size:12.5px;
+  color:black;
+}
+#context-menu .item:hover {
+  background:#555;
+  color:whitesmoke;
+}
+#context-menu .item i {
+  display:inline-block;
+  margin-right:5px;
+}
+#context-menu hr {
+  margin:2px 0px;
+  border-color:#555;
+}

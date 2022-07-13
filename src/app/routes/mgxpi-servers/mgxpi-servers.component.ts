@@ -1,13 +1,25 @@
-import { Component, OnInit, OnChanges, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { SidenavService } from 'app/services/sidenav.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { urls } from '@env/accessurls';
 import { ProjectSelection } from './../admin-layout/sidemenu/projectselection.service';
 import { workers } from 'cluster';
 import { SettingsService } from '@core';
-import { MatDialog } from '@angular/material';
+import { MatDialog,MatDialogConfig } from '@angular/material';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { HeaderComponent } from './../admin-layout/header/header.component';
+import * as XLSX from 'xlsx';
+import * as html2pdf from 'html2pdf.js';
+import html2canvas from 'html2canvas';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
+import { MgxpiServersInstancesComponent } from './mgxpi-servers-instances.component';
+import { TimeoutComponent } from '../admin-layout/sidemenu/sidemenu.component';
+import { ServersService } from './servers.service';
+import { RefreshTableComponent } from 'app/refresh-table/refresh-table.component';
+import { SharedModule } from '@shared';
+// import { Component, ViewChild, ElementRef } from '@angular/core';  
+// import * as jsPDF from 'jspdf';  
+ 
 
 export interface servers {
   serverId;
@@ -43,7 +55,12 @@ export interface workers {
   styleUrls: ['./mgxpi-servers.component.scss'],
   providers: [HeaderComponent]
 })
-export class MgxpiServersComponent implements OnInit, AfterViewInit {
+export class MgxpiServersComponent implements OnInit, OnDestroy,AfterViewInit {
+
+  exportAsConfig: ExportAsConfig = {
+    type: 'png', 
+    elementIdOrContent: 'dt', 
+  }
 
   options = this.settings.getOptions();
   opened = false;
@@ -55,6 +72,9 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
 
   panelOpenState = false;
   testValue: any;
+  totalmessagesprocessed:number;
+  Servers_count:number;
+  
 
   servers: servers[];
   workers: workers[];
@@ -64,12 +84,31 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
   hostList: any[] = [];
   statusList: any[] = [];
   licenseFeatureList: any[] = [];
+  stats: any[];
+  bpid: any;
+  flowid: any;
+  isenable: any;
+  var_cell: any;
+  flag: any;
+  //service: any;
+  myProp: string;
+  serverId: any;
+  serverData: any;
+
+  // recordsFilter = [
+  //   { value: 50, label: 50 },
+  //   { value: 100, label: 100 },
+  //   { value: 200, label: 200 },
+  //   { value: 500, label: 500 },
+  // ];
+
+
 
   constructor(private sidenavSrv: SidenavService, private http: HttpClient,
               private projectSelection: ProjectSelection,
-              private settings: SettingsService,
-              public headerSrv: HeaderComponent,
-              public dialog: MatDialog) {
+              private exportAsService: ExportAsService,
+              private settings: SettingsService,public dialog: MatDialog,
+              public headerSrv: HeaderComponent,private service: ServersService,public activityLogRefresh: MatDialog) {
     this.toggleButtonStatus = this.sidenavSrv.getToggleButtonStatus();
     this.toggleIconChange = this.sidenavSrv.getToggleIconChange();
     console.log('Not Lazily Loaded : NotALazyModule');
@@ -79,7 +118,35 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
   ngOnInit() {
 
     this.getServersDataByProjectKey(this.http, this.projectSelection.projectKey);
+    this.interval=setInterval(()=>{
+      this.getServersDataByProjectKey(this.http, this.projectSelection.projectKey);
+       
+      this.stats=[
+        { 
+         title: 'Total',
+         amount: this.Servers_count,
+         progress: {
+           value: 100
+         },
+         color: 'bg-indigo-500',
+      },
+      {
+        title:'Total Messages Processed',
+        amount:this.totalmessagesprocessed,
+        progress:{
+          value: 100
+        },
+        color: 'bg-blue-500',
+      }
+ 
+     ];
+ 
 
+    },5000)
+  
+
+
+     
     this.serverColumns = [
         { field: 'serverId', header: 'ID', width: '5%'   },
         { field: 'primaryHost', header: 'Host', width: '10%'   },
@@ -108,7 +175,149 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
       { field: 'licenseType', header: 'License Type', width: '8%' },
     ];
 
+
+    this.stats=[
+      { 
+       title: 'Total',
+       amount:0,
+       progress: {
+         value: 100
+       },
+       color: 'bg-indigo-500',
+    },
+    {
+      title:'Total Messages Processed',
+      amount:0,
+      progress:{
+        value: 100
+      },
+      color: 'bg-blue-500',
+    }
+
+ ];
+
+ //this.OnRefreshLicense();
+
+
+}
+
+onCreate() {
+  console.log("Inside onCreate");
+  this.service.initializeFormGroup();
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = true;
+  dialogConfig.width = "45%";
+  this.dialog.open(MgxpiServersInstancesComponent,dialogConfig);
+}
+
+onShutdown()
+{
+  //console.log(serverId + "Shutdown");
+  
+  const dialogRef = this.dialog.open(TimeoutComponent);
+  if (this.myProp) {
+    dialogRef.componentInstance.input = this.myProp;
   }
+  dialogRef.afterClosed().subscribe(timeout => {
+    if (timeout !== '' && timeout !== null) {
+
+      const tokenHeaders = new HttpHeaders(
+        {
+          'Content-Type': 'application/json',
+          Authorization: 'Basic ' + btoa('admin:admin'),
+          Accept: 'application/json'
+        }
+      );
+
+      this.http.get(urls.SERVER_URL + urls.StopServer + this.projectSelection.projectKey + '/' + this.serverData.serverId + '/' + timeout 
+      , { headers: tokenHeaders })
+        .subscribe(
+          (tokenResponse: any) => {
+           // console.log(tokenResponse);
+          },
+          (errorResponse: any) => {
+            console.log(errorResponse);
+          }
+        );
+
+    } 
+  });
+ 
+}
+
+Onstart()
+{
+  //console.log(ServerData.serverId);
+
+  const tokenHeaders = new HttpHeaders(
+    {
+      'Content-Type': 'application/json',
+      Authorization: 'Basic ' + btoa('admin:admin'),
+      Accept: 'application/json'
+    }
+  );
+
+  this.http.get(urls.SERVER_URL + urls.StartServer + this.projectSelection.projectKey + '/' + this.serverData.serverId, { headers: tokenHeaders })
+    .subscribe(
+      (tokenResponse: any) => {
+        console.log(tokenResponse);
+      },
+      (errorResponse: any) => {
+        console.log(errorResponse);
+      }
+    );
+  
+}
+
+onclearentry(){
+
+  const tokenHeaders = new HttpHeaders(
+    {
+      'Content-Type': 'application/json',
+      Authorization: 'Basic ' + btoa('admin:admin'),
+      Accept: 'application/json'
+    }
+  );
+
+  this.http.get(urls.SERVER_URL + urls.ClearEntry+ this.projectSelection.projectKey+'/'+ this.serverData.serverId, { headers: tokenHeaders })
+  .subscribe(
+    (tokenResponse: any) => {
+        console.log(tokenResponse);
+    },
+    (errorResponse: any) => {
+      console.log(errorResponse);
+    }
+  );
+
+}
+
+OnRefreshLicense( )
+{
+  //console.log('Inside OnRefreshLicense' + projectKey );
+
+  const tokenHeaders = new HttpHeaders(
+    {
+      'Content-Type': 'application/json',
+      Authorization: 'Basic ' + btoa('admin:admin'),
+      Accept: 'application/json'
+    }
+  );
+
+  this.http.get(urls.SERVER_URL + urls.Servers+ this.projectSelection.projectKey, { headers: tokenHeaders })
+  .subscribe(
+    (tokenResponse: any) => {
+       this.servers = tokenResponse.serverData;
+  
+    },
+    (errorResponse: any) => {
+      console.log(errorResponse);
+    }
+  );
+  
+}
+
+
 
   ngAfterViewInit() {
     const interval = setInterval(() => {
@@ -117,6 +326,13 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
         clearInterval(interval);
       }
     }, 1000);
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 
   clickOnToggle() {
@@ -136,11 +352,39 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
       }
     );
 
-    http.get(urls.SERVER_URL + urls.Servers + projectKey, { headers: tokenHeaders })
+    this.http.get(urls.SERVER_URL + urls.Servers + projectKey, { headers: tokenHeaders })
         .subscribe(
           (tokenResponse: any) => {
             this.servers = tokenResponse.serverData;
+            this.totalmessagesprocessed=tokenResponse.totalmessagesprocessed;
+            this.Servers_count=this.servers.length;
+
+            console.log(tokenResponse);
+
+            this.stats=[
+              { 
+               title: 'Total',
+               amount: this.Servers_count,
+               progress: {
+                 value: 100
+               },
+               color: 'bg-indigo-500',
+            },
+            {
+              title:'Total Messages Processed',
+              amount:this.totalmessagesprocessed,
+              progress:{
+                value: 100
+              },
+              color: 'bg-blue-500',
+            }
+       
+           ];
+           
+             
+
             this.empty();
+
             for (const host of tokenResponse.hostList) {
               if (host.hostName === 'ALL') {
                 this.hostList.push({label: host.hostName, value: null});
@@ -148,6 +392,7 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
                 this.hostList.push({label: host.hostName, value: host.hostName});
               }
             }
+
             for (const status of tokenResponse.statusList) {
               if (status.statusName === 'ALL') {
                 this.statusList.push({label: status.statusName, value: null});
@@ -155,6 +400,7 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
                 this.statusList.push({label: status.statusName, value: status.statusName});
               }
             }
+
             for (const license of tokenResponse.licenseFeatureList) {
               if (license.licenseType === 'ALL') {
                 this.licenseFeatureList.push({label: license.licenseType, value: null});
@@ -162,6 +408,8 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
                 this.licenseFeatureList.push({label: license.licenseType, value: license.licenseType});
               }
             }
+                        
+
           },
           (errorResponse: any) => {
             console.log(errorResponse);
@@ -171,7 +419,7 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
 
   getWorkerDataByProjectKey(server: any) {
 
-    console.log('Called Every 5 Second : ' + server.serverId);
+   // console.log('Called Every 5 Second : ' + server.serverId);
 
     const tokenHeaders = new HttpHeaders(
       {
@@ -181,12 +429,12 @@ export class MgxpiServersComponent implements OnInit, AfterViewInit {
       }
     );
 
-    // this.http.get(urls.SERVER_URL + urls.ServerWorkersByProject + server.serverId, { headers: tokenHeaders })
     this.http.get(urls.SERVER_URL + urls.ServerWorkersByProject + this.projectSelection.projectKey, { headers: tokenHeaders })
         .subscribe(
           (tokenResponse: any) => {
             this.workers = tokenResponse[0].workers;
-            // console.log('Sudeeps Workers : ' + this.workers);
+            console.log(tokenResponse);
+            
           },
           (errorResponse: any) => {
             console.log(errorResponse);
@@ -225,7 +473,7 @@ openPanel(event: MouseEvent) {
 }
 
 closePanel() {
-  this.opened = false;
+  this.opened =false;
 }
 
 togglePanel() {
@@ -247,11 +495,128 @@ getFlowWorkerStep(workerDataRow: any, col: any): any {
  }
  }
 
- empty() {
-  this.hostList.length = 0;
-  this.statusList.length = 0;
-  this.licenseFeatureList.length = 0;
-}
+  empty() {
+    this.hostList.length = 0;
+    this.statusList.length = 0;
+    this.licenseFeatureList.length = 0;
+  }
+
+  exportexcel(): void
+  {
+    console.log("excel exportation");
+    /* pass here the table id */
+    let element = document.getElementById('dt');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.projectSelection.projectKey+'_ServerData.xlsx');
+    
+ 
+  }
+
+  exportPDF(){
+
+    const options = {
+      filename : this.projectSelection.projectKey+'_Serverdata',  //project key is required to be passed
+     // image : {type:'jpeg'},
+      html2canvas:{}
+      //jsPDF : {orientation: 'landscape'}
+
+    };
+
+    const content : Element = document.getElementById('dt');
+
+    html2pdf().from(content).set(options).save();
+  }
+
+  exportPNG(){
+    this.exportAsService.save(this.exportAsConfig, this.projectSelection.projectKey).subscribe(() => {
+      // save started
+    });
+    
+  }
+
+
+  onRightClick(serverData:any,var_cell:any){
+
+    console.log("this data: "+serverData);
+    this.serverData = serverData;
+
+    if(serverData.status==='RUNNING')
+    {
+      this.flag=1;
+    }
+   else{
+          this.flag=0;
+       }
+
+    console.log(var_cell);
+    this.var_cell = var_cell;
+    
+    //this.flow_data_for_contextmenu = flowsdata;
+    
+    window.addEventListener("contextmenu",function(event){
+      event.preventDefault();
+      let contextElement = document.getElementById("context-menu");
+      contextElement.style.top = event.clientY + "px";
+      contextElement.style.left = event.clientX + "px";
+      contextElement.classList.add("active");
+    });
+    window.addEventListener("click",function(){
+      document.getElementById("context-menu").classList.remove("active");
+    });
+    console.log("right click has been executed and returning false");
+
+    
+  }
+
+  onRightClick_outside(){
+    console.log("outside right click");
+    return false;
+  }
+
+  copy_cell_value(){
+
+    const cellValue = document.createElement('textarea');
+    cellValue.style.position = 'fixed';
+    // cellValue.style.left = '0';
+    // cellValue.style.top = '0';
+    cellValue.style.opacity = '0';
+    cellValue.value = this.var_cell;
+    document.body.appendChild(cellValue);
+    cellValue.focus();
+    cellValue.select();
+    document.execCommand('copy');
+    document.body.removeChild(cellValue);
+
+  }
+
+  refresh(){
+    let dialogref = this.activityLogRefresh.open(RefreshTableComponent,{
+      data:{ refresh_interval:SharedModule.global_interval/1000}
+    });
+
+    dialogref.afterClosed().subscribe(result=>{
+
+      console.log("activity compoenent received data "+result.data_interval);
+      // console.log("activity compoenent received data "+typeof(result.data_interval)); 
+      if(result.data_interval){
+        SharedModule.global_interval = result.data_interval*1000
+        
+        clearInterval(this.interval);
+        this.interval = setInterval(() => {
+          this.getServersDataByProjectKey(this.http,this.projectSelection.projectKey);
+        },SharedModule.global_interval );
+        
+      }
+      
+    })
+  }
+
 
 }
 

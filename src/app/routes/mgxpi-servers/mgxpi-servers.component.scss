@@ -1,6 +1,9 @@
 body .ui-table .ui-table-caption {
     color:#0083B0 !important;
 }
+.center{
+  text-align: center;
+}
 .ui-table {
     height: 100%;
     display: flex;
@@ -28,4 +31,78 @@ body .ui-table .ui-table-caption {
         }
       }
     }
+  }
+
+
+
+  
+
+
+.matero-row{
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.matero-row{
+  min-width: 410px;
+}
+.f-s-16 {
+  font-size: 13px !important;
+}
+.f-w-500 {
+  font-weight: 100 !important;
+}
+
+.mat-expansion-panel-header {
+  // font-family: Roboto, "Helvetica Neue", sans-serif;
+   font-size: 14px;
+   font-weight: 400;
+}
+
+.mat-card {
+  //  font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 12px !important;
+    margin-bottom: 5px !important;
+    padding: 12px !important;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option{
+  height: auto;
+}
+
+
+
+  body {
+    margin:0px;
+    font-family:"Open Sans",sans-serif;
+  }
+  #context-menu {
+    position:fixed;
+    z-index:100;
+    width:135px;
+    background:rgb(238, 229, 229);
+    border-radius:5px;
+    transform:scale(0);
+    transform-origin:top left; 
+  }
+  #context-menu.active {
+    transform:scale(1);
+    transition:transform 300ms ease-in-out;
+  }
+  #context-menu .item {
+    padding:8px 10px;
+    font-size:12.5px;
+    color:black;
+  }
+  #context-menu .item:hover {
+    background:#555;
+    color:whitesmoke;
+  }
+  #context-menu .item i {
+    display:inline-block;
+    margin-right:5px;
+  }
+  #context-menu hr {
+    margin:2px 0px;
+    border-color:#555;
   }

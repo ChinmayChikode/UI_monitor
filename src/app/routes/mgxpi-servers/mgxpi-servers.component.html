@@ -1,8 +1,39 @@
+
+<mat-sidenav-container>
+
+   <mat-sidenav-content role="region">
+  
+       
+   <div class="matero-row" fxLayout="row wrap">
+    <div class="matero-col" fxFlex.gt-sm="20" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let stat of stats">
+      <mat-card [ngClass]="['text-white', stat.color]" style="padding:12px 15px 12px 15px;">
+        <mat-card-title style="margin-bottom: 0px" class="f-s-16 f-w-500">{{stat.title}}</mat-card-title>
+        <mat-card-content style="margin-bottom: 0;">
+          <h2 style="margin-bottom: 0px;">{{stat.amount}}</h2>
+          <mtx-progress [value]="stat.progress.value" height="2px" foreground="rgba(255,255,255,1)"
+            background='rgba(0,0,0,.5)'>
+          </mtx-progress>
+        </mat-card-content>
+      </mat-card>
+    </div>
+   </div>  
+
+
+
+  </mat-sidenav-content>
+</mat-sidenav-container> 
+
+
+
+
 <mat-sidenav-container>
 
   <mat-sidenav-content role="region">
+
+
+
     <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
-    <p-table #dt [columns]="serverColumns" [resizableColumns]="true" selectionMode="single" dataKey="serverId"
+    <p-table id='dt' #dt [columns]="serverColumns" [resizableColumns]="true" selectionMode="single" dataKey="serverId"
       [value]="servers" [paginator]="true" [rows]="15" expandableRows="true" rowExpandMode="multiple" class="table">
 
       <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
@@ -43,7 +74,8 @@
               <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
             </a>
           </td>
-          <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+          <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}"
+          (contextmenu)="onRightClick(serversData,serversData[col.field])">
             {{serversData[col.field]}}
           </td>
         </tr>
@@ -104,3 +136,70 @@
     <img src="assets/images/activity-settings.png" width="30px" />
   </button>
 </div>
+
+
+<div id="context-menu">
+  <div class="item" *ngIf= "flag" (click)="onShutdown()">
+    Shutdown
+  </div>
+  <div class="item" *ngIf= "!flag" (click)="Onstart()">
+    Start
+  </div>
+  <div class="item" *ngIf= "!flag" (click)="onclearentry()">
+    Clear entry
+  </div>
+  <div class="item" (click)="onCreate()">
+    Run new instance
+  </div>
+  <div class="item" (click)="onCreate()">
+    Add Server  </div>
+  <div class="item" (click)="OnRefreshLicense()">
+      Refresh License</div>
+  <hr>
+  <div class="item" (click)="refresh()">
+    Refresh
+  </div>   
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+     Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+     Logout
+  </div>
+</div>
+
+
+<!-- 
+<div class="container">  
+  <input type="button" value="Export PDF" class="btn btn-success" (click)="SavePDF()">  
+  <br/><br/>  
+  <div class="container" id="content" #content>  
+      <table class="table table-dark">  
+          <tr>  
+              <th>Id</th>  
+              <th>Host</th>  
+              <th>ProcessID</th>  
+              <th>Load Schedulers</th>  
+              <th>Load Triggers</th>  
+              <th>Workers</th>  
+              <th>Started At</th>  
+          </tr>  
+          <tr *ngFor="let item of serverColumns">  
+              <th>{{item.Id}}</th>  
+              <th>{{item.Host}}</th>  
+              <th>{{item.ProcessID}}</th>  
+              <th>{{item.Load Triggers}}</th>  
+              <th>{{item.Workers}}</th>  
+              <th>{{item.Started At}}</th>  
+          </tr>  
+      </table>  
+  </div>  
+</div>  -->

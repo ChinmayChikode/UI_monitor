@@ -1,3 +1,13 @@
+<style type="text/css"> 
+  .geek { 
+      border: 1px solid black; 
+      width: 400px; 
+      background-color: green; 
+      border-radius: 4px; 
+      height: 20px; 
+      color: white; 
+  } 
+</style> 
 <div>
 <ul navAccordion class="matero-sidemenu level-0" style="border-top: 1px solid rgba(0, 0, 0, 0.12);border: solid 1px #CCC !important;">
   <li navAccordionLink class="matero-sidemenu-item" style="height: 2em;font-size: 13px !important;" 
@@ -15,27 +25,33 @@
       </span> 
 
       <a class="matero-sidemenu-link"
-           (click)="getProjectNavigation(project);this.projectLoadSrv.getProjectLoadDataOnProjectChange();this.licenseUsageSrv.getProjectLoadDataOnProjectChange()">
-        <span 
+           (click)="getProjectNavigation(project)">
+           <!--;this.licenseUsageSrv.getProjectLoadDataOnProjectChange() ;this.projectLoadSrv.getProjectLoadDataOnProjectChange() -->
+           <span 
         [style.color]="project.projectKey === this.projectSelection.projectKey ? 'white' : ''"
         class="menu-name">{{project.projectKey}}</span>
       </a>
     <span class="span-icon-right span-icon-green">
       <button mat-icon-button class="sidemenu-mat-icon-button" (click)="startProject(project)"
       [disabled] = "project.status == 'RUNNING'">
-        <mat-icon aria-hidden="true">play_arrow</mat-icon>
+        <mat-icon aria-hidden="true"
+        matTooltip="Start" [matTooltipClass]="{ 'tool-tip': true }" >play_arrow</mat-icon>
       </button>
     </span>
-    <span class="span-icon-right span-icon-red">
+    <span class="span-icon-right span-icon-red" >
       <button mat-icon-button class="sidemenu-mat-icon-button" (click)="stopProject(project)"
-      [disabled] = "project.status == 'STOPPED'">
-        <mat-icon aria-hidden="true">stop</mat-icon>
+      [disabled] = "project.status == 'STOPPED'" >
+        <mat-icon aria-hidden="true"
+        matTooltip="Stop" [matTooltipClass]="{ 'tool-tip': true }" >stop</mat-icon>
       </button>
     </span>
-    <span class="span-icon-right span-icon-blue">
-      <button mat-icon-button class="sidemenu-mat-icon-button" (click)="RestartProject(project)"
-      [disabled] = "project.status == 'STOPPED'">
-        <mat-icon aria-hidden="true" style="transform: rotate(90deg);margin-bottom: 3px;">eject</mat-icon>
+    <span class="span-icon-right span-icon-blue" >
+      <button mat-icon-button class="sidemenu-mat-icon-button" 
+      (click)="RestartProject(project)"
+      [disabled] = "project.status == 'STOPPED'"> 
+        <mat-icon aria-hidden="true" style="transform: rotate(90deg);margin-bottom: 3px;"
+        matTooltip="Restart" [matTooltipClass]="{ 'tool-tip': true }" 
+        >eject</mat-icon>
       </button>
     </span>
     <div style="clear: both;"></div>

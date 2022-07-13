@@ -3,23 +3,24 @@
   <mat-sidenav-content role="region">
 
     <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100">
-      <p-table #dt [columns]="cols" [value]="scheduler" [paginator]="true" [rows]="26" sortField="pssName"
-        [sortOrder]="-1" class="table">
+      <p-table id='dt' #dt [columns]="cols" selectionMode="single" [value]="scheduler" [paginator]="true" [rows]="26" sortField="execDateTimeOrg"
+        [sortOrder]="-1" [resizableColumns]="true" class="table">
         <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
           Scheduler
         </ng-template>
         <ng-template pTemplate="header" let-columns>
           <tr class="table-th-tr">
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
+             [ngSwitch]="col.field">
               {{col.header}}
               <p-sortIcon [field]="col.field"></p-sortIcon>
             </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-scheduler let-columns="columns">
-          <tr>
-            <td *ngFor="let col of columns">
-              {{scheduler[col.field]}}
+          <tr [pSelectableRow]="scheduler">
+            <td *ngFor="let col of columns" (contextmenu)="onRightClick(scheduler,scheduler[col.field])">
+              {{scheduler[col.field]}} 
             </td>
           </tr>
         </ng-template>
@@ -29,3 +30,58 @@
   </mat-sidenav-content>
 
 </mat-sidenav-container>
+
+
+<div id="context-menu">
+  <div class="item" (click)="Invoke()">
+    Invoke
+  </div>
+  <hr>
+  <div class="item" (click)="refresh()">
+    Refresh
+  </div>
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+     Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+     Logout
+  </div>
+</div>
+
+
+<!-- 
+<div class="card">
+  <p-table [value]="scheduler" [(contextMenuSelection)]="selectedscheduler" dataKey="code">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Invocation Time</th>
+              <th>BP ID</th>
+              <th>BP Name</th>
+              <th>Flow ID</th>
+              <th>Flow Name</th>
+              <th>Name</th>
+              
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-scheduler>
+          <tr [pContextMenuRow]="scheduler">
+              <td>{{scheduler.execDateTimeOrg}}</td>
+              <td>{{scheduler.bpId}}</td>
+              <td>{{scheduler.bpName}}</td>
+              <td>{{scheduler.flowId | currency: 'USD'}}</td>
+              <td>{{scheduler.flowName}}</td>
+              <td>{{scheduler.schedulerName}}</td>
+              
+          </tr>
+      </ng-template>
+  </p-table>
+</div> -->

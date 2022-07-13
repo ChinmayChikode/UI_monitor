@@ -1,78 +1,39 @@
 <h4 mat-dialog-title>BAM Filters</h4>
 
 <mat-dialog-content>
-  <form>
 
-    <div class="m-l-8">
-      <h4 class="f-w-400"><u><b>Time Range Filters</b></u></h4>
-      <mat-form-field style="font-size: 12px !important;">
-        <input matInput [matDatepicker]="fromDatePicker" aria-label="From Date" placeholder="From Date">
-        <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #fromDatePicker></mat-datepicker>
-      </mat-form-field>
+  <h4 class="f-w-400"><u><b>Time Range Filters</b></u></h4>
+  <div class="m-l-8">
+  <mat-form-field class="mat-form-field-From-datepicker">
+    <input #fromDate matInput [matDatepicker]="fromPicker" placeholder="From date">
+    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+    <ngx-mat-datetime-picker #fromPicker [showSeconds]="true" [enableMeridian]="true">
+    </ngx-mat-datetime-picker>
+  </mat-form-field>
+  <br>
+  <mat-form-field class="mat-form-field-To-datepicker">
+    <input #toDate matInput [matDatepicker]="toPicker" placeholder="To date">
+    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+    <ngx-mat-datetime-picker #toPicker [showSeconds]="true" [enableMeridian]="true">
+    </ngx-mat-datetime-picker>
+  </mat-form-field>
+</div>
+  <mat-divider inset class="m-x-0 m-y-24"></mat-divider>
+  <h4 class="f-w-400"><u><b>User Key Filters</b></u></h4>
+  <div class="m-l-8">
+    <div>
+      <mat-label style="font-size: 12px !important;padding-right: 15px;">User Key 1</mat-label>
+      <input #userKey1 type="text" placeholder="Uk1" style="width: 60%;font-size: 12px !important;">
+      <br>
+      <mat-label style="font-size: 12px !important;padding-right: 15px;">User Key 2</mat-label>
+      <input #userKey2 type="text" placeholder="Uk1" style="width: 60%;font-size: 12px !important;">
 
-      <mat-form-field style="font-size: 12px !important;">
-        <input matInput [matDatepicker]="toDatePicker" aria-label="To Date" placeholder="To Date">
-        <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #toDatePicker></mat-datepicker>
-      </mat-form-field>
     </div>
+  </div>  
 
-    <mat-divider inset class="m-x-0 m-y-24"></mat-divider>
-    <h4 class="f-w-400"><u><b>Context Related Filters</b></u></h4>
-    <div class="m-l-8">
-      <div>
-        <mat-label style="font-size: 12px !important;padding-right: 60px;">Root FSID</mat-label>
-        <input RootFSID type="text" placeholder="" style="width: 40%;font-size: 12px !important;">
-        <br>
-        <mat-label style="font-size: 12px !important;padding-right: 15px;">Flow Request FSID</mat-label>
-        <input FlowRequestFSID type="text" placeholder="" style="width: 40%;font-size: 12px !important;">
-        <br>
-        <mat-label style="font-size: 12px !important;padding-right: 88px;">FSID</mat-label>
-        <input FSID type="text" placeholder="" style="width: 40%;font-size: 12px !important;">
-      </div>
-    </div>
-  </form>
-
-  <div class="demo-full-width" fxFlex="100" fxFlex.gt-sm="100">
-
-    <div class="m-l-8">
-      <div>
-        <mat-checkbox class="m-r-8" [value]="'Display'">Display All</mat-checkbox>
-        <mat-checkbox class="m-r-8" [value]="'Write'">Write All</mat-checkbox>
-      </div>
-    </div>
-
-    <p-table #dt [columns]="cols" [value]="bamFilters">
-      <!--<ng-template pTemplate="caption">
-          Messages
-      </ng-template>-->
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
-            {{col.header}}
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-bamFilter let-columns="columns">
-        <tr [pSelectableRow]="bamFilter">
-          <td style="text-align: center;">
-            <mat-checkbox [checked]="bamFilter.display"></mat-checkbox>
-          </td>
-          <td style="text-align: center;">
-            <mat-checkbox [checked]="bamFilter.write"></mat-checkbox>
-          </td>
-          <td>
-            {{bamFilter.messageName}}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-
-</mat-dialog-content>
+</mat-dialog-content> 
 
 <mat-dialog-actions>
-  <button mat-raised-button mat-dialog-close>Close</button>
-  <button mat-raised-button color="primary" mat-dialog-close cdkFocusInitial>Submit</button>
+  <button mat-raised-button color="primary" (click)="applyFilters(fromDate.value,toDate.value,userKey1.value,userKey2.value)">Apply</button>
+  <button mat-raised-button (click)="applyFilters(null,null,null,null)">Clear</button>  
 </mat-dialog-actions>

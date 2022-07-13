@@ -21,6 +21,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       console.log('Event URL Friedn : '+ event.url);
+      console.log('Event URL Friedn : '+ event.url);
       this.url = event.url;
     });
   }

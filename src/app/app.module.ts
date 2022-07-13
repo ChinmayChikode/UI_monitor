@@ -16,7 +16,7 @@ import { MgxpiLoginComponent } from './routes/mgxpi-login/mgxpi-login.component'
 import { ChatModule } from '@progress/kendo-angular-conversational-ui';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ChartsModule } from 'ng2-charts';
-// import { NgxLoadingModule } from 'ngx-loading';
+import { NgxLoadingModule } from 'ngx-loading';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -33,10 +33,17 @@ import { AccordionLinkDirective } from './routes/admin-layout/sidemenu/accordion
 import { ProjectSearchPipe } from './routes/admin-layout/sidemenu/projectsearch.pipe';
 import { MgxpiMenuSidenavComponent } from './routes/mgxpi-menu-sidenav/mgxpi-menu-sidenav.component';
 import { StepNamePipe } from './routes/mgxpi-servers/step-name.pipe';
-import { ActivityFiltersService } from './routes/mgxpi-activity/activity-filters.service';
+//import { ActivityFiltersService } from './routes/mgxpi-activity/activity-filters.service';
 import { AppRoutingModule } from './app-routing.module';
 import { MgxpiLicenseSummaryComponent } from './routes/mgxpi-license-summary/mgxpi-license-summary.component';
 import { UserPanelComponent } from './routes/admin-layout/sidebar/user-panel.component';
+import { ExportAsModule } from 'ngx-export-as';
+import { MgxpiServersInstancesComponent } from './routes/mgxpi-servers/mgxpi-servers-instances.component';
+import { MgxpiMessageActivityDetailsComponent } from './routes/mgxpi-messages/mgxpi-messages.component';
+import { MgxpiInvokeSchedulerComponent } from './routes/mgxpi-scheduler/mgxpi-scheduler.component';
+import { RefreshTableComponent } from './refresh-table/refresh-table.component';
+import { ActivityFiltersService } from './routes/mgxpi-activity/activity-filters.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   exports: [RouterModule],
@@ -62,14 +69,19 @@ import { UserPanelComponent } from './routes/admin-layout/sidebar/user-panel.com
     ProjectLoadComponent,
     LicenseUsagesComponent,
     MgxpiLicenseSummaryComponent,
-    UserPanelComponent
+    UserPanelComponent,
+    MgxpiServersInstancesComponent,
+    MgxpiMessageActivityDetailsComponent,
+    MgxpiInvokeSchedulerComponent,
+    RefreshTableComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
-    // NgxLoadingModule.forRoot({}),
+    NgbModule,
+    NgxLoadingModule.forRoot({}),
     SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -82,11 +94,15 @@ import { UserPanelComponent } from './routes/admin-layout/sidebar/user-panel.com
     ChatModule,
     SharedModule,
     NgApexchartsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ExportAsModule,
+    
+    
   ],
   providers: [
     ActivityFiltersService
   ],
   bootstrap: [AppComponent],
+  entryComponents:[MgxpiServersInstancesComponent,MgxpiMessageActivityDetailsComponent,MgxpiInvokeSchedulerComponent,RefreshTableComponent]
 })
 export class AppModule {}

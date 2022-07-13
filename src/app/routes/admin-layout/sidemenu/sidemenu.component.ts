@@ -96,7 +96,7 @@ export class SidemenuComponent implements OnInit {
 
   getAllProjectsList(http: any) {
 
-    console.log('Called Every 5 Second');
+   // console.log('Called Every 5 Second');
 
     const tokenHeaders = new HttpHeaders(
       {
@@ -300,7 +300,7 @@ export class SidemenuComponent implements OnInit {
           console.log(errorResponse);
         }
       );
-    this.router.navigateByUrl('/');
+    //this.router.navigateByUrl('/');
   }
 
   getStyle(project: any) {

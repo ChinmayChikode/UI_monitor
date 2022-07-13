@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, AfterViewInit, OnDestroy } from '@angular/core';
 import { SidenavService } from 'app/services/sidenav.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { urls } from '@env/accessurls';
@@ -18,7 +18,7 @@ export interface locking {
   encapsulation: ViewEncapsulation.None,
   providers: [HeaderComponent]
 })
-export class MgxpiLockingComponent implements OnInit, AfterViewInit {
+export class MgxpiLockingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleButtonStatus: boolean;
   toggleIconChange: boolean;
@@ -31,12 +31,17 @@ export class MgxpiLockingComponent implements OnInit, AfterViewInit {
     this.toggleButtonStatus = this.sidenavSrv.getToggleButtonStatus();
     this.toggleIconChange = this.sidenavSrv.getToggleIconChange();
   }
+  ngOnDestroy(): void {
+    if(this.interval){
+      clearInterval(this.interval);
+    }
+  }
 
   ngOnInit() {
 
-    this.getLockingDataByProjectKey(this.http,'A_Locking');
+    this.getLockingDataByProjectKey(this.http,'RtView_Scheduler_and_Lock');
     this.interval = setInterval(() => { 
-      this.getLockingDataByProjectKey(this.http,'A_Locking');
+      this.getLockingDataByProjectKey(this.http,'RtView_Scheduler_and_Lock');
     }, 5000);
 
     this.cols = [

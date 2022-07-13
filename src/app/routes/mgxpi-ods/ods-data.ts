@@ -1,3 +1,5 @@
+import { Time } from "@angular/common";
+
 export interface OdsData {
     userKey: string;
     type: string;
@@ -5,8 +7,15 @@ export interface OdsData {
     fsId: number;
     userNumber: number;
     userLogical: string;
-    userDate: string;
-    userTime: string;
+    userDate: Date;
+    userTime: Time;
     userBlob: string;
-    global: number;
+    global: string;
+    createDate: String;
+    modifyDate: Date;
+    createDateTime : string;
+    modifyDateTime : string;
+    userKeyType : string;
 } 
+
+

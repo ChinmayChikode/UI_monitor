@@ -369,13 +369,3 @@ body .ui-table .ui-table-tbody > tr.ui-state-highlight {
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
-
-.ui-paginator .ui-dropdown{
-  min-width: 5em !important;
-  margin-left: .375em !important;
-}
-
-body .ui-paginator .ui-dropdown .ui-dropdown-trigger, body .ui-paginator .ui-dropdown .ui-dropdown-label {
-  color: black !important;
-  font-size: 12px !important;
-}

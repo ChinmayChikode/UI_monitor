@@ -1,0 +1,66 @@
+
+<!-- <mat-toolbar>
+  <span>{{service.form.controls['Server_host'].value?"Details"}}</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+</mat-toolbar> -->
+
+<h4 mat-dialog-title>Server Details</h4>
+
+<mat-dialog-content>
+  <form [formGroup]="service.form" class="normal-form" (click)="onSubmit()">
+    <mat-grid-list cols="1" rowHeight="450px">
+      <mat-grid-tile>
+        <div class="controles-container">
+          <mat-form-field>
+            <input formControlName="Server_host" matInput placeholder="Server host*">
+            <mat-error>This field is mandatory.</mat-error>
+            <mat-error *ngIf="service.form.controls['Server_host'].errors?.minlength">Minimum 1 charactors needed.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="Alternate_host" matInput placeholder="Alternate hosts">
+            <mat-error>This field is mandatory.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="project_directory" matInput placeholder="Projects directory*">
+            <mat-error *ngIf="service.form.controls['project_directory'].errors?.required">This field is mandatory.</mat-error>
+            <mat-error *ngIf="service.form.controls['project_directory'].errors?.minlength">Minimum 1 charactors needed.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input formControlName="Number_of_instances" matInput placeholder="Number of instances">
+            <!-- <mat-error *ngIf="service.form.controls['Number_of_instances'].errors?.required">This field is mandatory.</mat-error> -->
+          </mat-form-field>
+
+                <div class="add-bottom-padding">
+                  <mat-checkbox formControlName="Load_Triggers">Load Triggers</mat-checkbox>
+                </div>
+                <div class="add-bottom-padding">
+                  <mat-checkbox formControlName="Load_Schedulers">Load schedulers</mat-checkbox>
+                </div>
+                <div class="add-bottom-padding">
+                  <mat-checkbox formControlName="Load_auto_start">Load auto-start</mat-checkbox>
+                </div>
+
+          <mat-form-field>
+            <input formControlName="Number_of_workers" matInput placeholder="Number of workers">
+            <!-- <mat-error *ngIf="service.form.controls['Number_of_instances'].errors?.required">This field is mandatory.</mat-error> -->
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>  
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions>
+  <div class="controles-container">
+    <div class="button-row">
+      <button mat-raised-button color="primary"  type="submit" [disabled]="service.form.invalid" (click)="onSubmit()">ok</button>
+      <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+      <button mat-raised-button color="basic" (click)="onNoClick()">Cancel</button>
+    </div>
+  </div>
+</mat-dialog-actions>
+

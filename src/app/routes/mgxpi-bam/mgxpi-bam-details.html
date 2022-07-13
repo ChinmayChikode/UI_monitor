@@ -1,0 +1,78 @@
+<mat-card style="border: solid 1px #CCC !important;border-radius: 15px; ">
+    <h2 mat-dialog-title>
+        <div
+            style="min-height: 25px;padding: 0.3em 0em 0.4em 0.7em;background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);">
+            Details
+        </div>
+    </h2>
+    <mat-dialog-content>
+        <div class='ng-container' (click)="exit()">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Date Time :</th>
+                        <td>{{user.displayCreatedTime}}</td>
+                    </tr><br>
+                    <tr>
+                        <th>Category :</th>
+                        <td>{{user.category}}</td>
+                    </tr><br>
+                    <tr>
+                        <th>Priority :</th>
+                        <td>{{user.severity}}</td>
+                    </tr><br>
+                    <tr>
+                        <th>Status :</th>
+                        <td>{{user.statuscode}}</td>
+                    </tr><br>
+                    <tr>
+                        <th>User Key 1 :</th>
+                        <td>{{user.userkey1}}</td>
+                    </tr><br>
+                    <tr>
+                        <th>User Key 2 :</th>
+                        <td>{{user.userkey2}}</td>
+                    </tr><br>
+                    <tr>
+                        <th> Root FSID:</th>
+                        <td> {{user.rootfsid}} </td>
+                    </tr><br>
+                    <tr>
+                        <th>Flow Request ID:</th>
+                        <td>{{user.flowrequestid}}</td>
+                    </tr><br>
+                    <tr>
+                        <th>FSID:</th>
+                        <td>{{user.fsid}}</td>
+                    </tr><br>
+                    <tr>
+                        <th>Message:</th>
+                        <td>
+                            <textarea>{{user.messagestring}}</textarea>
+                        </td>
+                    </tr><br>
+
+                    <tr>
+                        <th>UserBlob:</th>
+                        <td>
+                            <div *ngIf="'user.userblob'; then thenBlock else elseBlock"></div>
+                                <ng-template #thenBlock>
+                                    <span *ngIf="user.userblob" (click)="downloadFile(user.msgid)"> 
+                                        <mat-icon>insert_drive_file</mat-icon>
+                                    </span>
+                                </ng-template>
+                                <ng-template #elseBlock>
+                                    NA
+                                </ng-template>
+                            
+                        </td>
+                    </tr><br>
+
+
+
+                </tbody>
+            </table>
+
+        </div>
+    </mat-dialog-content>
+</mat-card>

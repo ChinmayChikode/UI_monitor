@@ -1,0 +1,20 @@
+::-webkit-scrollbar{
+  display: none;
+}
+table {
+    margin:0px;
+    font-family:"Open Sans";
+    font-size: 12px;
+    white-space:nowrap;
+    
+  }
+
+  td {
+    //border: 1px solid black;
+    text-align: center;
+  }
+
+  th {
+    //border: 1px solid black;
+    text-align: left;
+  }

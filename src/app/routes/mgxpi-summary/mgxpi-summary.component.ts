@@ -1,22 +1,50 @@
-import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, OnDestroy , ViewChild ,ElementRef} from '@angular/core';
 import { SidenavService } from 'app/services/sidenav.service';
 import { SummaryService } from './summary.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ProjectSelection } from '../admin-layout/sidemenu/projectselection.service';
 import D3Funnel from 'd3-funnel';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SettingsService } from '@core/services/settings.service';
+import * as html2pdf from 'html2pdf.js';
+import { MatDialog } from '@angular/material';
+import { SharedModule } from '@shared';
+import { RefreshTableComponent } from 'app/refresh-table/refresh-table.component';
+//import * as Highcharts from 'highcharts';
+// import HC_exporting from 'highcharts/modules/exporting';
+//import {MenuItem} from 'primeng/api';
+
 
 @Component({
   selector: 'app-mgxpi-summary',
   templateUrl: './mgxpi-summary.component.html',
-  styleUrls: ['./mgxpi-summary.component.scss']
+  styleUrls: ['./mgxpi-summary.component.scss'],
+  animations: [
+    trigger('flipState', [
+      state('active', style({
+        transform: 'rotateY(180deg)'
+      })),
+      state('inactive', style({
+        transform: 'rotateY(0)'
+      })),
+      transition('active => inactive', animate('500ms ease-out')),
+      transition('inactive => active', animate('500ms ease-in'))
+    ])
+  ]
 })
 export class MgxpiSummaryComponent implements OnInit, OnDestroy , AfterViewInit {
 
+//  Highcharts=Highcharts;  
+   //items: MenuItem[];
+   items:any;
+  // windows:any;
+  //  menu:any;
+  //  menuVisible:boolean;
   startedDate: Date;
   lastInvokeDate: Date;
   lastWorkerActivityDate: Date;
   chartOptions: any;
+  chartOptionsfinal:any;
   projectLoadChart = null;
   peakcount = 1;
   toggleButtonStatus: boolean;
@@ -24,19 +52,24 @@ export class MgxpiSummaryComponent implements OnInit, OnDestroy , AfterViewInit 
   interval: any;
   barInterval: any;
   stats: any[];
+  flip = 'inactive';
   options = this.settingsSrv.getOptions();
+
+  
 
   constructor(private ngZone: NgZone, private sidenavSrv: SidenavService,
               private summarySrv: SummaryService, private projectSelection: ProjectSelection,
-              private spinner: NgxSpinnerService, private settingsSrv : SettingsService) {
+              private spinner: NgxSpinnerService, private settingsSrv : SettingsService,public activityLogRefresh: MatDialog) {
     this.toggleButtonStatus = this.sidenavSrv.getToggleButtonStatus();
     this.toggleIconChange = this.sidenavSrv.getToggleIconChange();
+
+    
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
 
     console.log("on init");
-    this.spinner.show();
+   //this.spinner.hide();
     this.startedDate = new Date();
     this.lastInvokeDate = new Date();
     this.lastWorkerActivityDate = new Date();
@@ -145,7 +178,7 @@ export class MgxpiSummaryComponent implements OnInit, OnDestroy , AfterViewInit 
         series: [
           {
             name: 'Total Count',
-            data: [5, 10, 0, this.summarySrv.workeCount]
+            data: [this.summarySrv.reservedLicenseThreads, 0, 0,0]
           }
         ],
         chart: {
@@ -204,10 +237,77 @@ export class MgxpiSummaryComponent implements OnInit, OnDestroy , AfterViewInit 
           }
         }
       };
-      this.spinner.hide();
-     }, 3000);
+      setTimeout(() =>{
+        this.spinner.hide();
+      },5000);
+     },5000);
+    
 
-  }
+
+
+// this.chartOptionsfinal{
+// Highcharts.chart('container', {
+// chart: {
+//         plotBackgroundColor: null,
+//         plotBorderWidth: null,
+//         plotShadow: false,
+//         type: 'pie'
+//     },
+//     title: {
+//         text: 'Alternate Data'
+//     },
+//     tooltip: {
+//         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+//     },
+//     accessibility: {
+//         point: {
+//             valueSuffix: '%'
+//         }
+//     },
+//     plotOptions: {
+//         pie: {
+//             allowPointSelect: true,
+//             cursor: 'pointer',
+//             dataLabels: {
+//                 enabled: false
+//             },
+//             showInLegend: true
+//         }
+//     },
+//     exporting:{
+//       enabled:true
+//     },
+
+//     credits:{
+//       enabled:false
+//     }
+
+//     series: [{
+//         name: 'Linceses',
+//         colorByPoint: true,
+//         data: [{
+//             name: 'Reserved licenses',
+//             y: {{this.summarySrv.reservedLicenseThreads}} ,
+//             sliced: true,
+//             selected: true
+//         }, {
+//             name: 'Consumed licenses',
+//             y: {{this.summarySrv.reservedLicenseThreads}}
+//         }, {
+//             name: 'Production licenses',
+//             y: {{this.summarySrv.workeCount}}
+//         }, {
+//             name: 'No-production licenses',
+//             y: {{this.summarySrv.workeCount}}
+//         }]
+//     }] 
+//  }
+// }
+
+
+     
+}
+
 
   ngAfterViewInit() {
     console.log("after view init");
@@ -215,7 +315,7 @@ export class MgxpiSummaryComponent implements OnInit, OnDestroy , AfterViewInit 
     this.ngZone.runOutsideAngular(() => this.initiateChart());
     clearInterval(this.barInterval);
     this.spinner.hide();
-    }, 3000);
+    }, 1000);
   }
 
   ngOnDestroy(): void {
@@ -230,12 +330,71 @@ export class MgxpiSummaryComponent implements OnInit, OnDestroy , AfterViewInit 
     this.projectLoadChart.render();
   }
 
+  toggleFlip() {
+    this.flip = (this.flip === 'inactive') ? 'active' : 'inactive';
+  }
+
   clickOnToggle() {
     this.toggleButtonStatus = !this.toggleButtonStatus;
     this.toggleIconChange = !this.toggleIconChange;
     this.sidenavSrv.setToggleButtonStatus(this.toggleButtonStatus);
     this.sidenavSrv.setToggleIconChange(this.toggleIconChange);
   }
+
+  exportPDF(){
+
+    const options = {
+      filename : this.projectSelection.projectKey+'_Summarydata',  //project key is required to be passed
+     // image : {type:'jpeg'},
+      html2canvas:{}
+      //jsPDF : {orientation: 'landscape'}
+
+    };
+
+    const content : Element = document.getElementById('dt');
+
+    html2pdf().from(content).set(options).save();
+  }
+
+  onRightClick(){
+        
+    //this.flow_data_for_contextmenu = flowsdata;
+    
+    window.addEventListener("contextmenu",function(event){
+      event.preventDefault();
+      let contextElement = document.getElementById("context-menu");
+      contextElement.style.top = event.clientY + "px";
+      contextElement.style.left = event.clientX + "px";
+      contextElement.classList.add("active");
+    });
+    window.addEventListener("click",function(){
+      document.getElementById("context-menu").classList.remove("active");
+    });
+    console.log("right click has been executed and returning false");
+  }
+
+  refresh(){
+    let dialogref = this.activityLogRefresh.open(RefreshTableComponent,{
+      data:{ refresh_interval:SharedModule.global_interval/1000}
+    });
+  
+    dialogref.afterClosed().subscribe(result=>{
+  
+      console.log("activity compoenent received data "+result.data_interval);
+      // console.log("activity compoenent received data "+typeof(result.data_interval)); 
+      if(result.data_interval){
+        SharedModule.global_interval = result.data_interval*1000
+        
+        clearInterval(this.interval);
+        this.interval = setInterval(() => {
+          this.summarySrv.getProjectSummary(this.projectSelection.projectKey);
+        },SharedModule.global_interval );
+        
+      }
+      
+    })
+  }
+
 
 
 }

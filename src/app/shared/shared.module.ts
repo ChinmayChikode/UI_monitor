@@ -19,7 +19,8 @@ import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TimeoutComponent } from 'app/routes/admin-layout/sidemenu/sidemenu.component';
-import { ButtonModule } from 'primeng/button';
+import * as Material from "@angular/material";
+
 
 const THIRD_MODULES = [
   MaterialModule,
@@ -31,6 +32,26 @@ const THIRD_MODULES = [
   FormlyMaterialModule,
   NgxPopperModule,
 ];
+
+const FOURTH_MODULES = [
+  Material.MatToolbarModule,
+  Material.MatGridListModule,
+  Material.MatFormFieldModule,
+  Material.MatInputModule,
+  Material.MatRadioModule,
+  Material.MatSelectModule,
+  Material.MatCheckboxModule,
+  Material.MatDatepickerModule,
+  Material.MatNativeDateModule,
+  Material.MatButtonModule,
+  Material.MatSnackBarModule,
+  Material.MatTableModule,
+  Material.MatIconModule,
+  Material.MatPaginatorModule,
+  Material.MatSortModule,
+  Material.MatDialogModule
+];
+
 const COMPONENTS = [];
 const COMPONENTS_DYNAMIC = [TimeoutComponent];
 const DIRECTIVES = [];
@@ -42,11 +63,11 @@ const PIPES = [];
     CommonModule,
     FormsModule,
     RouterModule,
-    ButtonModule,
     ReactiveFormsModule,
     FormlyModule.forRoot(),
     ToastrModule.forRoot(),
-    ...THIRD_MODULES
+    ...THIRD_MODULES,
+    ...FOURTH_MODULES
   ],
   exports: [
     CommonModule,
@@ -56,6 +77,7 @@ const PIPES = [];
     FormlyModule,
     ToastrModule,
     ...THIRD_MODULES,
+    ...FOURTH_MODULES,
     ...COMPONENTS,
     ...DIRECTIVES,
     ...PIPES,
@@ -65,9 +87,11 @@ const PIPES = [];
     NgxMatNativeDateModule,
     TriStateCheckboxModule,
     ColorPickerModule,
-    OverlayPanelModule,
-    ButtonModule
+    OverlayPanelModule
   ],
   entryComponents: COMPONENTS_DYNAMIC,
 })
-export class SharedModule {}
+export class SharedModule {
+
+  static global_interval:number = 5000
+}

@@ -5,7 +5,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material';
 import { ProjectSelection } from './../admin-layout/sidemenu/projectselection.service';
 import { NgxSpinnerService } from "ngx-spinner";
-import { LazyLoadEvent } from 'primeng/api';
 
 export interface activityLog {
   displayCreatedTime;
@@ -17,6 +16,7 @@ export interface activityLog {
   msgid;
   flowrequestid;
   rootfsid;
+  userblob;
 }
 
 @Injectable()
@@ -32,129 +32,84 @@ export class ActivityService {
 
   recordsFilterRange = 50;
 
-  totalRecords: number;
-  lblFromDateValue: string;
-  lblToDateValue: string;
-  lblFilterFSIDValue: string;
-  lblFilterRootFSIDValue: string;
-  lblFilterFlowReqIDValue: string;
-  actLogDeletionDate: string;
+  bpList: any[] = [{label: 'ALL', value: null}];
+  flowList: any[] = [{label: 'ALL', value: null}];
+  serverList: any[] = [{label: 'ALL', value: null}];
 
+  totalRecordsCount: number;
+  lblFromDateValue= "";
+  lblToDateValue= "";
+  lblFilterFSIDValue= "";
+  lblFilterRootFSIDValue= "";
+  lblFilterFlowReqIDValue= "";
+  actLogDeletionDate= "";
+
+  
   public serializedDate: FormControl;
   @Output() date = new EventEmitter<MatDatepickerInputEvent<any>>();
   nextDisabled = false;
   lastDisabled = false;
   firstDisabled = false;
   previousDisabled = false;
+  stats: any[];
+  project_key: any;
 
   constructor(private http: HttpClient, private projectSelection: ProjectSelection,
     private spinner: NgxSpinnerService) { }
 
-    loadDataLazy(event: LazyLoadEvent, inputProjectKey: any) {
 
-      this.loading = true;
-  
-      this.spinner.show();
-  
-      const tokenHeaders = new HttpHeaders(
-        {
-          'Content-Type': 'application/json',
-          Authorization: 'Basic ' + btoa('admin:admin'),
-          Accept: 'application/json'
-        }
-      );
-  
-      const body = {
-        ProjKey: inputProjectKey,
-        ProjLocation: this.projectSelection.projectLocation,
-        Previous: this.previous,
-        Next: this.next,
-        lblFromDateValue: this.lblFromDateValue,
-        lblToDateValue: this.lblToDateValue,
-        lblFilterFSIDValue: this.lblFilterFSIDValue,
-        lblFilterRootFSIDValue: this.lblFilterRootFSIDValue,
-        lblFilterFlowReqIDValue: this.lblFilterFlowReqIDValue,
-        page: event.first / this.recordsFilterRange,
-        size: event.rows
-      };
-  
-      this.http.post(urls.SERVER_URL + '/activityLogPages', body, { headers: tokenHeaders })
-        .subscribe(
-          (tokenResponse: any) => {
-            this.activityLog = tokenResponse.content;
-            if (tokenResponse.content.length > 0) {
-              this.totalRecords = tokenResponse.totalElements;
-              if (this.totalRecords < this.next) {
-                this.next = this.totalRecords;
-                this.nextDisabled = true;
-                this.lastDisabled = true;
-              }
-              this.loading = false;
-            }
-            this.spinner.hide();
-          },
-          (errorResponse: any) => {
-            console.log(errorResponse);
-            this.loading = false;
-          }
-        );
-  
-    }
+  getActivityLogByProjectKey(inputProjectKey: any) {
 
-    loadDataLazyInitial(inputProjectKey: any) {
+    this.loading = true;    
 
-      this.loading = true;
-  
-      this.spinner.show();
-  
-      const tokenHeaders = new HttpHeaders(
-        {
-          'Content-Type': 'application/json',
-          Authorization: 'Basic ' + btoa('admin:admin'),
-          Accept: 'application/json'
-        }
-      );
-  
-      const body = {
-        ProjKey: inputProjectKey,
-        ProjLocation: this.projectSelection.projectLocation,
-        Previous: this.previous,
-        Next: this.next,
-        lblFromDateValue: this.lblFromDateValue,
-        lblToDateValue: this.lblToDateValue,
-        lblFilterFSIDValue: this.lblFilterFSIDValue,
-        lblFilterRootFSIDValue: this.lblFilterRootFSIDValue,
-        lblFilterFlowReqIDValue: this.lblFilterFlowReqIDValue
-      };
-  
-      this.http.post(urls.SERVER_URL + '/activityLogPages', body, { headers: tokenHeaders })
-        .subscribe(
-          (tokenResponse: any) => {
-            this.activityLog = tokenResponse.content;
-            if (tokenResponse.content.length > 0) {
-              this.totalRecords = tokenResponse.totalElements;
-              if (this.totalRecords < this.next) {
-                this.next = this.totalRecords;
-                this.nextDisabled = true;
-                this.lastDisabled = true;
-              }
-              this.loading = false;
-            }
-            this.spinner.hide();
-          },
-          (errorResponse: any) => {
-            console.log(errorResponse);
-            this.loading = false;
-          }
-        );
-  
-    }
+    if(this.project_key != inputProjectKey){
+      this.project_key = inputProjectKey;
+      this.bpList =[{label: 'ALL', value: null}];
+      this.flowList =[{label: 'ALL', value: null}];
+  }
 
-  /*getActivityLogByProjectKey(inputProjectKey: any) {
-
-    this.loading = true;
-
-    this.spinner.show();
+    this.stats = [
+      {
+        title: 'Log From',
+        amount: this.lblFromDateValue,
+        progress: {
+          value: 100,
+        },
+        color: 'bg-indigo-500',
+      },
+      {
+        title: 'Log To',
+        amount: this.lblToDateValue,        
+        progress: {
+          value: 100,
+        },
+        color: 'bg-blue-500',
+      },
+      {
+        title: 'Root FSID',
+        amount: this.lblFilterRootFSIDValue,
+        progress: {
+          value: 100,
+        },
+        color: 'bg-green-500',
+      },
+      {
+        title: 'FSID',
+        amount: this.lblFilterFSIDValue,
+        progress: {
+          value: 100,
+        },
+        color: 'bg-teal-500',
+      },
+      {
+        title: 'Flow Request ID',
+        amount: this.lblFilterFlowReqIDValue,
+        progress: {
+          value: 100,
+        },
+        color: 'bg-orange-500',
+      },
+    ];
 
     const tokenHeaders = new HttpHeaders(
       {
@@ -180,6 +135,7 @@ export class ActivityService {
       .subscribe(
         (tokenResponse: any) => {
           this.activityLog = tokenResponse;
+          console.log(tokenResponse);
           if (tokenResponse.length > 0) {
             this.totalRecordsCount = tokenResponse[0].totalNumberOfRecords;
             if (this.totalRecordsCount < this.next) {
@@ -197,7 +153,57 @@ export class ActivityService {
         }
       );
 
-  }*/
+   
+
+    let params = new HttpParams();
+    params = params.append('projectKey', inputProjectKey);
+    params = params.append('projectLocation', this.projectSelection.projectLocation);
+    this.http.get(urls.SERVER_URL + urls.TriggersByProject, { headers: tokenHeaders, params })
+        .subscribe(
+          (tokenResponse: any) => {
+            
+            console.log(tokenResponse);
+            
+            for (const bp of tokenResponse.bpList) {
+              
+              if(!this.exists(this.bpList,bp.bpName)) {
+                this.bpList.push({label: bp.bpName, value: bp.bpName});
+              }
+            }
+
+            for (const flow of tokenResponse.flowList) {
+              
+              if(!this.exists(this.flowList,flow.flowName)) {
+                this.flowList.push({label: flow.flowName, value: flow.flowName});
+              }
+            }
+            
+            for (const trigger of tokenResponse.triggerData) {
+              
+              if (!this.exists(this.serverList, 'Server_' + trigger.serverId)) {
+                this.serverList.push({label: 'Server_' + trigger.serverId, value: trigger.serverId});
+              }
+            }
+
+            
+          },
+          (errorResponse: any) => {
+            console.log(errorResponse);
+          }
+        );
+
+  }
+
+  exists(servers: any[], search: string) {
+    for (const server of servers) {
+      if (server.label === search) {
+        return true;
+      } else {
+        continue;
+      }
+    }
+    return false;
+  }
 
   deleteActivityLogByDays(inputProjectKey: any) {
 
@@ -230,7 +236,7 @@ export class ActivityService {
 
   }
 
-  /* first() {
+  first() {
     this.previous = 1;
     this.next = this.recordsFilterRange;
     this.getActivityLogByProjectKey(this.projectSelection.projectKey);
@@ -301,36 +307,39 @@ export class ActivityService {
 
 
     this.getActivityLogByProjectKey(this.projectSelection.projectKey);
-  } */
+  }
 
   onRangeFilterChange(selectedValue: any) {
     this.previous = 1;
-    if (this.totalRecords > selectedValue) {
+    if (this.totalRecordsCount > selectedValue) {
       this.next = selectedValue;
       this.nextDisabled = false;
       this.lastDisabled = false;
     } else {
-      this.next = this.totalRecords;
+      this.next = this.totalRecordsCount;
       this.nextDisabled = true;
       this.lastDisabled = true;
     }
     //this.getInitialActLogRecordsCountProjectKey(this.projectSelection.projectKey);
-    //this.getActivityLogByProjectKey(this.projectSelection.projectKey);
+    this.getActivityLogByProjectKey(this.projectSelection.projectKey);
   }
 
   onFromDateChange(fromDate: any) {
-    console.log("Here we go : " + fromDate);
+    console.log("from date : " + fromDate,typeof(fromDate));
     this.lblFromDateValue = fromDate;
+   
   }
 
   onToDateChange(toDate: any) {
-    console.log("Here we go : " + toDate);
+    console.log("to date : " + toDate);
     this.lblToDateValue = toDate;
   }
 
   onToDeleteDateChange(logDeletionDate: any) {
-    console.log("Here we go To Delete Log : " + logDeletionDate);
+    console.log("Here we go To Delete Log : " + logDeletionDate+ " "+typeof(logDeletionDate));
     this.actLogDeletionDate = logDeletionDate;
+    this.deleteActivityLogByDays(this.projectSelection.projectKey);
+
   }
 
   onFSIDChange(fsid: any) {
@@ -345,13 +354,29 @@ export class ActivityService {
     this.lblFilterFlowReqIDValue = flowrequestid;
   }
 
+ 
+  applyFilters(fromDate:string,toDate:string,rootfsid:string,flowrequest:string,fsid:string){
+   
+    
+    this.lblFromDateValue = fromDate;
+    this.lblToDateValue = toDate;
+    this.lblFilterFSIDValue = fsid;
+    this.lblFilterRootFSIDValue = rootfsid;
+    this.lblFilterFlowReqIDValue = flowrequest;
+    console.log(this.lblFilterFSIDValue);
+    this.getActivityLogByProjectKey(this.projectSelection.projectKey);
+  }
+
   clearFilters() {
+    console.log("clear filter is being executed");
     this.lblFromDateValue = "";
     this.lblToDateValue = "";
     this.lblFilterFSIDValue = "";
     this.lblFilterRootFSIDValue = "";
     this.lblFilterFlowReqIDValue = "";
-    //this.getActivityLogByProjectKey(this.projectSelection.projectKey);
+    this.previous = 1;
+    this.next = 50;
+    this.getActivityLogByProjectKey(this.projectSelection.projectKey);
   }
 
 }

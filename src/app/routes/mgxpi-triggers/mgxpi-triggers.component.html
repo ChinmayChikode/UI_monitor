@@ -1,14 +1,30 @@
 <mat-sidenav-container>
-
-  <mat-sidenav-content role="region">
-    <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
-    <p-table #triggersTable [resizableColumns]="true" [style]="{'width': '50% !important;'}" [columns]="cols"
-      selectionMode="single" dataKey="triggerId" [value]="triggers" [paginator]="true" [rows]="15" sortField="bpId"
-      [sortOrder]="1" class="table">
-      <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
-        Triggers
-      </ng-template>
-      <ng-template pTemplate="header" let-columns>
+<mat-sidenav-content role="region">
+  <div class="matero-row" fxLayout="row wrap">
+    <div class="matero-col" fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let stat of triggerStats">
+      <mat-card [ngClass]="['text-white', stat.color]" style="padding: 12px 15px 12px 15px;">
+        <mat-card-title style="margin-bottom: 0px;" class="f-s-16 f-w-500">{{stat.title}}</mat-card-title>
+        <mat-card-content style="margin-bottom: 0px;">
+          <h2 style="margin-bottom: 0px;">{{stat.amount}}</h2>
+          <mtx-progress [value]="100" height="2px" foreground="rgba(255,255,255,1)" background="rgba(0,0,0,.5)">
+          </mtx-progress>
+        </mat-card-content>
+      </mat-card>
+      <!-- <mat-card class="matero-col-head-2" *ngIf="i==1" [ngClass]="['text-white', stat.color]" style="padding: 12px 15px 12px 15px;">
+        <mat-card-title style="margin-bottom: 0px;" class="f-s-16 f-w-500">{{stat.title}}</mat-card-title>
+        <mat-card-content style="margin-bottom: 0px;">
+          <h2 style="margin-bottom: 0px;">{{stat.amount}}</h2>
+          <mtx-progress [value]="100" height="2px" foreground="rgba(255,255,255,1)" background="rgba(0,0,0,.5)">
+          </mtx-progress>
+        </mat-card-content>
+      </mat-card> -->
+    </div>
+    <div class="matero-row" fxLayout="row wrap">
+      <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100" >
+        <p-table id="triggersTable" #triggersTable [resizableColumns]="true" [columns]="cols" selectionMode="single" dataKey="triggerId" [value]="triggers" [paginator]="true" [rows]="15" sortField="bpId"
+        [sortOrder]="1" class="table">
+        
+        <ng-template pTemplate="header" let-columns>
         <tr class="table-th-tr">
           <th *ngFor="let col of columns" colspan="col.colspan" [pSortableColumn]="col.field"
             [ngStyle]="{'width': col.width}">
@@ -42,16 +58,41 @@
 
 
           </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-trigger let-columns="columns">
-        <tr [pSelectableRow]="trigger">
-          <td *ngFor="let col of columns">
-            {{trigger[col.field]}}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    </div>
+          </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-trigger let-columns="columns" >
+            <tr [pSelectableRow]="trigger">
+              <td *ngFor="let col of columns" (contextmenu)="onRightClick(trigger[col.field])">
+                {{trigger[col.field]}}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+       </div>
+       </div>
+      </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<div id="context-menu">
+
+  <div class="item" (click)="refresh()">
+    Refresh
+  </div>
+  <hr>
+  <div class="item" (click)="exportexcel()">
+    Export Table to Excel
+  </div>
+  <div class="item" (click)="exportPDF()">
+     Export Table to PDF
+  </div>
+  <div class="item" (click)="exportPNG()">
+    Export Table to png
+  </div>
+  <div class="item" (click)="copy_cell_value()">
+    Copy Cell Value
+  </div>
+  <div class="item">
+     Logout
+  </div>
+</div>
