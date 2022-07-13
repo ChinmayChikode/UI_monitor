@@ -1,0 +1,113 @@
+<mat-sidenav-container>
+  <mat-sidenav-content role="region">
+
+    <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3>Peak License Summary</h3>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ng-container>
+            <form action="" class="form-inline">
+              <div class="demo-select-a11y-spacer form-group">
+                <div class="matero-row" fxLayout="row wrap">
+                  <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
+                    <mat-label><strong>Project:</strong></mat-label>
+                    <select id="project" class="form-control" name="project" (change)="projectChange()"
+                      [(ngModel)]="selectedProject">
+                      <option value="All">All</option>
+                      <option *ngFor="let p of projects" value="{{p.projectKey}}">{{p.projectKey}}</option>
+                    </select>
+                    <button mat-raised-button color="primary" style="float: right;" (click)="reloadChart()">Load
+                      Summary</button>
+                  </div>
+                </div>
+                <div class="matero-row" fxLayout="row wrap">
+                  <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
+                    <mat-label [hidden]="selectedProject !== 'All'"><strong>Frequency: </strong></mat-label>
+                    <select class="form-control" [hidden]="selectedProject !== 'All'" name="rangefilter"
+                      [(ngModel)]="rangeFilter">
+                      <option value="sStart">Since Startup</option>
+                      <option value="custom">Custom</option>
+                    </select>
+                    <input [hidden]="!(rangeFilter === 'custom') || selectedProject !== 'All'" name="fDate"
+                      [matDatepicker]="fpicker" class="form-control" type="text" [(ngModel)]="fDate"
+                      (change)="dateChanged()">
+                    <mat-datepicker-toggle [hidden]="!(rangeFilter === 'custom') || selectedProject !== 'All'" matSuffix
+                      [for]="fpicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fpicker></mat-datepicker>
+                    <input [hidden]="!(rangeFilter === 'custom') || selectedProject !== 'All'" class="form-control"
+                      type="text" name="tDate" [(ngModel)]="tDate" [matDatepicker]="tpicker">
+                    <mat-datepicker-toggle [hidden]="!(rangeFilter === 'custom') || selectedProject !== 'All'" matSuffix
+                      [for]="tpicker"></mat-datepicker-toggle>
+                    <mat-datepicker #tpicker></mat-datepicker>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <div class="matero-row" fxLayout="row wrap">
+        <div class="matero-col" fxFlex="100" fxFlex.gt-sm="70">
+          <mat-card>
+            <mat-card-subtitle class="f-s-16 f-w-500" style="margin-bottom: 45px;">
+              <div style="float: left;">
+                <span>Plot Graph: </span>
+                <select class="form-control" name="plotType" [(ngModel)]="plotType" (change)="loadLicenseChart()">
+                  <option value="horizontal">Horizontal</option>
+                  <option value="verticle">Verticle</option>
+                </select>
+              </div>
+            </mat-card-subtitle>
+            <div id="projectLoadChart" (click)="chartClick(null,null)"></div>
+          </mat-card>
+        </div>
+        <div class="matero-col" fxFlex="100" fxFlex.gt-sm="30">
+          <mat-card style="min-height: 511px;">
+            <mat-card-subtitle class="f-s-16 f-w-500">
+              Frequency:
+              <select [hidden]="selectedProject === 'All'" class="form-control" name="peakBy" [(ngModel)]="peakBy"
+                (change)="getProjectAndPeakLicenseData()">
+                <option value="sStart">Since Startup</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+              <select [hidden]="selectedProject !== 'All'" style="max-width: 180px;" class="form-control"
+                name="peakByProject" [(ngModel)]="peakByProject" (change)="getProjectAndPeakLicenseDataAll()">
+                <option *ngFor="let p of categories" value="{{p}}">{{p}}</option>
+              </select>
+            </mat-card-subtitle>
+            <p-table [columns]="licenseTableColms" [value]="licensePeakData" [scrollable]="true" scrollHeight="380px">
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns">
+                    {{col.header}}
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                  <td *ngFor="let col of columns">
+                    {{rowData[col.field]}}
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </mat-card>
+        </div>
+      </div>
+      <div class="matero-row" fxLayout="row wrap">
+        <div class="matero-col" fxFlex="100" fxFlex.gt-sm="60">
+
+        </div>
+      </div>
+
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

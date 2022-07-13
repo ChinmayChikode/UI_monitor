@@ -1,0 +1,106 @@
+<mat-sidenav-container>
+
+  <mat-sidenav-content role="region">
+    <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
+    <p-table #dt [columns]="serverColumns" [resizableColumns]="true" selectionMode="single" dataKey="serverId"
+      [value]="servers" [paginator]="true" [rows]="15" expandableRows="true" rowExpandMode="multiple" class="table">
+
+      <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
+        Servers
+      </ng-template>
+
+      <!-- Parent Table Data -->
+
+      <ng-template pTemplate="header" let-columns>
+        <tr class="table-th-tr">
+          <th></th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
+            [ngStyle]="{'width': col.width}">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+        <tr class="table-th-tr-fltr">
+          <th></th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+
+            <p-dropdown *ngSwitchCase="'primaryHost'" placeholder="ALL" [options]="hostList" appendTo="body"
+              [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')"></p-dropdown>
+            <p-dropdown *ngSwitchCase="'status'" placeholder="ALL" [options]="statusList" appendTo="body"
+              [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')"></p-dropdown>
+            <p-dropdown *ngSwitchCase="'licenseFeature'" placeholder="ALL" [options]="licenseFeatureList"
+              appendTo="body" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')">
+            </p-dropdown>
+
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-serversData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="serversData">
+          <td>
+            <a href="#" [pRowToggler]="serversData" (click)="getWorkerDataByProjectKey(serversData)">
+              <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </a>
+          </td>
+          <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+            {{serversData[col.field]}}
+          </td>
+        </tr>
+      </ng-template>
+
+      <!-- Child Table Data-->
+
+      <ng-template pTemplate="rowexpansion" let-serversData dataKey="workerId">
+        <tr>
+          <td [attr.colspan]="13" [attr.rowspan]="1" style="padding-left: 67px !important;">
+            <p-table #dt1 [columns]="workerColumns" selectionMode="single" dataKey="workerId" [value]="workers">
+              <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
+            [ngStyle]="{'width': col.width}">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+        <tr class="table-th-tr-fltr">
+          <th *ngFor="let col of columns" [ngSwitch]="col.field">
+
+            <input *ngSwitchCase="'workerId'" pInputText type="text" placeholder="Starts with" class="ui-column-filter"
+              style="width: 80%;" (input)="dt1.filter($event.target.value, col.field, 'startsWith')">
+
+            <input *ngSwitchCase="'statusSTR'" pInputText type="text" placeholder="Starts with" class="ui-column-filter"
+              style="width: 80%;" (input)="dt1.filter($event.target.value, col.field, 'startsWith')">
+
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-workersData let-columns="columns">
+        <tr [pSelectableRow]="workersData" *ngIf="serversData.serverId === workersData.serverId">
+          <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+            <div *ngIf="col.subfield;then flowruntimetreedata else workersdata"></div>
+            <ng-template #flowruntimetreedata>
+              <ng-container *ngIf="col.subfield === 'stepName'">{{getFlowWorkerStep(workersData,col)}}</ng-container>
+            </ng-template>
+            <ng-template #workersdata>
+              {{workersData[col.field]}}
+            </ng-template>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </td>
+    </tr>
+    </ng-template>
+
+    </p-table>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<div *ngIf="options.dir === 'ltr'" class="customizer-handle" matTooltip="You can change my location" cdkDrag
+  (cdkDragStarted)="handleDragStart($event)">
+  <button mat-icon-button class="sidemenu-mat-icon-button" (click)="openPanel($event)">
+    <img src="assets/images/activity-settings.png" width="30px" />
+  </button>
+</div>

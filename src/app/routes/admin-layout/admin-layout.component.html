@@ -1,0 +1,235 @@
+<div class="matero-container-wrap" [dir]="options.dir" [ngClass]="{
+  'matero-sidenav-collapsed': options.sidenavCollapsed && options.navPos!=='top',
+  'matero-navbar-side': options.navPos==='side',
+  'matero-navbar-top': options.navPos==='top',
+  'matero-header-above': options.headerPos==='above',
+  'matero-header-fixed': options.headerPos==='fixed',
+  'matero-header-white': options.theme==='light'}">
+  <ng-progress></ng-progress>
+
+  <!-- Header Above -->
+  <app-header #header class="matero-header" *ngIf="options.showHeader && options.headerPos==='above'"
+    (toggleSidenav)="sidenav.toggle()" [showBranding]="true">
+  </app-header>
+
+  <mat-sidenav-container class="matero-container" autosize autoFocus>
+    <mat-sidenav #sidenav class="matero-sidenav" [mode]="isOver ? 'over' : 'side'"
+      [opened]="options.navPos==='side' && options.sidenavOpened && !isOver"
+      (openedChange)="sidenavOpenedChange($event)" (closedStart)="sidenavCloseStart()">
+      <app-sidebar (toggleCollapsed)="toggleCollapsed()" [toggleChecked]="options.sidenavCollapsed"
+        [showToggle]="!isOver">
+      </app-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content #content class="matero-content-wrap" id="sideContentHideScroll">
+      <app-header #header class="matero-header" *ngIf="options.showHeader && options.headerPos!=='above'"
+        (toggleSidenav)="sidenav.toggle()" [showToggle]="!options.sidenavCollapsed && options.navPos!=='top'"
+        [showBranding]="options.navPos==='top'">
+      </app-header>
+
+      <div *ngIf="options.menu==='DND'"
+        [ngClass]="toggleButtonStatus ? 'matero-toggle-button-toggle' : 'matero-toggle-button'"
+        (click)="clickOnToggle()">
+        <button mat-icon-button aria-label="Navigation menu" (click)="sidenavNotice.toggle()">
+          <mat-icon aria-hidden="false" *ngIf="toggleIconChange">keyboard_arrow_left</mat-icon>
+          <mat-icon aria-hidden="false" *ngIf="!toggleIconChange">keyboard_arrow_right</mat-icon>
+        </button>
+      </div>
+
+      <div class="matero-content">
+        <div style="margin-bottom: 0.4em;margin-top: 0.4em;" *ngIf="options.menu==='hor'">
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important; background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/dashboard" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/Dashboard.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            Dashboard
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/messages" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/Messages.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            Messages
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/flows" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/Flows.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            Flows
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/triggers" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/Triggers.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            Triggers
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/servers" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/Server.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            Servers
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/activity" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/ActivityLog.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            Activity Log
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/ods" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/ODS.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            ODS
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/bam" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/BAM.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            BAM
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/locking" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/Locking.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            Locking
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/subscription" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/Subscribe.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            Subscription
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/scheduler" mat-raised-button ma>
+            <!--<mat-icon>
+              <img src="assets/images/Scheduler.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon>-->
+            Scheduler
+          </a>
+          <a routerLinkActive="active-link" style="width: 7.5% !important;margin-left: 0.4em !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;"
+            routerLink="/xpi/summary" mat-raised-button ma>
+            <!-- <mat-icon>
+              <img src="assets/images/Summary.png" style="width:20px;margin-bottom:0px;vertical-align:top" />
+            </mat-icon> -->
+            Summary
+          </a>
+        </div>
+        <router-outlet></router-outlet>
+      </div>
+
+      <mat-sidenav #sidenavNotice [opened]="toggleButtonStatus" mode="side" role="navigation"
+        class="matero-sub-row matero-sidenav-actionmenu" *ngIf="options.menu==='ver'">
+        <mat-nav-list>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/dashboard">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/Dashboard.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Dashboard</span>
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/messages">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/Messages.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Messages</span>
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/flows">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/Flows.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Flows</span>
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/triggers">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/Triggers.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Triggers</span>
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/servers">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/Server.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Servers</span>
+
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/activity">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/ActivityLog.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Activity Log</span>
+
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/ods">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/ODS.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">ODS</span>
+
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/bam">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/BAM.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">BAM</span>
+
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/locking">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/Locking.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Locking</span>
+
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/subscription">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/Subscribe.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Subscription</span>
+
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/scheduler">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/Scheduler.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Scheduler</span>
+
+          </a>
+          <a routerLinkActive="active-link" mat-list-item routerLink="/xpi/summary">
+            <mat-icon _ngcontent-ssv-c322="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color"
+              style="margin-right: 5px;" aria-hidden="true">
+              <img src="assets/images/Summary.png" style="width:20px;margin-bottom:8px;vertical-align:middle" />
+            </mat-icon>
+            <span class="menu-name">Summary</span>
+
+          </a>
+        </mat-nav-list>
+      </mat-sidenav>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <!-- Demo Purposes Only -->
+  <app-customizer (optionsEvent)="receiveOptions($event)"></app-customizer>
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+  </ngx-spinner>
+</div>

@@ -1,0 +1,20 @@
+.bg-img{
+    min-height: 100vh;
+    width: 100%;
+    background: url('/assets/background_1.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+   }
+
+.center {
+    display: flex;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mat-form-field {
+    display: block !important;
+}

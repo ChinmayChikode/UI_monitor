@@ -1,0 +1,10 @@
+<h2 matDialogTitle>Set Timeout</h2>
+<mat-dialog-content>
+    <mat-form-field>
+		<input matInput placeholder="Set Timeout" [(ngModel)]="input">
+	</mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<button mat-button style="height: 25px !important;color: black !important;line-height: 20px !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;" color="primary" [matDialogClose]="input">OK</button>
+	<button mat-button style="height: 25px !important;color: black !important;line-height: 20px !important;background-color: #f5f7fa !important; background-image: linear-gradient(315deg, #f5f7fa 0%, #b8c6db 74%) !important;" color="primary" matDialogClose>Cancel</button>
+</mat-dialog-actions>

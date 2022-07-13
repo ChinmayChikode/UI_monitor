@@ -1,0 +1,152 @@
+<mat-toolbar class="matero-toolbar">
+  <button mat-icon-button class="matero-toolbar-button" *ngIf="showToggle" (click)="toggleSidenav.emit()">
+    <mat-icon style="color: black;line-height: 0px !important;height: 0px !important;">menu</mat-icon>
+  </button>
+
+  <app-branding *ngIf="showBranding"></app-branding>
+  <span fxFlex>
+    <mat-label style="color: black;font-size: 15px;">{{projectName}}</mat-label>
+    <mat-label></mat-label>
+    <mat-label style="color: black;font-size: 12px;" *ngIf="projectStartedSince?.length">
+      <mat-label style="color: black;font-size: 12px;"> [</mat-label>
+      Started Since : {{projectStartedSince}}
+      <mat-label style="color: black;font-size: 12px;">]</mat-label>
+    </mat-label>
+  </span>
+
+  <!-- <mat-checkbox [checked]="options.dir === 'rtl'"
+                  (change)="options.dir = options.dir === 'rtl' ? 'ltr' : 'rtl'; sendOptions()">
+      RTL</mat-checkbox> -->
+  <span class="f-s-14" style="color: black;margin: 3px 8px 0px 0px;">RTL</span>
+  <mat-slide-toggle matTooltip="Project Right To Left Visualisation" [matTooltipClass]="{ 'tool-tip': true }"
+    color="primary" [checked]="options.dir === 'rtl'"
+    (change)="options.dir = options.dir === 'rtl' ? 'ltr' : 'rtl'; sendOptions()">
+  </mat-slide-toggle>
+
+  <span class="f-s-14" style="color: black;margin: 3px 8px 0px 8px;">Menu</span>
+  <mat-checkbox matTooltip="Menu Options" [matTooltipClass]="{ 'tool-tip': true }" color="primary"
+    [checked]="options.menu === 'hor'" (change)="options.menu = options.menu === 'hor' ? 'ver' : 'hor'; sendOptions()">
+  </mat-checkbox>
+
+  <button style="color: black;margin-top: 2px;line-height: 40px !important;height: 40px !important;" mat-icon-button
+    class="matero-toolbar-button" fxHide.lt-sm (click)="toggleFullscreen()">
+    <mat-icon>fullscreen</mat-icon>
+  </button>
+
+  <button style="color: black;margin-top: 2px;line-height: 40px !important;height: 40px !important;" mat-icon-button
+    class="matero-toolbar-button" fxHide.lt-sm (click)="op.toggle($event)">
+    <img src="assets/images/Apps.png" width="30px" />
+  </button>
+
+  <div style="position: fixed;left: -5px;top: 0;">
+    <p-overlayPanel #op [style]="{width: '370px',height:'325px'}">
+      <div class="row">
+        <div class="col-xs-6" style="margin-left: 3em;">
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/dashboard" mat-raised-button ma>
+                <img src="assets/images/Dashboard.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 5px;">Dashboard</span>
+              </a>
+            </span>
+          </div>
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/messages" mat-raised-button ma>
+                <img src="assets/images/Messages.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 7px;">Messages</span>
+              </a>
+            </span>
+          </div>
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/flows" mat-raised-button ma>
+                <img src="assets/images/Flows.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 18px;">Flows</span>
+              </a>
+            </span>
+          </div>
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/triggers" mat-raised-button ma>
+                <img src="assets/images/Triggers.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 12px;">Triggers</span>
+              </a>
+            </span>
+          </div>
+        </div>
+        <div class="col-xs-6" style="margin-left: 3em;">
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/servers" mat-raised-button ma>
+                <img src="assets/images/Server.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 14px;">Servers</span>
+              </a>
+            </span>
+          </div>
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/activity" mat-raised-button ma>
+                <img src="assets/images/ActivityLog.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 3px;">Activity Log</span>
+              </a>
+            </span>
+          </div>
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/ods" mat-raised-button ma>
+                <img src="assets/images/ODS.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 20px;">ODS</span>
+              </a>
+            </span>
+          </div>
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/bam" mat-raised-button ma>
+                <img src="assets/images/BAM.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 20px;">BAM</span>
+              </a>
+            </span>
+          </div>
+        </div>
+        <div class="col-xs-6" style="margin-left: 3em;">
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/locking" mat-raised-button ma>
+                <img src="assets/images/Locking.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 14px;">Locking</span>
+              </a>
+            </span>
+          </div>
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/subscription" mat-raised-button ma>
+                <img src="assets/images/Subscribe.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;">Subscription</span>
+              </a>
+            </span>
+          </div>
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/scheduler" mat-raised-button ma>
+                <img src="assets/images/Scheduler.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 7px;">Scheduler</span>
+              </a>
+            </span>
+          </div>
+          <div style="height: 80px;width: 80px;">
+            <span style="float: left;clear: left;">
+              <a routerLinkActive="active-link" routerLink="/xpi/summary" mat-raised-button ma>
+                <img src="assets/images/Summary.png" style="width:35px;margin-bottom:0px;vertical-align:top" />
+                <span style="float: left;clear: left;margin-left: 8px;">Summary</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </p-overlayPanel>
+  </div>
+
+  <app-user></app-user>
+
+</mat-toolbar>

@@ -1,0 +1,59 @@
+<mat-sidenav-container>
+
+  <mat-sidenav-content role="region">
+
+    <mat-card>
+      <div style="overflow: auto !important; max-height:200px !important">
+        <p-table #dt [columns]="topcols" [value]="odsData" [paginator]="false" [rows]="25" class="table">
+          <ng-template pTemplate="header" let-columns>
+            <tr class="table-th-tr">
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-user let-columns="columns">
+            <tr (click)="getOdsChildData(user.userKey)">
+              <td *ngFor="let col of columns">
+                {{user[col.field]}}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </mat-card>
+    <mat-card>
+      <div style="overflow: auto !important; max-height:300px !important">
+        <p-table #dt [columns]="childCols" [value]="odsChildData" [paginator]="false" [rows]="25" selectionMode="single"
+          class="table">
+          <ng-template pTemplate="header" let-columns>
+            <tr class="table-th-tr">
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-user let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns ;">
+                <div *ngIf="col.field=='userBlob'; then thenBlock else elseBlock"></div>
+                <ng-template #thenBlock>
+                  <span *ngIf="user.userBlob" (click)="showBlob(user)">
+                    <mat-icon> insert_drive_file</mat-icon>
+                  </span>
+                </ng-template>
+                <ng-template #elseBlock>
+                  {{user[col.field]}}
+                </ng-template>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </mat-card>
+
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

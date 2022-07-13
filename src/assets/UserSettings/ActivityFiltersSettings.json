@@ -1,0 +1,10 @@
+[
+        { "field": "displayCreatedTime", "header": "Date & Time", "checked": true },
+        { "field": "messageType", "header": "Message Type", "checked": true },
+        { "field": "messagestring", "header": "Message String", "checked": true },
+        { "field": "stepName", "header": "Step Name", "checked": true },
+		{ "field": "fsid", "header": "FSID", "checked": true },
+        { "field": "blobexists", "header": "Blob", "checked": true },
+        { "field": "flowrequestid", "header": "Flow Request ID", "checked": true },
+        { "field": "rootfsid", "header": "Root FSID", "checked": true }
+]

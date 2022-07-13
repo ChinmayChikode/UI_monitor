@@ -1,0 +1,381 @@
+// ==================================================
+// LAYOUT
+// ==================================================
+
+.matero-container-wrap,
+.matero-container {
+  height: 100%;
+  background-color: white !important;
+}
+
+.matero-content {
+  position: relative;
+  padding: $gutter - 5;
+}
+
+// TODO: Grid row
+.matero-row {
+  margin-right: -$gutter/2 + 3;
+  margin-left: -$gutter/2 + 3;
+}
+
+.matero-row-menu {
+  margin-right: -$gutter/2 + 3;
+  margin-left: -$gutter/2 + 3;
+  margin-top: 1em;
+}
+
+// TODO: Grid row
+.matero-sub-row {
+  margin-right: -$gutter;
+  margin-left: -$gutter;
+}
+
+// TODO: Grid col
+.matero-col {
+  padding-right: $gutter/2;
+  padding-left: $gutter/2;
+}
+
+.matero-col-1 {
+  padding-right: $gutter/4;
+  padding-left: $gutter/4;
+}
+
+// Layout control
+.matero-header-above {
+  .matero-container {
+    height: calc(100% - #{$toolbar-height-desktop}) !important;
+  }
+
+  .matero-sidebar-main {
+    height: 100% !important;
+  }
+}
+
+// Fix the init content width
+.matero-content-width-fix {
+  .matero-content-wrap {
+    margin-left: $sidenav-width !important;
+
+    [dir="rtl"] & {
+      margin-left: auto !important;
+      margin-right: $sidenav-width !important;
+    }
+  }
+}
+
+//
+// Auth
+//
+.matero-auth-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #212121;
+  background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.05) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(255, 255, 255, 0.05) 75%,
+      rgba(255, 255, 255, 0.05)
+    ),
+    linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.05) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(255, 255, 255, 0.05) 75%,
+      rgba(255, 255, 255, 0.05)
+    );
+  background-size: 60px 60px;
+}
+.ui-table-wrapper {
+  overflow-x: auto;
+}
+
+.ui-table .ui-sortable-column {
+  position: -webkit-sticky;
+  position: sticky;
+  top: -1px;
+  z-index: 9999;
+}
+
+::ng-deep .ui-table table,
+.ui-table table {
+  table-layout: auto !important;
+  font-size: 10px !important;
+  position: sticky !important;
+  //background-color: #ffffff;
+  background-color: white;
+}
+::ng-deep .ui-table-tablewrapper {
+  width: auto !important;
+}
+::ng-deep .ui-table .ui-sortable-column {
+  position: -webkit-sticky;
+  position: sticky;
+  top: -1px;
+  z-index: 9999;
+}
+
+::ng-deep .ui-table-resizable {
+  padding-bottom: 1px;
+  width: auto !important;
+}
+.ui-table .ui-table-tbody > tr,
+.ui-table .ui-table-thead > tr > th,
+.ui-table .ui-table-tfoot > tr > td {
+  max-width: 300px !important;
+  font-size: 11px;
+  color: black;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+  border-width: 1px;
+  //padding: 0.450em 0.857em !important;
+}
+
+.ui-resizable-column {
+  //background:linear-gradient(#667db6, #0082c8, #0082c8, #667db6) !important;
+  //background: linear-gradient(#457fca, #5691c8) !important;
+  //background: linear-gradient(#d0d4d8, #d0d4d8) !important;
+  background: linear-gradient(#676a6d,#ced1d3 ) !important;
+  //color: #fff !important;
+  color: black !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  //text-transform: uppercase !important;
+  padding: 5px !important;
+}
+
+.table {
+  background-color: white;
+
+  .ui-table-caption,
+  .ui-paginator-bottom {
+    //background-color: white !important;
+  }
+}
+
+.ui-table-caption {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.ui-paginator {
+  //background: #5691c8 !important;
+  background: linear-gradient(#d0d4d8, #d0d4d8) !important;
+}
+
+body .ui-paginator .ui-paginator-first,
+body .ui-paginator .ui-paginator-prev,
+body .ui-paginator .ui-paginator-next,
+body .ui-paginator .ui-paginator-last {
+  color: black !important;
+}
+
+body .ui-widget {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 12px !important;
+  text-decoration: none;
+}
+
+.table-th-tr th {
+  //background:linear-gradient(#667db6, #0082c8, #0082c8, #667db6) !important;
+  background: linear-gradient(#676a6d,#ced1d3 ) !important;
+  font-size: 13px !important;
+  padding: 5px !important;
+  color: black !important;
+  font-weight: 500 !important;
+}
+
+.table-th-tr-fltr th {
+  padding: 1px 4px 1px 4px !important;
+}
+
+body .ui-table .ui-table-thead > tr > th {
+  //background-color: white !important;
+  //background: linear-gradient(#676a6d,#ced1d3 ) !important;
+  //background: linear-gradient(#676a6d,#ced1d3 ) !important;
+  font-size: 11px !important;
+  color: black !important;
+  font-weight: 700 !important;
+  .ui-inputtext {
+    padding: 0px !important;
+    margin: 2px 0px 0px 4px;
+  }
+}
+
+.ui-dropdown-label {
+  padding: 4px 4px 4px 6px !important;
+}
+
+body .table .ui-sortable-column:focus {
+  box-shadow: none !important;
+}
+
+.mat-raised-button {
+  font-size: 12px !important;
+  //line-height: 30px !important;
+  line-height: 20px !important;
+  padding: 0.2em 0.5em 0.2em 0.5em !important;
+  border-radius: 5px !important;
+}
+
+.active-link {
+  //background-color: #457fca !important; /* Note: You could also use a custom theme */
+  color: #457fca !important;
+}
+
+.mat-drawer-container {
+  background-color: white !important;
+}
+
+body .ui-widget {
+  font-size: 11px !important;
+}
+
+.body .ui-inputtext {
+  font-size: 11px !important;
+}
+
+body .ui-table .ui-table-thead > tr > th .ui-inputtext {
+  font-size: 11px !important;
+}
+
+body .pi {
+  font-size: 1em !important;
+}
+
+.fixed-table {
+  position: fixed !important;
+}
+
+.searchtext-ltr {
+  margin-left: 2px;
+}
+
+.searchtext-rtl {
+  margin-right: 2px;
+}
+
+body .ui-paginator .ui-paginator-pages .ui-paginator-page{
+  color: black !important;
+}
+
+body .ui-table .ui-table-tbody > tr:nth-child(even) {
+  //background-color: rgb(245, 247, 241)!important;
+  //background-color: rgb(211, 216, 202) !important;
+  background-color: rgb(230, 233, 224) !important;
+}
+
+.mat-card-actions, .mat-card-content, .mat-card-subtitle{
+  //margin-bottom: 0px !important;
+  margin-bottom: 5px !important;
+}
+
+li:nth-child(odd) { 
+  //background: rgb(232, 235, 224); 
+  //background-color: rgb(211, 216, 202);
+  background-color: #ffffff;
+  background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);
+}
+
+.dashboard-radio-filters-ltr{
+  text-align: left;
+  padding: 0em 0em 0em 0.3em;
+  width: fit-content;
+  /*background: linear-gradient(#dee1e7, #eceff3);*/
+  //margin-left: 1.2em !important;
+  //border-style: outset;
+  border: solid 1px #CCC !important;
+  box-shadow: 1px 1px 0px 0px #CCC;
+  border-radius: 3px;
+  margin-top: 1px;
+}
+
+.dashboard-radio-filters-rtl{
+  text-align: left;
+  padding: 0em 0em 0em 0.3em;
+  width: fit-content;
+  //background: linear-gradient(#dee1e7, #eceff3);
+  //margin-right: 1.2em !important;
+  //border-style: outset;
+  border: solid 1px #CCC !important;
+  box-shadow: 1px 1px 0px 0px #CCC;
+  border-radius: 3px;
+  margin-top: 1px;
+}
+
+.mat-radio-outer-circle {
+  height: 15px !important;
+  width: 15px !important;
+}
+
+.mat-radio-inner-circle {
+  height: 15px !important;
+  width: 15px !important;
+}
+
+.summary-server-acivity-ltr{
+  margin-left:8em;
+  height: 300px; 
+  width: 40%;
+  margin-top: 4em;
+}
+
+.summary-server-acivity-rtl{
+  margin-right:8em;
+  height: 300px; 
+  width: 40%;
+  margin-top: 4em;
+}
+
+.mat-radio-label-content{
+  padding-left: 0px !important;
+  padding-bottom: 4px !important;
+}
+
+.mat-icon-button {
+  line-height: 0px !important;
+  height: 0px !important;
+}
+
+body .ui-table .ui-table-tbody > tr > td {
+  padding: 0.350em 0.857em !important;
+}
+
+body .ui-table .ui-table-tbody > tr.ui-state-highlight {
+  background-color: #94989c !important;
+  color: white !important;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: rgb(36, 207, 36);
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: text-bottom;
+    margin-left: 0.5em;
+}
+
+.Centered {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.ui-paginator .ui-dropdown{
+  min-width: 5em !important;
+  margin-left: .375em !important;
+}
+
+body .ui-paginator .ui-dropdown .ui-dropdown-trigger, body .ui-paginator .ui-dropdown .ui-dropdown-label {
+  color: black !important;
+  font-size: 12px !important;
+}

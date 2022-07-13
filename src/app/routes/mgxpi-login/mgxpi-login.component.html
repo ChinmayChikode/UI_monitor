@@ -1,0 +1,61 @@
+<div [@fadeIn]="state" (@fadeIn.done)="onDone($event)" [style.backgroundImage]="currentImage" class="pt-5"
+  class="bg-img" style="text-align: center;">
+  <!-- <img src="assets/logo.jpg" class="text-align:center;" style="margin-top: 3em;" alt=""> -->
+</div>
+<div style="position: absolute;">
+  <div class="alert alert-dismissible alert-danger"
+    *ngIf="authentication.loginValue == -1 && authentication.unauthorizedAccessRedirect == 'FromLogin'">
+    <label>Please Login First</label>
+  </div>
+
+  <div class="alert alert-dismissible alert-danger"
+    *ngIf="authentication.unauthorizedAccessRedirect == 'AccessDenied'">
+    <label>Sorry,Access to the protected resource has been denied!!!</label>
+  </div>
+  <div style="padding-top: 1em;"></div>
+  <div style="background-color: lightslategray !important;text-align:left;position:fixed;top:7%;left:3%;width:fit-content;border-radius: 15px;padding: 0em 4em 2em 4em;box-shadow: 0px 0px 0px 5px rgba(0,0,0,0.3);">
+    <br />
+    <!-- <label for="name">User Name</label> -->
+    <br />
+
+    <h1 style="text-align: center; color: white;">
+      Magic Monitor
+    </h1>
+
+    <!-- <input type="text" name="name" (focus)=checkLoginError() #inputName required placeholder="Username"/> -->
+    <mat-form-field>
+      <mat-label style="color: white;">Username</mat-label>
+      <input matInput style="color: white;" type="text" [(ngModel)]="username" #userModel="ngModel" />
+      <mat-error style="color: white;" *ngIf="userModel.hasError('required')">You must enter your user name
+      </mat-error>
+    </mat-form-field>
+    <!-- <input type="password" name="password" #inputPassword required placeholder="Password"/> -->
+    <mat-form-field hideRequiredMarker>
+      <mat-label style="color: white;">Password</mat-label>
+      <input matInput style="color: white;" [type]="passwordType" [(ngModel)]="password" #passwordModel="ngModel" />
+      <button mat-icon-button matSuffix [attr.aria-label]="passwordToggleLabel"
+        (click)="showPassword = !showPassword">
+        <mat-icon>{{passwordToggleIcon}}</mat-icon>
+      </button>
+      <!-- <mat-hint>Hint: favorite color</mat-hint> -->
+      <mat-error style="color: white;" *ngIf="passwordModel.hasError('required')">You must enter your password.
+      </mat-error>
+    </mat-form-field>
+
+    <br />
+    <br />
+    <br />
+    <div class="container left" style="margin-top: -3em;">
+      <button mat-raised-button style="color: black; background-color: #F1F1F1 !important;font-weight: 500;min-width: 90px !important;" type="button"
+        (click)="login(username,password)">
+        Login
+      </button>
+      <button mat-raised-button style="color: black; margin-left: 2em;background-color: #F1F1F1 !important;font-weight: 500;min-width: 90px !important;" type="button" (click)="username=''"
+        (click)="password=''">
+        Clear
+      </button>
+    </div>
+    <br />
+    <br />
+  </div>
+</div>

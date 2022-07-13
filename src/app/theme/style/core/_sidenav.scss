@@ -1,0 +1,438 @@
+// ==================================================
+// SIDENAV
+// ==================================================
+
+@mixin matero-sidenav-theme($theme) {
+  $background: mat-color($theme, 'background');
+  $foreground: mat-color($theme, 'foreground');
+
+  .matero-sidenav {
+    .matero-sidemenu {
+      a {
+        color: mat-color($foreground, text);
+      }
+
+      .matero-sidemenu-item {
+        font-family: $font-family-sans-serif;
+        font-weight: normal;
+        font-size: 14px;
+        border-bottom: 1px solid $boder-color;
+        &:hover {
+          //MAGIC : PROJECT LIST HOVER COLOR
+          background: mat-color($background, hover);
+        }
+
+        &.open {
+          background: rgba(0, 0, 0, .02);
+        }
+
+        &.active {
+          > a {
+            color: mat-color(map-get($theme, accent));
+          }
+        }
+      }
+    }
+
+    .matero-sidebar-header {
+      color: mat-color($foreground, text);
+      background: mat-color($background, app-bar);
+      border-bottom: 1px solid $boder-color;
+    }
+  }
+}
+
+.matero-sidenav {
+  position: absolute;
+  overflow-x: hidden;
+  transition: swift-ease-out(width); // Only set width property
+
+  @include mat-elevation(2);
+
+  &.mat-drawer-side {
+    border-width: 0;
+  }
+
+  .matero-sidemenu {
+    width: $sidenav-width;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .matero-sidemenu-item {
+      display: flex;
+      height: auto;
+      //MAGIC : LIST PADDDING
+      padding: 0px;
+
+      &.open {
+        > .matero-sidemenu {
+          max-height: 2000px;
+        }
+
+        > .matero-sidemenu-toggle > .menu-caret {
+          transform: rotate(-180deg);
+        }
+      }
+      &:hover{
+          color:#171a69 !important;
+          cursor: pointer;
+      }
+    }
+
+    a {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+     // height: 30px;
+      //padding: 0 30px;
+      padding: 0 25px;
+      text-decoration: none;
+      float: left;
+      max-width: 58%;
+      min-width: 58%;
+      color: #0d0d31;
+    }
+
+    .menu-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 16px;
+      font-size: 18px;
+      line-height: 18px;
+
+      [dir='rtl'] & {
+        margin-left: 16px;
+        margin-right: auto;
+      }
+    }
+
+    .menu-name,
+    .menu-label,
+    .menu-badge {
+      transition: swift-ease-out(opacity);
+    }
+
+    .menu-label,
+    .menu-badge {
+      @include badge();
+    }
+
+    .menu-badge {
+      border-radius: 20px;
+    }
+
+    .menu-caret {
+      display: block;
+      text-align: center;
+      transition: fast-out-slow(transform);
+    }
+
+    &.level-0 > li > a > .menu-name {
+      margin-right: 5px;
+
+      [dir='rtl'] & {
+        margin-left: 5px;
+        margin-right: auto;
+      }
+    }
+
+    &.level-1 > li > a {
+      padding-left: 50px;
+
+      [dir='rtl'] & {
+        padding-left: 16px;
+        padding-right: 50px;
+      }
+    }
+
+    &.level-2 > li > a {
+      padding-left: 64px;
+
+      [dir='rtl'] & {
+        padding-left: 16px;
+        padding-right: 64px;
+      }
+    }
+
+    &.submenu {
+      max-height: 0;
+      padding-top: 0;
+      overflow: hidden;
+      transform: translateZ(0) !important;
+      transition: fast-out-slow(max-height);
+
+      .matero-sidemenu-item {
+        border-left-width: 0;
+      }
+    }
+  }
+
+  .matero-sidebar-header {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    height: $toolbar-height-desktop;
+    //padding: 0px 5px 0px 5px;
+    padding: 0px 0px 0px 0px;
+    overflow: hidden;
+
+    @include bp-lt(small) {
+      & {
+        height: $toolbar-height-mobile;
+      }
+    }
+
+    // Colorful
+    .matero-header-white & {
+      background-color:#333333;
+    }
+  }
+
+  .matero-sidebar-main {
+    height: calc(100% - #{$toolbar-height-desktop});
+    overflow: auto;
+
+    @include bp-lt(small) {
+      & {
+        height: calc(100% - #{$toolbar-height-mobile});
+      }
+    }
+  }
+}
+
+// User panel
+.matero-user-panel {
+  padding: 16px 0;
+  border-bottom: 1px solid $boder-color;
+}
+
+.matero-user-panel-avatar {
+  margin-bottom: 8px;
+  // Set default width and height can avoid flashing before avatar image loaded.
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  transition: swift-ease-out(transform);
+}
+
+.matero-user-panel-name,
+.matero-user-panel-email {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: normal;
+}
+
+.matero-user-panel-name,
+.matero-user-panel-email,
+.matero-user-panel-icons {
+  opacity: 1;
+  transition: swift-ease-out(opacity);
+}
+
+.matero-user-panel-icons {
+  white-space: nowrap;
+
+  .mat-icon-button {
+    width: 24px;
+    height: 24px;
+    line-height: 22px !important;
+
+    .mat-icon {
+      width: 18px;
+      height: 18px;
+      font-size: 18px;
+      line-height: 18px;
+    }
+  }
+}
+
+// Layout control
+.matero-sidenav-collapsed,
+.matero-sidenav-collapsed-fix {
+  .matero-sidenav {
+    width: $sidenav-collapsed-width;
+
+    .menu-name,
+    .menu-label,
+    .menu-badge,
+    .menu-caret,
+    .matero-user-panel-name,
+    .matero-user-panel-email,
+    .matero-user-panel-icons {
+      opacity: 0;
+    }
+
+    .matero-user-panel-avatar {
+      transform: scale(.5);
+    }
+
+    &:hover {
+      width: $sidenav-width;
+      .menu-name,
+      .menu-label,
+      .menu-badge,
+      .menu-caret,
+      .matero-user-panel-name,
+      .matero-user-panel-email,
+      .matero-user-panel-icons {
+        opacity: 1;
+      }
+      .matero-user-panel-avatar {
+        transform: scale(1);
+      }
+    }
+    
+  }
+}
+
+.matero-sidenav-collapsed {
+  .matero-content-wrap {
+    margin-left: $sidenav-collapsed-width !important;
+
+    [dir='rtl'] & {
+      margin-left: auto !important;
+      margin-right: $sidenav-collapsed-width !important;
+    }
+  }
+
+  &[dir='rtl'] .matero-content-wrap {
+    margin-left: auto !important;
+    margin-right: $sidenav-collapsed-width !important;
+  }
+}
+
+.sidemenu-mat-icon-button {
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+}
+
+.mat-arrow-style {
+  margin-left: 19em;
+    margin-top: 3em;
+}
+
+.matero-toggle-button{
+  background-color: transparent !important;
+  position: fixed;
+  z-index: 1000;
+  border-radius: 15rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(44,51,73,.1);
+  background: cornflowerblue !important;
+  cursor: pointer;
+  transition-duration: 0.34s;
+  //margin: -5px 0px 0px -3px;
+  margin: 6px 0px 0px 16px;
+  transform: translate3d(0px, 0px, 0px);
+ .mat-icon-button{
+    height: 32px;
+    width: 32px;
+    line-height: 32px;
+  }
+}
+/*
+.matero-toggle-button-toggle{
+  transform: translate3d(125px, 0px, 0px);
+}
+*/
+
+.matero-toggle-button-toggle{
+  background-color: transparent !important;
+  position: fixed;
+  z-index: 1000;
+  border-radius: 15rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(44, 51, 73, .1);
+  background: cornflowerblue !important;
+  cursor: pointer;
+  transition-duration: 0.34s;
+  //margin: -5px 0px 0px -5px;
+  margin: 6px 0px 0px 10px;
+  transform: translate3d(125px, 0px, 0px);
+
+  .mat-icon-button{
+    height: 32px;
+    width: 32px;
+    line-height: 32px;
+  }
+
+}
+.matero-sidenav-actionmenu{
+  position: fixed !important;
+  margin-top: 42px;
+  padding-top: 0px !important;
+  border: none !important;
+}
+
+.matero-sidenav-actionmenu .mat-list-base .mat-list-item{
+  height: 39px !important;
+  font-size: 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  font-family: $font-family-sans-serif;
+  &:hover{
+    color:#171a69;
+  }
+}
+
+.mat-icon-button .mat-icon, .mat-icon-button i{
+     line-height: 22px !important; 
+}
+
+.matero-sidenav-actionmenu .mat-list-base{
+  padding-top: 0px;
+}
+.span-icon-right{
+  float: right;
+}
+.span-icon-red{
+  color: rgb(223, 23, 23);
+}
+.span-icon-green{
+  color: rgb(11, 102, 11);
+}
+.span-icon-blue{
+  color: rgb(238, 167, 13);
+}
+.matero-sidenav-actionmenu .mat-icon{
+  font-size: 20px;
+  height: 20px;
+  line-height: 20px;
+}
+.status{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #333333;
+}
+.project-name{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  padding-left: 1.6em;
+  color: #333333;
+}
+.action{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  padding-left: 5.3em;
+  color: #333333;
+}
+.ui-dropdown {
+  min-width: 3.8em !important;
+  min-height: 1.92em;
+}
+.margin-left{
+  margin-left: -0.5em;
+}
+.Blink {
+  animation: blinker 1s cubic-bezier(.5, 0, 1, 1) infinite alternate;  
+}
+@keyframes blinker {  
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

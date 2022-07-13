@@ -1,0 +1,44 @@
+<mat-sidenav-container>
+
+  <mat-sidenav-content role="region">
+
+    <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100">
+      <p-table #dt [columns]="cols" [value]="bam" [paginator]="true" [rows]="26" sortField="messageId" [sortOrder]="-1"
+        class="table">
+        <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
+          BAM
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr class="table-th-tr">
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+              <input *ngSwitchCase="'businessProcess'" pInputText type="text" placeholder="Starts with"
+                class="ui-column-filter" style="width: 100%;"
+                (input)="dt.filter($event.target.value, col.field, 'startsWith')">
+              <input *ngSwitchCase="'flow'" pInputText type="text" placeholder="Starts with" class="ui-column-filter"
+                style="width: 100%;" (input)="dt.filter($event.target.value, col.field, 'contains')">
+              <input pInputText style="width: 100%;" *ngSwitchCase="'status'" placeholder="Starts with" type="text"
+                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              {{user[col.field]}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<div *ngIf="options.dir === 'ltr'" class="customizer-handle" matTooltip="You can change my location" cdkDrag
+  (cdkDragStarted)="handleDragStart($event)">
+  <button mat-icon-button class="sidemenu-mat-icon-button" (click)="openPanel($event)">
+    <img src="assets/images/activity-settings.png" width="30px" />
+  </button>
+</div>

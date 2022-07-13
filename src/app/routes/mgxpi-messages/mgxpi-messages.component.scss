@@ -1,0 +1,43 @@
+body .ui-table .ui-table-caption {
+  color:#0083B0 !important;
+}
+.mat-card {
+  //  font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 12px !important;
+    margin-bottom: 5px !important;
+    padding: 12px !important;
+}
+.ui-table {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #c8c8c8;
+    > * {
+      flex: 0 0 auto;
+    }
+
+    > .ui-table-scrollable-wrapper {
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      > .ui-table-scrollable-view {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        > .ui-table-scrollable-header {
+          flex: 0 0 auto;
+        }
+
+        > .ui-table-scrollable-body {
+          flex: 1 1 auto;
+        }
+      }
+    }
+  }
+.f-s-16 {
+    font-size: 13px !important;
+}
+.f-w-500 {
+    font-weight: 100 !important;
+}

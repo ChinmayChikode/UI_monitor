@@ -1,0 +1,45 @@
+<div>
+<ul navAccordion class="matero-sidemenu level-0" style="border-top: 1px solid rgba(0, 0, 0, 0.12);border: solid 1px #CCC !important;">
+  <li navAccordionLink class="matero-sidemenu-item" style="height: 2em;font-size: 13px !important;" 
+      [style.background-color]="project.projectKey === this.projectSelection.projectKey ? '#94989c' : ''"
+      [style.background-image]="project.projectKey === this.projectSelection.projectKey ? 'none' : ''"
+    *ngFor="let project of projectsList | searchProject: searchProjectQuery : 'projectKey' | searchProject: projectStatus : 'status' ; let i = index" (click)="getProjectKey(project)" 
+      matRipple [matRippleDisabled]="!ripple">
+      
+      <span style="float: left;color: darkolivegreen ;">
+        <button mat-icon-button [ngClass]="isProjStatsChngRqstd(project) ? {'Blink' : true} : {'Blink' : false}"
+        class="sidemenu-mat-icon-button" style="padding-left: 1em">
+          <img *ngIf="isProjectStopped(project)" src="assets/images/project-stopped.png" width="15px"/>
+          <img *ngIf="isProjectRunning(project)" src="assets/images/project-running.png" width="15px"/>
+        </button>
+      </span> 
+
+      <a class="matero-sidemenu-link"
+           (click)="getProjectNavigation(project);this.projectLoadSrv.getProjectLoadDataOnProjectChange();this.licenseUsageSrv.getProjectLoadDataOnProjectChange()">
+        <span 
+        [style.color]="project.projectKey === this.projectSelection.projectKey ? 'white' : ''"
+        class="menu-name">{{project.projectKey}}</span>
+      </a>
+    <span class="span-icon-right span-icon-green">
+      <button mat-icon-button class="sidemenu-mat-icon-button" (click)="startProject(project)"
+      [disabled] = "project.status == 'RUNNING'">
+        <mat-icon aria-hidden="true">play_arrow</mat-icon>
+      </button>
+    </span>
+    <span class="span-icon-right span-icon-red">
+      <button mat-icon-button class="sidemenu-mat-icon-button" (click)="stopProject(project)"
+      [disabled] = "project.status == 'STOPPED'">
+        <mat-icon aria-hidden="true">stop</mat-icon>
+      </button>
+    </span>
+    <span class="span-icon-right span-icon-blue">
+      <button mat-icon-button class="sidemenu-mat-icon-button" (click)="RestartProject(project)"
+      [disabled] = "project.status == 'STOPPED'">
+        <mat-icon aria-hidden="true" style="transform: rotate(90deg);margin-bottom: 3px;">eject</mat-icon>
+      </button>
+    </span>
+    <div style="clear: both;"></div>
+</li>
+
+</ul>
+</div>

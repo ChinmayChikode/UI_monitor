@@ -1,0 +1,45 @@
+<div style="background-color: #bdd4e7 !important;background-image: linear-gradient(315deg, #bdd4e7 0%, #8693ab 74%) !important;">
+<h4 mat-dialog-title style="color: white;">
+  <div>
+    <img src="assets/images/delete-warning.png" width="30px" />  
+      Warning Delete Activity Log Records
+  </div>
+</h4>
+
+<mat-dialog-content>
+ 
+  <div class="demo-full-width" fxFlex="100" fxFlex.gt-lg="100">
+
+    <!-- <P>
+        
+        Clearing all messages will delete all Statistics and Activity Log information
+        
+    </P> -->
+    <P style="color: white;">
+      Clearing all messages will delete all Statistics and Activity Log information
+      <br>
+      Delete messages older than 
+    
+    <mat-form-field  class="mat-form-field-delete-datepicker" style="width:12em !important">
+        <input style="color: white;" #deleteLogDate matInput [matDatepicker]="deleteLogPicker" placeholder="Deletion date"
+        (dateChange)="this.activityServices.onToDeleteDateChange(deleteLogDate.value)">
+        <mat-datepicker-toggle style="color: white;" matSuffix [for]="deleteLogPicker"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker style="color: white;" #deleteLogPicker [showSeconds]="true"
+          [enableMeridian]="true">
+        </ngx-mat-datetime-picker>
+    </mat-form-field>
+    
+    </P>
+
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <!-- <button mat-stroked-button mat-dialog-close>No</button>
+  <button mat-stroked-button color="primary" mat-dialog-close cdkFocusInitial
+  (click)="this.activityServices.deleteActivityLogByDays(this.projectSelection.projectKey)">Yes</button> -->
+  <button mat-button style="background-color: white;color: black;" width="30px" class="activityFiltersCancel" mat-dialog-close>No</button>
+	<button mat-button style="background-color: white;color: black;" width="30px" class="activityFiltersSave" (click)="this.activityServices.deleteActivityLogByDays(this.projectSelection.projectKey)" mat-dialog-close>Yes</button>
+</mat-dialog-actions>
+</div>

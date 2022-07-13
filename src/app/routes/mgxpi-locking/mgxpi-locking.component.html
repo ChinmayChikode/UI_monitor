@@ -1,0 +1,30 @@
+<mat-sidenav-container>
+
+  <mat-sidenav-content role="region">
+
+    <div class="matero-col" id="wrapper_div" fxFlex="100" fxFlex.gt-sm="100">
+      <p-table #dt [columns]="cols" [value]="locking" [paginator]="true" [rows]="26" sortField="fsidCreated"
+        [sortOrder]="-1" class="table">
+        <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
+          Locking
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr class="table-th-tr">
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-locking let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              {{locking[col.field]}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

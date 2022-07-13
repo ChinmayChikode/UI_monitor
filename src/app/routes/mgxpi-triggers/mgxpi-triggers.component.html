@@ -1,0 +1,57 @@
+<mat-sidenav-container>
+
+  <mat-sidenav-content role="region">
+    <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
+    <p-table #triggersTable [resizableColumns]="true" [style]="{'width': '50% !important;'}" [columns]="cols"
+      selectionMode="single" dataKey="triggerId" [value]="triggers" [paginator]="true" [rows]="15" sortField="bpId"
+      [sortOrder]="1" class="table">
+      <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
+        Triggers
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr class="table-th-tr">
+          <th *ngFor="let col of columns" colspan="col.colspan" [pSortableColumn]="col.field"
+            [ngStyle]="{'width': col.width}">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+        <tr class="table-th-tr-fltr">
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field" colspan="col.colspan"
+            [ngStyle]="{'width': col.width}">
+
+            <p-dropdown *ngSwitchCase="'bpName'" placeholder="ALL" [options]="bpList" appendTo="body"
+              [style]="{'width':'100%'}" (onChange)="triggersTable.filter($event.value, col.field, 'contains')">
+            </p-dropdown>
+
+            <p-dropdown *ngSwitchCase="'flowName'" placeholder="ALL" [options]="flowList" appendTo="body"
+              [style]="{'width':'100%'}" (onChange)="triggersTable.filter($event.value, col.field, 'contains')">
+            </p-dropdown>
+
+            <p-dropdown *ngSwitchCase="'triggerType'" placeholder="ALL" [options]="tiggerTypeList" appendTo="body"
+              [style]="{'width':'100%'}" (onChange)="triggersTable.filter($event.value, col.field, 'contains')">
+            </p-dropdown>
+
+            <p-dropdown *ngSwitchCase="'serverId'" placeholder="ALL" [options]="serversList" appendTo="body"
+              [style]="{'width':'100%'}" (onChange)="triggersTable.filter($event.value, col.field, 'contains')">
+            </p-dropdown>
+
+            <p-dropdown *ngSwitchCase="'triggerState'" placeholder="ALL" [options]="tiggerStates" appendTo="body"
+              [style]="{'width':'100%'}" (onChange)="triggersTable.filter($event.value, col.field, 'contains')">
+            </p-dropdown>
+
+
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-trigger let-columns="columns">
+        <tr [pSelectableRow]="trigger">
+          <td *ngFor="let col of columns">
+            {{trigger[col.field]}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

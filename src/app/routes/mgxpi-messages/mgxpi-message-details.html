@@ -1,0 +1,13 @@
+<h4 mat-dialog-title>Message Details</h4>
+
+<mat-dialog-content>
+  
+  <canvas baseChart width="500" height="350"
+          [data]="pieChartData"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"
+          [options]="barChartOptions"></canvas>
+
+</mat-dialog-content>

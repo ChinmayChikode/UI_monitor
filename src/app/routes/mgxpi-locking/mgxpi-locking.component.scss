@@ -1,0 +1,31 @@
+body .ui-table .ui-table-caption {
+  color:#0083B0 !important;
+}
+.ui-table {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #c8c8c8;
+    > * {
+      flex: 0 0 auto;
+    }
+
+    > .ui-table-scrollable-wrapper {
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      > .ui-table-scrollable-view {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        > .ui-table-scrollable-header {
+          flex: 0 0 auto;
+        }
+
+        > .ui-table-scrollable-body {
+          flex: 1 1 auto;
+        }
+      }
+    }
+  }

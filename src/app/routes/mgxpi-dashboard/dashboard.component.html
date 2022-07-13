@@ -1,0 +1,129 @@
+<mat-sidenav-container>
+
+  <mat-sidenav-content role="region">
+    <div [ngClass]="this.settings.getOptions().menu === 'hor' ? 'matero-row' : 'matero-row-menu'" fxLayout="row wrap">
+      <!-- Charts -->
+      <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
+        <div [ngClass]="options.dir === 'ltr' ? 'dashboard-radio-filters-ltr' : 'dashboard-radio-filters-rtl'">
+          <!--<div style="border-style: groove;border-radius: 15px;padding: 0.1em 0em 0.2em 1em;"> -->
+          <mat-radio-button class="mat-radio-label-content-1" [checked]="true"
+            (click)="appproject.load('10_minute');applicense.load('10_minute');triggeractivity.load('10_minute')"
+            value="10_minute" [matTooltipClass]="{ 'tool-tip': true }" matTooltip="Load Last 10 Minute Data">
+            10 Minutes
+          </mat-radio-button>
+          <mat-radio-button class="mat-radio-label-content-1"
+            (click)="appproject.load('30_minute');applicense.load('30_minute');triggeractivity.load('10_minute')"
+            value="30_Minute" [matTooltipClass]="{ 'tool-tip': true }" matTooltip="Load Last 30 Minute Data">
+            30 Minutes
+          </mat-radio-button>
+          <mat-radio-button class="mat-radio-label-content-1"
+            (click)="appproject.load('1_hour');applicense.load('1_hour');triggeractivity.load('10_minute')"
+            value="1_Hour" [matTooltipClass]="{ 'tool-tip': true }" matTooltip="Load Last 1 Hour Data">
+            1 Hour
+          </mat-radio-button>
+          <mat-radio-button class="mat-radio-label-content-1"
+            (click)="appproject.load('1_day');applicense.load('1_day');triggeractivity.load('10_minute')" value="1_Day"
+            [matTooltipClass]="{ 'tool-tip': true }" matTooltip="Load Last 1 Day Data">
+            1 Day
+          </mat-radio-button>
+          <mat-radio-button class="mat-radio-label-content-1"
+            (click)="appproject.load('3_day');applicense.load('3_day');triggeractivity.load('10_minute')" value="3_Day"
+            [matTooltipClass]="{ 'tool-tip': true }" matTooltip="Load Last 3 Day Data">
+            3 Day
+          </mat-radio-button>
+        <!--</div> -->
+      </div>
+        <div style="text-align: right;">
+          <div class="tp-box" [@flipState]="flip">
+            <mat-card class="tp-box__side tp-box__back" style="border: solid 1px #CCC !important;border-radius: 15px;">
+              <mat-card-subtitle class="f-s-14 f-w-100" style="padding: 0em 0em 0em 0em;background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);">
+                <!--<span style="float: left;color: black;font-weight: 500 !important;padding: 0.3em 0em 0em 0.8em;background:linear-gradient(#5f6164,#dee1e7) !important">-->
+                  <span style="float: left;color: black;font-weight: 500 !important;padding: 0.4em 0em 0em 0.9em;">
+                  <!-- <div style="padding: 0.3em 0.9em 0.3em 0.9em;background:linear-gradient(#dee1e7, #eceff3)">
+                    License usage & Available workers over time
+                  </div>-->
+                  License usage & Available workers over time
+                </span>
+                <mat-icon (click)="toggleFlip()">
+                  <img src="assets/images/Flip2.png" style="width:25px;vertical-align:sub" />
+                </mat-icon>
+              </mat-card-subtitle>
+              <app-license-usages #applicense></app-license-usages>
+            </mat-card>
+            <mat-card class="tp-box__side tp-box__front" style="border: solid 1px #CCC !important;border-radius: 15px;">
+              <mat-card-subtitle class="f-s-14 f-w-100" style="padding: 0em 0em 0em 0em;background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);">
+                <span style="float: left;color: black;font-weight: 500 !important;padding: 0.4em 0em 0em 0.9em">
+                  <!--<div style="padding: 0.3em 0.9em 0.3em 0.9em;background:linear-gradient(#dee1e7, #eceff3)">
+                    
+                  </div>-->
+                  Project load & Pending messages
+                </span>
+                <mat-icon (click)="toggleFlip()">
+                  <img src="assets/images/Flip2.png" style="width:25px;vertical-align:sub" />
+                </mat-icon>
+              </mat-card-subtitle>
+              <app-project-load #appproject></app-project-load>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+      <!--<div class="matero-col" fxFlex="100" fxFlex.gt-sm="50">
+        <mat-card>
+          <span style="float: left;font-size: 14px;">Project Alerts</span>
+          <app-project-alert #projectAlerts></app-project-alert>
+        </mat-card>
+      </div>
+
+      <div class="matero-col" fxFlex="100" fxFlex.gt-sm="50">
+        <mat-card>
+          <span style="float: left;font-size: 14px;">Trigger Activity</span>
+          <app-trigger-activity #triggeractivity></app-trigger-activity>
+        </mat-card>
+      </div> -->
+      <div class="matero-col" fxFlex="100" fxFlex.gt-sm="50">
+        <mat-card style="min-width: 250px;min-height: 175px;border: solid 1px #CCC !important;border-radius: 15px;">
+          <mat-card-subtitle class="f-s-14 f-w-100" style="color: black;font-weight: 500 !important;background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);padding: 0.5em 0em 0.5em 0.8em">
+          <!--<div style="padding: 0.3em 0.9em 0.3em 0.9em;background:linear-gradient(#dee1e7, #eceff3);width: fit-content;">
+            Project Alerts
+          </div>-->
+          Project Alerts
+          </mat-card-subtitle>
+          <br>
+          <app-project-alert #projectAlerts></app-project-alert>
+        </mat-card>
+      </div>
+      <div class="matero-col" fxFlex="100" fxFlex.gt-sm="50">
+        <mat-card style="min-width: 250px;min-height: 175px;border: solid 1px #CCC !important;border-radius: 15px;">
+          <mat-card-subtitle class="f-s-14 f-w-100" style="background-color: #ffffff;background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);color: black;font-weight: 500 !important;padding: 0.5em 0em 0.5em 0.8em">
+          <!--<div style="padding: 0.3em 0.9em 0.3em 0.9em;background:linear-gradient(#dee1e7, #eceff3);width: fit-content;">
+            Trigger Activity
+          </div> -->
+          Trigger Activity
+          </mat-card-subtitle>
+          <app-trigger-activity #triggeractivity></app-trigger-activity>
+        </mat-card>
+      </div>
+    </div>
+    <div *ngIf="options.dir === 'ltr'" class="chatbot-handle" matTooltip="You can change my location" cdkDrag
+  (cdkDragStarted)="handleDragStart($event)">
+  <button mat-icon-button class="sidemenu-mat-icon-button" (click)="openPanel($event)">
+    <img src="assets/images/ChatBot.jpg" width="45px" />
+  </button>
+</div>
+<div style="border: solid 1px #CCC !important;" *ngIf="options.dir === 'ltr'" [ngClass]="{ 'chat-window': true, 'mat-elevation-z12 opened': openedFilterDialog }">
+  <div style="background-color: #bdd4e7 !important;background-image: linear-gradient(315deg, #bdd4e7 0%, #8693ab 74%) !important;height: 35px;">
+    <span class="dot"></span>
+    <span style="color:black;vertical-align: sub;margin-left: 0.5em;">Magic Bot</span>
+    <span style="color:black;vertical-align: bottom;margin-left: 4.5em;font-size: 11px;">Powered by Magic Software Enterprises</span>
+  </div>
+  <kendo-chat style="margin-top: 0px !important;height: 434px !important;"
+        [messages]="feed | async"
+        [user]="user"
+        (sendMessage)="sendMessage($event)">
+      </kendo-chat>
+
+</div>
+<div [ngClass]="{ 'customizer-panel-overlay': true, opened: openedFilterDialog }" (click)="closePanel()"></div>
+    
+  </mat-sidenav-content>
+</mat-sidenav-container>

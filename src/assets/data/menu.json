@@ -1,0 +1,504 @@
+{
+  "menu": [
+    {
+      "state": "stopped",
+      "name": "Project1",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project BAM",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project BAM",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Shopify Connector Fulletron Indian Project",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project India",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project SAP",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Shopify Connector Fulletron Indian Project",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Shopify Connector Fulletron Japan Project",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Shopify Connector Fulletron Brazil Project",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    },
+    {
+      "state": "stopped",
+      "name": "Project ODS",
+      "type": "link",
+      "icon": "work",
+      "badge": {
+        "color": "green-500",
+        "value": "5"
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+body .ui-table .ui-table-caption {
+    color:#0083B0 !important;
+}
+input, button, select, optgroup, textarea {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #dddddd;
+}
+
+button{
+    padding: 0px 6px 0px 6px;
+    line-height: 35px;
+}
+
+tr:nth-child(even){
+    background-color: #9695ab3d !important;
+}
+
+th{
+    background-color: #6867da3d !important;
+}
+

@@ -1,0 +1,77 @@
+<mat-sidenav-container>
+  <mat-sidenav-content role="region">
+    <div class="matero-col" fxFlex="100" fxFlex.gt-sm="100">
+    <p-table #dt [columns]="flowColumns" [resizableColumns]="true" selectionMode="single" dataKey="flowId"
+      [value]="flows" [paginator]="true" [rows]="15" expandableRows="true" rowExpandMode="multiple" class="table">
+      <ng-template pTemplate="caption" *ngIf="headerSrv.options.menu === 'ver'">
+        Flows
+      </ng-template>
+
+      <!-- Parent Table Data -->
+
+      <ng-template pTemplate="header" let-columns>
+        <tr class="table-th-tr">
+          <th></th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
+            [ngStyle]="{'width': col.width}">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+        <tr class="table-th-tr-fltr">
+          <th></th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+            <p-dropdown *ngSwitchCase="'bpName'" placeholder="ALL" [options]="bpList" appendTo="body"
+              [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'contains')"></p-dropdown>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-flowsData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="flowsData">
+          <td>
+            <a href="#" [pRowToggler]="flowsData" (click)="getTriggersDataByFlows(flowsData)">
+              <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </a>
+          </td>
+          <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+            <span>{{col.field=='isEnable'?flowsData[col.field]==true?'Yes':'No':flowsData[col.field]}}</span>
+          </td>
+        </tr>
+      </ng-template>
+
+      <!-- Child Table Data-->
+
+      <ng-template pTemplate="rowexpansion" let-flowsData dataKey="triggerId">
+        <tr>
+          <td [attr.colspan]="10" [attr.rowspan]="1" style="padding-left: 67px !important;">
+            <p-table [columns]="triggerColumns" selectionMode="single" dataKey="triggerId" [value]="triggers">
+              <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn colspan="col.colspan"
+            [ngStyle]="{'width': col.width}">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-triggersData let-columns="columns">
+        <tr [pSelectableRow]="triggersData" *ngIf="flowsData.flowId === triggersData.flowId">
+          <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">
+            <div *ngIf="col.subfield;then flowruntimetreedata else triggersdata"></div>
+            <ng-template #flowruntimetreedata>
+              <ng-container>{{getFlowTriggersStep(triggersData,col)}}</ng-container>
+            </ng-template>
+            <ng-template #triggersdata>
+              {{triggersData[col.field]}}
+            </ng-template>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </td>
+    </tr>
+    </ng-template>
+    </p-table>
+  </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

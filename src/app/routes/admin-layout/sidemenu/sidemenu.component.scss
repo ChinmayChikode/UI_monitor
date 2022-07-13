@@ -1,0 +1,17 @@
+@import '~@angular/material/theming';
+@import '~@addapptables/notifier/_addapptables-notifier.theme';
+
+$addapptable-app-primary: mat-palette($mat-teal, 800);
+$addapptable-app-accent:  mat-palette($mat-pink, 800, A100, 100);
+$addapptable-app-warn: mat-palette($mat-red);
+$addapptable-app-theme: mat-light-theme($addapptable-app-primary, $addapptable-app-accent, $addapptable-app-warn);
+$addapptable-theme-variables: (
+    color-info: #20a9d2,
+    color-success: #5cb85c,
+    color-danger: #d43934,
+    color-warning: #e09d3d
+);
+
+@include mat-core();
+@include angular-material-theme($addapptable-app-theme);
+@include addapptable-notifier($addapptable-app-theme, $addapptable-theme-variables);
